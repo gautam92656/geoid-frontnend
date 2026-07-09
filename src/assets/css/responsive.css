@@ -1,0 +1,168 @@
+@media (max-width: 1200px) {
+  .navbar__phone,
+  .navbar__locale-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .navbar__nav {
+    gap: 16px;
+  }
+
+  .navbar__switch-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 991px) {
+  .discovery-steps__grid,
+  .auth-page__grid,
+  .landing-features-grid,
+  .landing-cta__grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .landing-section {
+    padding: 56px 0;
+  }
+
+  .discovery-hero {
+    padding: 48px 0 40px;
+  }
+
+  .discovery-hero::before {
+    width: 55%;
+    opacity: 0.8;
+  }
+
+  .discovery-steps {
+    padding: 40px 0 64px;
+  }
+
+  .auth-promo {
+    text-align: center;
+  }
+
+  .auth-promo__text {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .auth-promo__title {
+    font-size: 30px;
+  }
+
+  .auth-page {
+    padding: 40px 0 56px;
+  }
+
+  .account-page {
+    padding: 32px 0 64px;
+  }
+
+  .account-page__title {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .discovery-hero::before {
+    opacity: 0.5;
+  }
+
+  .auth-page {
+    padding-top: 32px;
+  }
+
+  .account-page {
+    padding: 24px 0 56px;
+  }
+
+  .account-page__title {
+    font-size: 34px;
+  }
+
+  .account-page__subtitle {
+    font-size: 14px;
+  }
+
+  .account-card {
+    padding: 22px;
+    border-radius: 16px;
+  }
+
+  .navbar-main nav {
+    display: none;
+  }
+
+  .navbar__actions .btns,
+  .navbar__switch-btn,
+  .navbar__locale-btn,
+  .navbar__phone {
+    display: none;
+  }
+
+  .navbar__actions .btns-primary {
+    display: inline-flex;
+  }
+
+  .navbar__hamburger {
+    display: flex;
+  }
+
+  .header {
+    padding: 14px 0;
+  }
+
+  .footer__top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .footer__links-row {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 575px) {
+  .account-page {
+    padding: 20px 0 48px;
+  }
+
+  .account-page__title {
+    font-size: 28px;
+  }
+
+  .account-card {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .auth-panel,
+  .check-email-card,
+  .password-changed-card {
+    padding: 24px 20px;
+  }
+
+  .auth-promo__title {
+    font-size: 26px;
+  }
+
+  .form-row-2col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-page__title {
+    font-size: 26px;
+  }
+
+  .account-card {
+    padding: 14px;
+  }
+}

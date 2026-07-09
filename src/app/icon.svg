@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Outer curved wings -->
+  <path d="M 30 80 Q 150 20 256 60 Q 362 20 482 80" stroke="#2C2417" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+  <!-- Left diagonal bar -->
+  <path d="M 148 175 L 185 205" stroke="#2C2417" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <!-- Right diagonal bar -->
+  <path d="M 364 175 L 327 205" stroke="#2C2417" stroke-width="12" stroke-linecap="round" fill="none"/>
+
+  <!-- Center top petal -->
+  <path d="M 256 130 C 230 160 222 200 256 230 C 290 200 282 160 256 130 Z" stroke="#2C2417" stroke-width="11" fill="none"/>
+
+  <!-- Left petal -->
+  <path d="M 256 230 C 220 210 185 215 175 245 C 195 265 235 258 256 230 Z" stroke="#2C2417" stroke-width="11" fill="none"/>
+  <!-- Right petal -->
+  <path d="M 256 230 C 292 210 327 215 337 245 C 317 265 277 258 256 230 Z" stroke="#2C2417" stroke-width="11" fill="none"/>
+
+  <!-- Far left petal -->
+  <path d="M 200 255 C 165 240 140 255 138 280 C 155 295 190 285 210 265" stroke="#2C2417" stroke-width="11" fill="none"/>
+  <!-- Far right petal -->
+  <path d="M 312 255 C 347 240 372 255 374 280 C 357 295 322 285 302 265" stroke="#2C2417" stroke-width="11" fill="none"/>
+
+  <!-- Diamond center -->
+  <path d="M 256 230 L 270 258 L 256 275 L 242 258 Z" stroke="#2C2417" stroke-width="10" fill="none"/>
+
+  <!-- Stem going down -->
+  <path d="M 256 275 C 254 340 255 400 256 480" stroke="#2C2417" stroke-width="9" stroke-linecap="round" fill="none"/>
+</svg>
