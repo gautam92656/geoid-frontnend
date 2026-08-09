@@ -1,0 +1,242 @@
+[
+  {
+    "code": "Coreloss",
+    "path": "coreloss.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/coreloss.png"
+  },
+  {
+    "code": "Gravel or conglomerate",
+    "path": "601.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/601.png"
+  },
+  {
+    "code": "Gravel or conglomerate",
+    "path": "602.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/602.png"
+  },
+  {
+    "code": "Crossbedded gravel or conglomerate",
+    "path": "603.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/603.png"
+  },
+  {
+    "code": "Breccia",
+    "path": "605.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/605.png"
+  },
+  {
+    "code": "Breccia",
+    "path": "606.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/606.png"
+  },
+  {
+    "code": "Massive sand or sandstone",
+    "path": "607.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/607.png"
+  },
+  {
+    "code": "Bedded sand or sandstone",
+    "path": "608.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/608.png"
+  },
+  {
+    "code": "Crossbedded sand or sandstone",
+    "path": "609.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/609.png"
+  },
+  {
+    "code": "Crossbedded sand or sandstone",
+    "path": "610.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/610.png"
+  },
+  {
+    "code": "Ripple-bedded sand or sandstone",
+    "path": "611.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/611.png"
+  },
+  {
+    "code": "Argillaceous or shaly sandstone",
+    "path": "612.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/612.png"
+  },
+  {
+    "code": "Calcareous sandstone",
+    "path": "613.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/613.png"
+  },
+  {
+    "code": "Dolomitic sandstone",
+    "path": "614.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/614.png"
+  },
+  {
+    "code": "Silt, siltstone, or shaly silt",
+    "path": "616.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/616.png"
+  },
+  {
+    "code": "Calcareous siltstone",
+    "path": "617.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/617.png"
+  },
+  {
+    "code": "Dolomitic siltstone",
+    "path": "618.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/618.png"
+  },
+  {
+    "code": "Sandy or silty shale",
+    "path": "619.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/619.png"
+  },
+  {
+    "code": "Clay or clay shale",
+    "path": "620.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/620.png"
+  },
+  {
+    "code": "Cherty shale",
+    "path": "621.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/621.png"
+  },
+  {
+    "code": "Dolomitic shale",
+    "path": "622.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/622.png"
+  },
+  {
+    "code": "Calcareous shale or marl",
+    "path": "623.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/623.png"
+  },
+  {
+    "code": "Carbonaceous shale",
+    "path": "624.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/624.png"
+  },
+  {
+    "code": "Oil shale",
+    "path": "625.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/625.png"
+  },
+  {
+    "code": "Chalk",
+    "path": "626.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/626.png"
+  },
+  {
+    "code": "Limestone",
+    "path": "627.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/627.png"
+  },
+  {
+    "code": "Clastic limestone",
+    "path": "628.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/628.png"
+  },
+  {
+    "code": "Fossiliferous clastic limestone",
+    "path": "629.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/629.png"
+  },
+  {
+    "code": "Nodular or irregularly bedded limestone",
+    "path": "630.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/630.png"
+  },
+  {
+    "code": "Limestone, irregular (burrow?) fillings of saccharoidal dolomite",
+    "path": "631.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/631.png"
+  },
+  {
+    "code": "Crossbedded limestone",
+    "path": "632.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/632.png"
+  },
+  {
+    "code": "Cherty crossbedded limestone",
+    "path": "633.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/633.png"
+  },
+  {
+    "code": "Cherty and sandy crossbedded clastic limestone",
+    "path": "634.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/634.png"
+  },
+  {
+    "code": "Oolitic limestone",
+    "path": "635.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/635.png"
+  },
+  {
+    "code": "Sandy limestone",
+    "path": "636.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/636.png"
+  },
+  {
+    "code": "Silty limestone",
+    "path": "637.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/637.png"
+  },
+  {
+    "code": "Argillaceous or shaly limestone",
+    "path": "638.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/638.png"
+  },
+  {
+    "code": "Cherty limestone",
+    "path": "639.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/639.png"
+  },
+  {
+    "code": "Cherty limestone",
+    "path": "640.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/640.png"
+  },
+  {
+    "code": "Dolomitic limestone, limy dolostone, or limy dolomite",
+    "path": "641.png",
+    "url": "assets/img/graphics/big_soil_or_rock_type/",
+    "full_path": "assets/img/graphics/big_soil_or_rock_type/641.png"
+  }
+]

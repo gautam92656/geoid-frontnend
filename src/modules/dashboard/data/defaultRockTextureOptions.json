@@ -1,0 +1,7 @@
+[
+  { "id": "glassy", "name": "Glassy" },
+  { "id": "porphyritic", "name": "Porphyritic" },
+  { "id": "crystalline", "name": "Crystalline" },
+  { "id": "amorphous", "name": "Amorphous" },
+  { "id": "vesicular", "name": "Vesicular" }
+]

@@ -1,0 +1,267 @@
+/* ─── Shared motion ─── */
+
+:root {
+  --motion-duration-fast: 0.2s;
+  --motion-duration-medium: 0.32s;
+  --motion-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-standard: ease-out;
+
+  --z-navbar: 1000;
+  --z-confirm-dialog: 1650;
+  --z-modal: 1500;
+  --z-modal-stacked: 1600;
+  --z-modal-nested: 1620;
+  --z-floating-menu: 1700;
+}
+
+@keyframes overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popup-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes popup-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.page-enter {
+  animation: page-enter var(--motion-duration-medium) var(--motion-ease-out) both;
+}
+
+.popup-menu-enter {
+  animation: popup-menu-in var(--motion-duration-fast) var(--motion-ease-out) both;
+}
+
+@keyframes loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loader-pulse {
+  0%,
+  100% {
+    transform: scale(0.94);
+    opacity: 0.88;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes loader-orbit {
+  0% {
+    transform: rotate(0deg) translateX(26px) scale(1);
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(360deg) translateX(26px) scale(1);
+    opacity: 0.35;
+  }
+}
+
+@keyframes loader-label-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes loader-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  width: 100%;
+  animation: loader-enter var(--motion-duration-medium) var(--motion-ease-out) both;
+}
+
+.page-loader--page {
+  min-height: min(72vh, 720px);
+}
+
+.page-loader--section {
+  min-height: 320px;
+}
+
+.page-loader--inline {
+  min-height: 120px;
+  gap: 12px;
+}
+
+.page-loader__visual {
+  position: relative;
+  width: 72px;
+  height: 72px;
+}
+
+.page-loader__spinner {
+  position: absolute;
+  inset: 8px;
+}
+
+.page-loader__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+
+.page-loader__ring--outer {
+  border-top-color: #2563eb;
+  border-right-color: rgba(37, 99, 235, 0.2);
+  animation: loader-spin 1.15s linear infinite;
+}
+
+.page-loader__ring--middle {
+  inset: 7px;
+  border-bottom-color: #60a5fa;
+  border-left-color: rgba(96, 165, 250, 0.18);
+  animation: loader-spin 0.9s linear infinite reverse;
+}
+
+.page-loader__core {
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+  box-shadow:
+    0 0 0 6px rgba(37, 99, 235, 0.08),
+    0 8px 24px rgba(37, 99, 235, 0.28);
+  animation: loader-pulse 1.5s ease-in-out infinite;
+}
+
+.page-loader__orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: #2563eb;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.45);
+}
+
+.page-loader__orbit--one {
+  animation: loader-orbit 2.4s linear infinite;
+}
+
+.page-loader__orbit--two {
+  animation: loader-orbit 2.4s linear infinite;
+  animation-delay: -0.8s;
+  background: #60a5fa;
+}
+
+.page-loader__orbit--three {
+  animation: loader-orbit 2.4s linear infinite;
+  animation-delay: -1.6s;
+  background: #93c5fd;
+}
+
+.page-loader__label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: #6b7280;
+  animation: loader-label-pulse 1.6s ease-in-out infinite;
+}
+
+.page-loader--inline .page-loader__visual {
+  width: 52px;
+  height: 52px;
+}
+
+.page-loader--inline .page-loader__spinner {
+  inset: 4px;
+}
+
+.page-loader--inline .page-loader__core {
+  inset: 10px;
+}
+
+.page-loader--inline .page-loader__label {
+  font-size: 13px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-fast: 0.01ms;
+    --motion-duration-medium: 0.01ms;
+  }
+
+  .page-enter,
+  .popup-menu-enter,
+  .project-modal__backdrop,
+  .project-modal__dialog,
+  .confirm-dialog,
+  .confirm-dialog-overlay__backdrop,
+  .page-loader,
+  .page-loader__ring--outer,
+  .page-loader__ring--middle,
+  .page-loader__core,
+  .page-loader__orbit,
+  .page-loader__label {
+    animation: none !important;
+  }
+}
+

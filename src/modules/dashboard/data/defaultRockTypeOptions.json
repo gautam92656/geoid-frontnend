@@ -1,0 +1,163 @@
+[
+  {
+    "id": "44703",
+    "name": "SANDSTONE",
+    "code": "XW",
+    "graphic": "611.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44704",
+    "name": "Siltstone",
+    "code": "SLT",
+    "graphic": "SLT.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44705",
+    "name": "Phyllite",
+    "code": "PHY",
+    "graphic": "PHY.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44706",
+    "name": "Basalt",
+    "code": "BAS",
+    "graphic": "BAS.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44707",
+    "name": "Greywacke",
+    "code": "ARG",
+    "graphic": "ARG.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44708",
+    "name": "Argillite",
+    "code": "ARG",
+    "graphic": "ARG.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44709",
+    "name": "Concrete",
+    "code": "CCT",
+    "graphic": "CCT.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44710",
+    "name": "Breccia",
+    "code": "BXX",
+    "graphic": "BXX.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44711",
+    "name": "Chert",
+    "code": "CHT",
+    "graphic": "CHT.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44712",
+    "name": "Coal",
+    "code": "COL",
+    "graphic": "COL.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44713",
+    "name": "Conglomerate",
+    "code": "CON",
+    "graphic": "602.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44714",
+    "name": "Gneiss",
+    "code": "GNE",
+    "graphic": "GNE.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44715",
+    "name": "Granite",
+    "code": "GRA",
+    "graphic": "GRA.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44716",
+    "name": "Rhyolite",
+    "code": "RHY",
+    "graphic": "RHY.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44717",
+    "name": "Tuff",
+    "code": "TFF",
+    "graphic": "TFF.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44718",
+    "name": "Asphalt",
+    "code": "ASP",
+    "graphic": "ASP.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44719",
+    "name": "Extremely weathered Material",
+    "code": "ARG",
+    "graphic": "ARG.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44720",
+    "name": "MUDSTONE",
+    "code": "XW",
+    "graphic": "616.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44721",
+    "name": "SHALE",
+    "code": "NA",
+    "graphic": "624.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44722",
+    "name": "CORE LOSS",
+    "code": "CLS",
+    "graphic": "658.png",
+    "rockGroup": null
+  },
+  {
+    "id": "44723",
+    "name": "interbedded SILTSTONE/SANDSTONE",
+    "code": "SS",
+    "graphic": "607.png",
+    "rockGroup": null
+  },
+  {
+    "id": "60269",
+    "name": "GRANODIORITE",
+    "code": "GRN",
+    "graphic": "601.png",
+    "rockGroup": "Igneous"
+  },
+  {
+    "id": "63768",
+    "name": "Calcarenite",
+    "code": "XW",
+    "graphic": "601.png",
+    "rockGroup": null
+  }
+]

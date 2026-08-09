@@ -1,0 +1,152 @@
+export const API_MESSAGES = {
+  CLIENT_ADDED: "Client added successfully.",
+  CLIENT_UPDATED: "Client updated successfully.",
+  CLIENT_DELETED: "Client deleted successfully.",
+  CLIENTS_DELETED: "Clients deleted successfully.",
+
+  SUPPLIER_ADDED: "Supplier added successfully.",
+  SUPPLIER_UPDATED: "Supplier updated successfully.",
+  SUPPLIER_DELETED: "Supplier deleted successfully.",
+  SUPPLIERS_DELETED: "Suppliers deleted successfully.",
+
+  PROJECT_ADDED: "Project added successfully.",
+  PROJECT_UPDATED: "Project updated successfully.",
+  PROJECT_ARCHIVED: "Project archived successfully.",
+  PROJECT_RESTORED: "Project restored successfully.",
+  PROJECT_DELETED: "Project deleted successfully.",
+  PROJECTS_DELETED: "Projects deleted successfully.",
+  PROJECT_STATUS_UPDATED: "Project status updated successfully.",
+
+  LOG_ADDED: "Log added successfully.",
+  LOG_UPDATED: "Log updated successfully.",
+  LOG_DELETED: "Log deleted successfully.",
+
+  LOG_SUBSURFACE_LAYER_ADDED: "Subsurface layer added successfully.",
+  LOG_SUBSURFACE_LAYER_UPDATED: "Subsurface layer updated successfully.",
+  LOG_SUBSURFACE_LAYER_DELETED: "Subsurface layer deleted successfully.",
+  LOG_SUBSURFACE_LAYER_RESTORED: "Subsurface layer restored successfully.",
+
+  LOG_CONFIGURATION_ADDED: "Log configuration added successfully.",
+  LOG_CONFIGURATION_UPDATED: "Log configuration updated successfully.",
+  LOG_CONFIGURATION_DELETED: "Log configuration deleted successfully.",
+
+  EQUIPMENT_ADDED: "Equipment added successfully.",
+  EQUIPMENT_UPDATED: "Equipment updated successfully.",
+  EQUIPMENT_DELETED: "Equipment deleted successfully.",
+  EQUIPMENT_ITEMS_DELETED: "Equipment items deleted successfully.",
+
+  EQUIPMENT_TYPE_ADDED: "Equipment type added successfully.",
+  EQUIPMENT_TYPE_UPDATED: "Equipment type updated successfully.",
+  EQUIPMENT_TYPE_DELETED: "Equipment type deleted successfully.",
+
+  OFFICE_ADDED: "Office added successfully.",
+  OFFICE_UPDATED: "Office updated successfully.",
+  OFFICE_DELETED: "Office deleted successfully.",
+  LABORATORY_SUPPLIER_ADDED: "Laboratory supplier added successfully.",
+
+  HEADER_FOOTER_TEMPLATE_ADDED: "Header & footer template added successfully.",
+  HEADER_FOOTER_TEMPLATE_UPDATED: "Header & footer template updated successfully.",
+  HEADER_FOOTER_TEMPLATE_DELETED: "Header & footer template deleted successfully.",
+  HEADER_FOOTER_TEMPLATES_DELETED: "Header & footer templates deleted successfully.",
+
+  ITEM_ADDED: "Item added successfully.",
+  ITEM_UPDATED: "Item updated successfully.",
+  ITEM_DELETED: "Item deleted successfully.",
+
+  USER_ADDED: "User added successfully.",
+  USER_UPDATED: "User updated successfully.",
+  USER_DELETED: "User deleted successfully.",
+  USERS_DELETED: "Users deleted successfully.",
+
+  GENERIC_ERROR: "Something went wrong. Please try again.",
+} as const;
+
+export const API_ERROR_MESSAGES = {
+  LOAD_CLIENTS: "Failed to load clients.",
+  ADD_CLIENT: "Failed to add client.",
+  UPDATE_CLIENT: "Failed to update client.",
+  DELETE_CLIENTS: "Failed to delete clients.",
+
+  LOAD_SUPPLIERS: "Failed to load suppliers.",
+  ADD_SUPPLIER: "Failed to add supplier.",
+  UPDATE_SUPPLIER: "Failed to update supplier.",
+  DELETE_SUPPLIERS: "Failed to delete suppliers.",
+
+  LOAD_PROJECTS: "Failed to load projects.",
+  LOAD_PROJECT: "Failed to load project.",
+  LOAD_PROJECT_SCHEDULE: "Failed to load project schedule.",
+  ADD_PROJECT: "Failed to add project.",
+  UPDATE_PROJECT: "Failed to update project.",
+  COPY_PROJECT: "Failed to copy project.",
+  ARCHIVE_PROJECT: "Failed to archive project.",
+  RESTORE_PROJECT: "Failed to restore project.",
+  DELETE_PROJECTS: "Failed to delete projects.",
+  UPDATE_PROJECT_STATUS: "Failed to update project status.",
+  LOAD_PROJECT_FORM: "Failed to load project form data.",
+  LOAD_PROJECT_DETAILS: "Failed to load project details.",
+  LOAD_PROJECT_LOGS: "Failed to load project logs.",
+  LOAD_STATUS_HISTORY: "Failed to load status history.",
+
+  LOAD_LOG: "Failed to load log.",
+  LOAD_LOG_FORM: "Failed to load log form data.",
+  ADD_LOG: "Failed to add log.",
+  UPDATE_LOG: "Failed to update log.",
+  DELETE_LOG: "Failed to delete log.",
+
+  LOAD_SUBSURFACE_LAYERS: "Failed to load subsurface layers.",
+  SAVE_SUBSURFACE_LAYER: "Failed to save subsurface layer.",
+  DELETE_SUBSURFACE_LAYER: "Failed to delete subsurface layer.",
+  RESTORE_SUBSURFACE_LAYER: "Failed to restore subsurface layer.",
+
+  LOAD_INSITU_TESTS: "Failed to load insitu tests.",
+  SAVE_INSITU_TEST: "Failed to save insitu test.",
+  DELETE_INSITU_TEST: "Failed to delete insitu test.",
+  RESTORE_INSITU_TEST: "Failed to restore insitu test.",
+  LOAD_LOG_REMARKS: "Failed to load log remarks.",
+  SAVE_LOG_REMARK: "Failed to save log remark.",
+  DELETE_LOG_REMARK: "Failed to delete log remark.",
+  RESTORE_LOG_REMARK: "Failed to restore log remark.",
+
+  LOAD_LOG_CONFIGURATIONS: "Failed to load log configurations.",
+  LOAD_LOG_CONFIGURATION: "Failed to load log configuration.",
+  LOAD_LOG_CONFIGURATION_TEMPLATES: "Failed to load log configuration templates.",
+  LOAD_CONFIG_MODULES: "Failed to load module library.",
+  ADOPT_CONFIG_MODULE: "Failed to add module to your library.",
+  UNADOPT_CONFIG_MODULE: "Failed to remove module from this configuration.",
+  SYNC_CONFIG_MODULE_SETTINGS: "Failed to save module customizations.",
+  ADD_LOG_CONFIGURATION: "Failed to add log configuration.",
+  UPDATE_LOG_CONFIGURATION: "Failed to update log configuration.",
+  DELETE_LOG_CONFIGURATION: "Failed to delete log configuration.",
+
+  LOAD_EQUIPMENT: "Failed to load equipment.",
+  LOAD_EQUIPMENT_REFERENCE: "Failed to load equipment reference data.",
+  ADD_EQUIPMENT: "Failed to add equipment.",
+  UPDATE_EQUIPMENT: "Failed to update equipment.",
+  DELETE_EQUIPMENT: "Failed to delete equipment.",
+  SAVE_EQUIPMENT_TYPE: "Failed to save equipment type.",
+  DELETE_EQUIPMENT_TYPE: "Failed to delete equipment type.",
+
+  LOAD_LABORATORIES: "Failed to load laboratories.",
+  ADD_OFFICE: "Failed to add office.",
+  ADD_LABORATORY_SUPPLIER: "Failed to add laboratory supplier.",
+
+  LOAD_HEADER_FOOTER_TEMPLATES: "Failed to load header & footer templates.",
+  ADD_HEADER_FOOTER_TEMPLATE: "Failed to add header & footer template.",
+  UPDATE_HEADER_FOOTER_TEMPLATE: "Failed to update header & footer template.",
+  DELETE_HEADER_FOOTER_TEMPLATES: "Failed to delete header & footer templates.",
+
+  LOAD_ITEMS: "Failed to load items.",
+  SAVE_ITEM: "Failed to save item.",
+  DELETE_ITEM: "Failed to delete item.",
+
+  LOAD_USERS: "Failed to load users.",
+  ADD_USER: "Failed to add user.",
+  UPDATE_USER: "Failed to update user.",
+  DELETE_USERS: "Failed to delete users.",
+
+  SIGN_IN: "Unable to sign in. Please try again.",
+  REGISTER: "Something went wrong. Please try again.",
+  VERIFY_OTP: "Unable to verify code. Please try again.",
+  FORGOT_PASSWORD: "Unable to send reset link. Please try again.",
+  RESET_PASSWORD: "Unable to reset password. Please try again.",
+} as const;

@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useAppDispatch } from "@/store/hooks";
 import { login } from "@/store/slices/authSlice";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
 import { Label } from "@/shared/components/ui/Label";
-import { ApiError } from "@/shared/services/apiClient";
+import { API_ERROR_MESSAGES } from "@/shared/constants/apiMessages";
+import { getApiErrorMessage, showApiError, showApiSuccess } from "@/shared/utils/apiToast";
 import { verifyOtp } from "../services/authApi";
 
 type VerifyOtpFormProps = {
@@ -33,12 +33,14 @@ export function VerifyOtpForm({ email }: VerifyOtpFormProps) {
 
         setSubmitting(true);
         try {
-            const result = await verifyOtp(email, otpCode.trim());
+            const { data: result, message } = await verifyOtp(email, otpCode.trim());
             dispatch(login({ token: result.token, user: result.user }));
-            toast.success("Account verified successfully.");
-            router.push("/");
+            showApiSuccess(message ?? result.message, "Account verified successfully.");
+            router.push("/dashboard");
         } catch (err) {
-            setError(err instanceof ApiError ? err.message : "Unable to verify code. Please try again.");
+            const errorMessage = getApiErrorMessage(err, API_ERROR_MESSAGES.VERIFY_OTP);
+            setError(errorMessage);
+            showApiError(err, errorMessage);
         } finally {
             setSubmitting(false);
         }

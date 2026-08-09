@@ -1,0 +1,7156 @@
+[
+  {
+    "id": "170683",
+    "name": "Gravelly Clay",
+    "abbreviation": "CH",
+    "graphic": "CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-43pcr",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-br3tq",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-mn7xx",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-dumeu",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-6ojql",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-3uv1n",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170684",
+    "name": "Sandy Clay",
+    "abbreviation": "CH",
+    "graphic": "CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-jv8n0",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-hx49d",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-9v8r9",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-io522",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-uduyc",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-cyegc",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170637",
+    "name": "Silty Sandy Clay",
+    "abbreviation": "CH",
+    "graphic": "CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-447in",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-04lpg",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-yzbqs",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-ao9rq",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-p71zo",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-2x6pj",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Sandy",
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170632",
+    "name": "Silty Clay",
+    "abbreviation": "CH",
+    "graphic": "CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-30dmd",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-qrij8",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-gj0g1",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-mxh5s",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-iyyp6",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-gvxmw",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170625",
+    "name": "Clay",
+    "abbreviation": "CH",
+    "graphic": "CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-bpr0b",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-qp4ar",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-uz5e5",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-s6gsh",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-8ejkv",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-vfelu",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_null",
+              "value": [],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170641",
+    "name": "Gravelly Sandy Clay",
+    "abbreviation": "CH",
+    "graphic": "CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-qy755",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-rt3ih",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-1dl4g",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-oa63l",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-ic3qb",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-kyz9x",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170640",
+    "name": "Silty Gravelly Clay",
+    "abbreviation": "CH",
+    "graphic": "CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-gb41t",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-hi8w9",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-jatg8",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-bqqcz",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-hisjd",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-3byiz",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170628",
+    "name": "Clay",
+    "abbreviation": "CI",
+    "graphic": "CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-z3dzq",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-sbhex",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-l2rgt",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-6kcxu",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-gk6w1",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-5es87",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_null",
+              "value": [],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170638",
+    "name": "Silty Gravelly Clay",
+    "abbreviation": "CI",
+    "graphic": "CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-sw7n2",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-7s0mh",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-yivu4",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-rsgry",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-yilia",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-5xpal",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170636",
+    "name": "Silty Sandy Clay",
+    "abbreviation": "CI",
+    "graphic": "CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-ruxo8",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-7bg7u",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-bdshj",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-w8b9y",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-glxar",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-z8jr5",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Sandy",
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170633",
+    "name": "Silty Clay",
+    "abbreviation": "CI",
+    "graphic": "CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-tn9ig",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-58zxw",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-q2wjo",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-yl833",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-p1mdb",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-r3wpm",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170639",
+    "name": "Gravelly Sandy Clay",
+    "abbreviation": "CI",
+    "graphic": "CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-yqtjp",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-nb3p2",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-qfjsy",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-fmkib",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-uhrlg",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-x52rm",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170686",
+    "name": "Sandy Clay",
+    "abbreviation": "CI",
+    "graphic": "CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-y95ko",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-3ectw",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-qtzue",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-jmf5y",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-gci9a",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-cdwbp",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170685",
+    "name": "Gravelly Clay",
+    "abbreviation": "CI",
+    "graphic": "CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-sesyc",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-9azv5",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-2em40",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-wls0c",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-wpupx",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-y3kc5",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170627",
+    "name": "Clay",
+    "abbreviation": "CI-CH",
+    "graphic": "CI-CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-enybx",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-sl7pv",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Clay"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-2-zq9vs",
+          "kind": "condition",
+          "field": "Soil Plasticity",
+          "condition": "equal_all",
+          "value": [
+            "Medium",
+            "High"
+          ],
+          "searchTerm": "Soil Plasticity"
+        },
+        {
+          "id": "class-rule-3-fowm0",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_null",
+          "value": [],
+          "searchTerm": "Identifier"
+        },
+        {
+          "id": "class-rule-4-xhz2p",
+          "kind": "condition",
+          "field": "Organic Content",
+          "condition": "equal_one",
+          "value": [
+            "Inorganic"
+          ],
+          "searchTerm": "Organic Content"
+        },
+        {
+          "id": "class-rule-5-l07oz",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170643",
+    "name": "Silty Gravelly Clay",
+    "abbreviation": "CI-CH",
+    "graphic": "CI-CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-cwvbv",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-wnrui",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-atqvu",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-qgp1p",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-n668e",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-21fd5",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170688",
+    "name": "Sandy Clay",
+    "abbreviation": "CI-CH",
+    "graphic": "CI-CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-hbb4q",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-e53be",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-dlzmz",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-2t79y",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-hcuhd",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-6lxun",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170687",
+    "name": "Gravelly Clay",
+    "abbreviation": "CI-CH",
+    "graphic": "CI-CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-mje3z",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-evte3",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-y9moe",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-bcf7d",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-6jcfx",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-3ey4s",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170634",
+    "name": "Silty Clay",
+    "abbreviation": "CI-CH",
+    "graphic": "CI-CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-kbstb",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-ca8xq",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-5pjat",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-vodjs",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-rke2m",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-ws1x9",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170635",
+    "name": "Silty Sandy Clay",
+    "abbreviation": "CI-CH",
+    "graphic": "CI-CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-9gb0x",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-stykt",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-kn6ee",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-dk3v5",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-qvkss",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-rgnpd",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Sandy",
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-5-zmpoa",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170642",
+    "name": "Gravelly Sandy Clay",
+    "abbreviation": "CI-CH",
+    "graphic": "CI-CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-ysog7",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-ywo1a",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-mswtl",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-fuz6i",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-i228v",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-n0l38",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170644",
+    "name": "Gravelly Sandy Clay",
+    "abbreviation": "CL",
+    "graphic": "CL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-jnrij",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-l48wy",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-7zglf",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-qna1e",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-hsnas",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-7w2m8",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-5-s1thk",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170648",
+    "name": "Clay",
+    "abbreviation": "CL",
+    "graphic": "CL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-ov6zt",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-lbol7",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-khixr",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-m0n1x",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-cxt35",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-l63ef",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_null",
+              "value": [],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-5-bpz3j",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170645",
+    "name": "Silty Gravelly Clay",
+    "abbreviation": "CL",
+    "graphic": "CL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-lurmw",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-lw6f3",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-56tma",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-nmqyt",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-mz0cp",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-71quj",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-5-d3i2k",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170646",
+    "name": "Silty Clay",
+    "abbreviation": "CL",
+    "graphic": "CL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-z9nyv",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-pnn4n",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-jtvme",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-19mqx",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-lxxup",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-kflq9",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170647",
+    "name": "Silty Sandy Clay",
+    "abbreviation": "CL",
+    "graphic": "CL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-9uov1",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-9ieqb",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-kuj68",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-ht5h7",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-oe2uk",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-vpdl0",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Sandy",
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170690",
+    "name": "Gravelly Clay",
+    "abbreviation": "CL",
+    "graphic": "CL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-nz886",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-tcs6o",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-x7ql0",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-cfnmx",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-lx0tz",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-k35px",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-5-m0s2x",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170689",
+    "name": "Sandy Clay",
+    "abbreviation": "CL",
+    "graphic": "CL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-oqdys",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-y85rk",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-1s3jl",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-5d6na",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-pf3cj",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-qitwq",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-5-8pdip",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170650",
+    "name": "Silty Gravelly Clay",
+    "abbreviation": "CL-CI",
+    "graphic": "CL-CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-iirbw",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-hhcqu",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-ki270",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-c5xbe",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-wfrye",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-eg5ao",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-5-l61cb",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170651",
+    "name": "Silty Clay",
+    "abbreviation": "CL-CI",
+    "graphic": "CL-CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-gocc2",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-qhc2r",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-5is6c",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-oee2d",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-t91mc",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-zfxly",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-5-hylwt",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170652",
+    "name": "Silty Sandy Clay",
+    "abbreviation": "CL-CI",
+    "graphic": "CI-CH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-8mgil",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-198in",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-n9v2e",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-xzzxd",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-ucrsu",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-xd912",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Sandy",
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-5-rj3tc",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170653",
+    "name": "Gravelly Sandy Clay",
+    "abbreviation": "CL-CI",
+    "graphic": "CL-CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-v55mc",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-ezlv0",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-308pn",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-fk4wt",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-45p5p",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-8m6r9",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170649",
+    "name": "Clay",
+    "abbreviation": "CL-CI",
+    "graphic": "CL-CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-00jqe",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-bf0us",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Clay"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-2-0oul1",
+          "kind": "condition",
+          "field": "Soil Plasticity",
+          "condition": "equal_all",
+          "value": [
+            "Low",
+            "Medium"
+          ],
+          "searchTerm": "Soil Plasticity"
+        },
+        {
+          "id": "class-rule-3-8hshv",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_null",
+          "value": [],
+          "searchTerm": "Identifier"
+        },
+        {
+          "id": "class-rule-4-vvz8l",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-5-42au0",
+          "kind": "condition",
+          "field": "Organic Content",
+          "condition": "equal_one",
+          "value": [
+            "Inorganic"
+          ],
+          "searchTerm": "Organic Content"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170691",
+    "name": "Gravelly Clay",
+    "abbreviation": "CL-CI",
+    "graphic": "CL-CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-fdh10",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-7gliy",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-20rgd",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-bvuko",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-xaajb",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-84uus",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-5-q1owj",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170692",
+    "name": "Sandy Clay",
+    "abbreviation": "CL-CI",
+    "graphic": "CL-CI.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-o3u4j",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-v0w1c",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-qni1p",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-l9r3k",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-ppt7t",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-m2893",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-5-lensu",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170676",
+    "name": "Clayey Sandy Gravel",
+    "abbreviation": "GC",
+    "graphic": "GC.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-mq8yn",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-js07y",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-zt6x0",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Gravel"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-c3txw",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_all",
+          "value": [
+            "Clayey",
+            "Sandy"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170675",
+    "name": "Silty Clayey Gravel",
+    "abbreviation": "GC",
+    "graphic": "GC.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-lxuuo",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-ds05q",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-yji6b",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Gravel"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-widt2",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_all",
+          "value": [
+            "Clayey",
+            "Silty"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170617",
+    "name": "Clayey Gravel",
+    "abbreviation": "GC",
+    "graphic": "GC.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-bk0t4",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-c3qsz",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-q6if6",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Gravel"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-vs6ev",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_one",
+          "value": [
+            "Clayey"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170677",
+    "name": "Silty Sandy Gravel",
+    "abbreviation": "GM",
+    "graphic": "GM.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-ex700",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-usi40",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-d7iu9",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Gravel"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-vnfet",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_all",
+          "value": [
+            "Sandy",
+            "Silty"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170618",
+    "name": "Silty Gravel",
+    "abbreviation": "GM",
+    "graphic": "GM.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-3k02o",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-ldm1k",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-911x2",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Gravel"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-in71z",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_one",
+          "value": [
+            "Silty"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170620",
+    "name": "Gravel",
+    "abbreviation": "GP",
+    "graphic": "GP.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-7um2m",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-hzugc",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-q7qxv",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Gravel"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-gzse7",
+          "kind": "condition",
+          "field": "Grading",
+          "condition": "equal_one",
+          "value": [
+            "Poorly graded"
+          ],
+          "searchTerm": "Grading"
+        },
+        {
+          "id": "class-rule-4-uu3qh",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_null",
+          "value": [],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170678",
+    "name": "Sandy Gravel",
+    "abbreviation": "GP",
+    "graphic": "GP.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-8624j",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-qeovp",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-nwrat",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Gravel"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-4zgnr",
+          "kind": "condition",
+          "field": "Grading",
+          "condition": "equal_one",
+          "value": [
+            "Poorly graded"
+          ],
+          "searchTerm": "Grading"
+        },
+        {
+          "id": "class-rule-4-mhhwh",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_one",
+          "value": [
+            "Sandy"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170619",
+    "name": "Well-Graded Gravel",
+    "abbreviation": "GW",
+    "graphic": "GW.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-fp1du",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-c6ew8",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-60a3s",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Gravel"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-3gssw",
+          "kind": "condition",
+          "field": "Grading",
+          "condition": "equal_one",
+          "value": [
+            "Well-graded"
+          ],
+          "searchTerm": "Grading"
+        },
+        {
+          "id": "class-rule-4-u2er6",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_null",
+          "value": [],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170680",
+    "name": "Gravel",
+    "abbreviation": "GW",
+    "graphic": "GW.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-1sdue",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-i2o95",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-bp8q2",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Gravel"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-z4xf0",
+          "kind": "condition",
+          "field": "Grading",
+          "condition": "equal_one",
+          "value": [
+            "Well-graded"
+          ],
+          "searchTerm": "Grading"
+        },
+        {
+          "id": "class-rule-4-lhqrn",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "not_contains_any",
+          "value": [
+            "Clayey",
+            "Silty"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170679",
+    "name": "Sandy Gravel",
+    "abbreviation": "GW",
+    "graphic": "GW.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-kxc4d",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-x240x",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-ktrl1",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Gravel"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-s1zfo",
+          "kind": "condition",
+          "field": "Grading",
+          "condition": "equal_one",
+          "value": [
+            "Well-graded"
+          ],
+          "searchTerm": "Grading"
+        },
+        {
+          "id": "class-rule-4-d8xdq",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_one",
+          "value": [
+            "Sandy"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170697",
+    "name": "Sandy Silt",
+    "abbreviation": "MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-w7wwj",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-fikbs",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-6cvai",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-8fs0y",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-cornx",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-l5mxh",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-lavte",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-je6am",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-9ar9n",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-kchpz",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-4ipn8",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170710",
+    "name": "Gravelly Silt",
+    "abbreviation": "MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-0djaw",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-uygaz",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-uf2p1",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-dv461",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-fozv8",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-e82re",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-6m1uk",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-lhwy2",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-2441p",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-cspgs",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-k0hbi",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170711",
+    "name": "Clayey Silt",
+    "abbreviation": "MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-dbc8u",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-cpvkd",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-gf9i4",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-dudqi",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-wqc1s",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-r1h20",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-yn4oz",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-9uxvz",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-c9p93",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-nx563",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-b1ujo",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170712",
+    "name": "Gravelly Sandy Silt",
+    "abbreviation": "MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-6xfpc",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-wd3uy",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-23lam",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-f69q5",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-v86rs",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-cv4w5",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-a4wdg",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-t9vh5",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-m5k9y",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-tlo38",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-sg2xm",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170713",
+    "name": "Clayey Sandy Silt",
+    "abbreviation": "MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-ctyqt",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-3da6e",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-aktjw",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-tujrm",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-tzfsp",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-dr6ba",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Clayey",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-fag52",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-jkxjt",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-c5byt",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-kvgnw",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-qv03l",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Clayey",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170714",
+    "name": "Clayey Gravelly Silt",
+    "abbreviation": "MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-ossrv",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-6ulq3",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-oetr6",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-t5cyi",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-b3tig",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-epsjz",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-aakv7",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-iklla",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-720sm",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-3hb8p",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-rmpwl",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170626",
+    "name": "Silt",
+    "abbreviation": "MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-zqjtl",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-zmm0v",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-48stx",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-skvb7",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-5s8qz",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-xifwa",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_null",
+              "value": [],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-tf7ku",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-1ou7j",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-l8ncs",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-7lwkb",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-6hiku",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_null",
+              "value": [],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170629",
+    "name": "Silt",
+    "abbreviation": "ML",
+    "graphic": "ML.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-3p41t",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-3i2zs",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-lj37p",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-jfz95",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-g8dlo",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-0bzji",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_null",
+              "value": [],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-n8ueu",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-gkc4d",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-vt6mg",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-84h9n",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-jqa4p",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_null",
+              "value": [],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170709",
+    "name": "Clayey Gravelly Silt",
+    "abbreviation": "ML",
+    "graphic": "ML.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-f4e5q",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-8sgeq",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-71ca8",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-4m6ap",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-yloam",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-3gyal",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-7349q",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-tw2jb",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-cyix2",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-o4t1s",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-ic9k0",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170708",
+    "name": "Gravelly Sandy Silt",
+    "abbreviation": "ML",
+    "graphic": "ML.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-1kxo1",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-mes89",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-vht3m",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-ww55r",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-qe474",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-s2g14",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-7lhvb",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-8vnk4",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-mkp05",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-jue79",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-2zuxa",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170707",
+    "name": "Clayey Sandy Silt",
+    "abbreviation": "ML",
+    "graphic": "ML.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-t60l5",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-a07p0",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-sh29r",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-966kc",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-voqzq",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-z012o",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Clayey",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-1vs2l",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-hudx5",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-jyq9x",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-aftyi",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-ccpds",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Clayey",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170706",
+    "name": "Clayey Silt",
+    "abbreviation": "ML",
+    "graphic": "ML.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-myybr",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-qr7id",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-y9n7o",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-puau5",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-hpusm",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-ug2mz",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-u2meo",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-3ugao",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-uutsm",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-nb9xv",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-kp80w",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170704",
+    "name": "Gravelly Silt",
+    "abbreviation": "ML",
+    "graphic": "ML.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-gvy0l",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-jbuuv",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-4wrqu",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-dm0vg",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-151pn",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-4zps5",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-s3yey",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-g7kvl",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-5w7vk",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-2th87",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-0b1x0",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170705",
+    "name": "Sandy Silt",
+    "abbreviation": "ML",
+    "graphic": "ML.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-agk0n",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-ykesr",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-5bs5n",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-yjxbe",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-cwqt8",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Low"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-h2rwl",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-1jk13",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-bsixp",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-0gflr",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-0tgkb",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-g03ll",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170700",
+    "name": "Gravelly Silt",
+    "abbreviation": "ML-MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-14ejx",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-2okpu",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-u24h3",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-e8qta",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-8qovp",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-7010v",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-9y58k",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-gognw",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-8bkwe",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-l230g",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-7xeka",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-4-qnhsj",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-5-5prqp",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170655",
+    "name": "Silt",
+    "abbreviation": "ML-MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-hlg8x",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-pb8ch",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-az3tl",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-ryxsk",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-t9u5o",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-a5wux",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-f6d5f",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_null",
+              "value": [],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-ct5lp",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-kr7nv",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-sy9lw",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-yu0nr",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_null",
+              "value": [],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-4-ljigi",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-5-ucpus",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170703",
+    "name": "Gravelly Clayey Silt",
+    "abbreviation": "ML-MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-1bgpu",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-23ext",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-rx16u",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-4lf0w",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-upyr9",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-orkrl",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-bq1vy",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-pj6wk",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-t053y",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-tw8ld",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-a0u2b",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-4-jp5b7",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-5-wq0md",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170702",
+    "name": "Clayey Sandy Silt",
+    "abbreviation": "ML-MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-9c0pn",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-2qs4g",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-wkmsj",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-7wx51",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-pj0sn",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-1fgp4",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-at121",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Clayey",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-d8bdk",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-f91j6",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-4p3ru",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-ojqwz",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Clayey",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-4-peg44",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-5-91sui",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170701",
+    "name": "Gravelly Sandy Silt",
+    "abbreviation": "ML-MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-7j1iz",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-iq2b6",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-0vdao",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-5n8pd",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-ichpz",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-xon17",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-7lblz",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-gi932",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-zoijv",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-qyw1j",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-iq3z4",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-4-y1k66",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-5-o55wu",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170699",
+    "name": "Clayey Silt",
+    "abbreviation": "ML-MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-wsa7p",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-ykshf",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-6543o",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-9311i",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-sxxxr",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-fdf6i",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-zafy4",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-bcccb",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-vp598",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-k4tu0",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-w73o7",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-4-kl5fy",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-5-xs934",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170698",
+    "name": "Sandy Silt",
+    "abbreviation": "ML-MH",
+    "graphic": "MH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-8vqvp",
+      "kind": "group",
+      "operator": "OR",
+      "rules": [
+        {
+          "id": "class-rule-group-1-p52of",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-es0uf",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-tdtpx",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-od4dq",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "Medium"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-6i15y",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-um4la",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        },
+        {
+          "id": "class-rule-group-2-fn1sb",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-xo8f9",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-1l5tm",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-av7r6",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            },
+            {
+              "id": "class-rule-4-z7sjp",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_all",
+              "value": [
+                "Low",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-5-z3jsf",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Inorganic"
+              ],
+              "searchTerm": "Organic Content"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170630",
+    "name": "Organic Clay",
+    "abbreviation": "OH",
+    "graphic": "OH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-w7vsm",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-k9onr",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-u3hrv",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-qja9k",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-twtfz",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-v1ulq",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-jsxw1",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_null",
+              "value": [],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170661",
+    "name": "Organic Silty Clay",
+    "abbreviation": "OH",
+    "graphic": "OH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-y3nxq",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-0gjf4",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-fc25s",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-v0v47",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-cah1y",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "contains_one_or_more",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-96qrt",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-zo5yv",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170656",
+    "name": "Organic Gravelly Clay",
+    "abbreviation": "OH",
+    "graphic": "OH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-d5qoc",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-nnsoj",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-c18q0",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-sp9vg",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-67ukq",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-bckir",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-q6cge",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170662",
+    "name": "Organic Sandy Clay",
+    "abbreviation": "OH",
+    "graphic": "OH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-79a06",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-u0llw",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-txb8d",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-pkgib",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-vz1f7",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "contains_one_or_more",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-m4g1j",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-izvtu",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170663",
+    "name": "Organic Sandy Gravelly Clay",
+    "abbreviation": "OH",
+    "graphic": "OH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-8uots",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-xamzq",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-wj7y0",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-u7w67",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-myrzu",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "contains_one_or_more",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-r9hp0",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-ebimy",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170664",
+    "name": "Organic Silty Sandy Clay",
+    "abbreviation": "OH",
+    "graphic": "OH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-5vw6c",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-2ki48",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-rduo9",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-6hhag",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-avfvi",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "contains_one_or_more",
+              "value": [
+                "Medium",
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-4yvnb",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-3vkkb",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Sandy",
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170665",
+    "name": "Organic Silty Gravelly Clay",
+    "abbreviation": "OH",
+    "graphic": "OH.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-js7ex",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-k7gpg",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-kznyb",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-6rqvs",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Clay"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-mfs4e",
+              "kind": "condition",
+              "field": "Soil Plasticity",
+              "condition": "equal_one",
+              "value": [
+                "High"
+              ],
+              "searchTerm": "Soil Plasticity"
+            },
+            {
+              "id": "class-rule-4-lsmyy",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-5-dtfml",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Silty"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170658",
+    "name": "Organic Sandy Silt",
+    "abbreviation": "OL",
+    "graphic": "OL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-lzppd",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-al422",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-sv8z2",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-5und6",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-44s79",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-4-oac7d",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170657",
+    "name": "Organic Silt",
+    "abbreviation": "OL",
+    "graphic": "OL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-mc1dx",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-mkgyh",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-iso3d",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-lkz1m",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-urdrn",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-4-2hdcw",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_null",
+              "value": [],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170659",
+    "name": "Organic Gravelly Silt",
+    "abbreviation": "OL",
+    "graphic": "OL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-563my",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-5pvbd",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-4y0mm",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-x1r9d",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-5jh1y",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-4-qz0nu",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Gravelly"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170660",
+    "name": "Organic Clayey Silt",
+    "abbreviation": "OL",
+    "graphic": "OL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-fofom",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-e60xp",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-hr676",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-qgny4",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-k5t77",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-4-wp3ak",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_one",
+              "value": [
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170666",
+    "name": "Organic Sandy Gravelly Silt",
+    "abbreviation": "OL",
+    "graphic": "OL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-r969q",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-bhjkh",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-2txpt",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-oouom",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-iivru",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-4-8kcfj",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170667",
+    "name": "Organic Clayey Sandy Silt",
+    "abbreviation": "OL",
+    "graphic": "OL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-r1ccv",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-xikzz",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-2moka",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-4192v",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-5oynf",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-4-o7nwn",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Clayey",
+                "Sandy"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170668",
+    "name": "Organic Clayey Gravelly Silt",
+    "abbreviation": "OL",
+    "graphic": "OL.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-cw8qs",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-group-1-anapr",
+          "kind": "group",
+          "operator": "AND",
+          "rules": [
+            {
+              "id": "class-rule-1-z5j6m",
+              "kind": "condition",
+              "field": "Origin Type",
+              "condition": "equal_one",
+              "value": [
+                "Soil"
+              ],
+              "searchTerm": "Origin Type"
+            },
+            {
+              "id": "class-rule-2-0yocx",
+              "kind": "condition",
+              "field": "Soil Type",
+              "condition": "equal_one",
+              "value": [
+                "Silt"
+              ],
+              "searchTerm": "Soil Type"
+            },
+            {
+              "id": "class-rule-3-8ux4q",
+              "kind": "condition",
+              "field": "Organic Content",
+              "condition": "equal_one",
+              "value": [
+                "Organic"
+              ],
+              "searchTerm": "Organic Content"
+            },
+            {
+              "id": "class-rule-4-3jqzk",
+              "kind": "condition",
+              "field": "Identifier",
+              "condition": "equal_all",
+              "value": [
+                "Gravelly",
+                "Clayey"
+              ],
+              "searchTerm": "Identifier"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "170669",
+    "name": "Sandy Peat",
+    "abbreviation": "Pt",
+    "graphic": "657.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-el7k6",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-ky8zm",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-lauxt",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Peat"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-q83fk",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_one",
+          "value": [
+            "Sandy"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170695",
+    "name": "Clayey Sandy Peat",
+    "abbreviation": "Pt",
+    "graphic": "657.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-8eowb",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-q1sao",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-tmg6g",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Peat"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-qj7sf",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_all",
+          "value": [
+            "Clayey",
+            "Sandy"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170694",
+    "name": "Sandy Gravelly Peat",
+    "abbreviation": "Pt",
+    "graphic": "657.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-dfazy",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-47f3n",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-ukrg0",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Peat"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-yzt7j",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_all",
+          "value": [
+            "Gravelly",
+            "Sandy"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170693",
+    "name": "Silty Sandy Peat",
+    "abbreviation": "Pt",
+    "graphic": "657.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-2wqq0",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-rlj2c",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-1t0lc",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Peat"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-eju4n",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_all",
+          "value": [
+            "Sandy",
+            "Silty"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170631",
+    "name": "Peat",
+    "abbreviation": "Pt",
+    "graphic": "657.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-wxyax",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-0pe4l",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-7ze44",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Peat"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-6jjs4",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_null",
+          "value": [],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170696",
+    "name": "Clayey Gravelly Peat",
+    "abbreviation": "Pt",
+    "graphic": "657.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-6tc9b",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-yfifo",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-a2dw6",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Peat"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-04edk",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_all",
+          "value": [
+            "Gravelly",
+            "Clayey"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170670",
+    "name": "Gravelly Peat",
+    "abbreviation": "Pt",
+    "graphic": "657.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-ib6ad",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-2s9vs",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-v5e2k",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Peat"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-gvy90",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_one",
+          "value": [
+            "Gravelly"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170671",
+    "name": "Clayey Peat",
+    "abbreviation": "Pt",
+    "graphic": "657.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-3mq2s",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-0pi29",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-q8nih",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Peat"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-6b11d",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_one",
+          "value": [
+            "Clayey"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170672",
+    "name": "Silty Peat",
+    "abbreviation": "Pt",
+    "graphic": "657.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-4cra4",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-gg47y",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-8t10h",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Peat"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-uukag",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_one",
+          "value": [
+            "Silty"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170621",
+    "name": "Clayey Gravelly Sand",
+    "abbreviation": "SC",
+    "graphic": "SC.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-auz5q",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-wk7no",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-mqpdl",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Sand"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-kyui9",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_all",
+          "value": [
+            "Gravelly",
+            "Clayey"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170674",
+    "name": "Clayey Sand",
+    "abbreviation": "SC",
+    "graphic": "SC.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-nex4c",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-jyjdd",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-xwo1b",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Sand"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-e5jc0",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_one",
+          "value": [
+            "Clayey"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170654",
+    "name": "Silty Clayey Sand",
+    "abbreviation": "SC-SM",
+    "graphic": "SC.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-ueoic",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-ygq31",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-v38rx",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Sand"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-4dgie",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_all",
+          "value": [
+            "Clayey",
+            "Silty"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170673",
+    "name": "Silty Gravelly Sand",
+    "abbreviation": "SM",
+    "graphic": "SM.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-kof6s",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-hqvbs",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-gxebc",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Sand"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-tcvpf",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_all",
+          "value": [
+            "Gravelly",
+            "Silty"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170622",
+    "name": "Silty Sand",
+    "abbreviation": "SM",
+    "graphic": "SM.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-lvkk9",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-wntg2",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-189vl",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Sand"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-ugyhh",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_one",
+          "value": [
+            "Silty"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170681",
+    "name": "Gravelly Sand",
+    "abbreviation": "SP",
+    "graphic": "SP.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-hc2qk",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-vasms",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-f7p8f",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Sand"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-5r459",
+          "kind": "condition",
+          "field": "Grading",
+          "condition": "equal_one",
+          "value": [
+            "Poorly graded"
+          ],
+          "searchTerm": "Grading"
+        },
+        {
+          "id": "class-rule-4-ydna1",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_one",
+          "value": [
+            "Gravelly"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170624",
+    "name": "Sand",
+    "abbreviation": "SP",
+    "graphic": "SP.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-3fwm7",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-cgi1c",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-rmwza",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Sand"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-six35",
+          "kind": "condition",
+          "field": "Grading",
+          "condition": "equal_one",
+          "value": [
+            "Poorly graded"
+          ],
+          "searchTerm": "Grading"
+        },
+        {
+          "id": "class-rule-4-nif6k",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_null",
+          "value": [],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170682",
+    "name": "Gravelly Sand",
+    "abbreviation": "SW",
+    "graphic": "SW.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-psdgl",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-2hfau",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-469g2",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Sand"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-vol97",
+          "kind": "condition",
+          "field": "Grading",
+          "condition": "equal_one",
+          "value": [
+            "Well-graded"
+          ],
+          "searchTerm": "Grading"
+        },
+        {
+          "id": "class-rule-4-ijnkf",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_one",
+          "value": [
+            "Gravelly"
+          ],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  },
+  {
+    "id": "170623",
+    "name": "Sand",
+    "abbreviation": "SW",
+    "graphic": "SW.png",
+    "graphicColorOverlay": null,
+    "fillOverrideColor": null,
+    "applyGraphicToIds": [],
+    "rules": {
+      "id": "class-rule-root-231tv",
+      "kind": "group",
+      "operator": "AND",
+      "rules": [
+        {
+          "id": "class-rule-1-9skv9",
+          "kind": "condition",
+          "field": "Origin Type",
+          "condition": "equal_one",
+          "value": [
+            "Soil"
+          ],
+          "searchTerm": "Origin Type"
+        },
+        {
+          "id": "class-rule-2-suuod",
+          "kind": "condition",
+          "field": "Soil Type",
+          "condition": "equal_one",
+          "value": [
+            "Sand"
+          ],
+          "searchTerm": "Soil Type"
+        },
+        {
+          "id": "class-rule-3-teby2",
+          "kind": "condition",
+          "field": "Grading",
+          "condition": "equal_one",
+          "value": [
+            "Well-graded"
+          ],
+          "searchTerm": "Grading"
+        },
+        {
+          "id": "class-rule-4-208st",
+          "kind": "condition",
+          "field": "Identifier",
+          "condition": "equal_null",
+          "value": [],
+          "searchTerm": "Identifier"
+        }
+      ]
+    }
+  }
+]

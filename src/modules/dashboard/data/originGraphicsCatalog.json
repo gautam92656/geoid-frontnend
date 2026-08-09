@@ -1,0 +1,762 @@
+[
+  {
+    "filename": "no_graphic.png",
+    "label": "No graphic",
+    "code": "no_graphic.png"
+  },
+  {
+    "filename": "coreloss.png",
+    "label": "Coreloss",
+    "code": "coreloss.png"
+  },
+  {
+    "filename": "601.png",
+    "label": "Gravel or conglomerate",
+    "code": "601.png"
+  },
+  {
+    "filename": "602.png",
+    "label": "Gravel or conglomerate",
+    "code": "602.png"
+  },
+  {
+    "filename": "603.png",
+    "label": "Crossbedded gravel or conglomerate",
+    "code": "603.png"
+  },
+  {
+    "filename": "605.png",
+    "label": "Breccia",
+    "code": "605.png"
+  },
+  {
+    "filename": "606.png",
+    "label": "Breccia",
+    "code": "606.png"
+  },
+  {
+    "filename": "607.png",
+    "label": "Massive sand or sandstone",
+    "code": "607.png"
+  },
+  {
+    "filename": "608.png",
+    "label": "Bedded sand or sandstone",
+    "code": "608.png"
+  },
+  {
+    "filename": "609.png",
+    "label": "Crossbedded sand or sandstone",
+    "code": "609.png"
+  },
+  {
+    "filename": "610.png",
+    "label": "Crossbedded sand or sandstone",
+    "code": "610.png"
+  },
+  {
+    "filename": "611.png",
+    "label": "Ripple-bedded sand or sandstone",
+    "code": "611.png"
+  },
+  {
+    "filename": "612.png",
+    "label": "Argillaceous or shaly sandstone",
+    "code": "612.png"
+  },
+  {
+    "filename": "613.png",
+    "label": "Calcareous sandstone",
+    "code": "613.png"
+  },
+  {
+    "filename": "614.png",
+    "label": "Dolomitic sandstone",
+    "code": "614.png"
+  },
+  {
+    "filename": "616.png",
+    "label": "Silt, siltstone, or shaly silt",
+    "code": "616.png"
+  },
+  {
+    "filename": "617.png",
+    "label": "Calcareous siltstone",
+    "code": "617.png"
+  },
+  {
+    "filename": "618.png",
+    "label": "Dolomitic siltstone",
+    "code": "618.png"
+  },
+  {
+    "filename": "619.png",
+    "label": "Sandy or silty shale",
+    "code": "619.png"
+  },
+  {
+    "filename": "620.png",
+    "label": "Clay or clay shale",
+    "code": "620.png"
+  },
+  {
+    "filename": "621.png",
+    "label": "Cherty shale",
+    "code": "621.png"
+  },
+  {
+    "filename": "622.png",
+    "label": "Dolomitic shale",
+    "code": "622.png"
+  },
+  {
+    "filename": "623.png",
+    "label": "Calcareous shale or marl",
+    "code": "623.png"
+  },
+  {
+    "filename": "624.png",
+    "label": "Carbonaceous shale",
+    "code": "624.png"
+  },
+  {
+    "filename": "625.png",
+    "label": "Oil shale",
+    "code": "625.png"
+  },
+  {
+    "filename": "626.png",
+    "label": "Chalk",
+    "code": "626.png"
+  },
+  {
+    "filename": "627.png",
+    "label": "Limestone",
+    "code": "627.png"
+  },
+  {
+    "filename": "628.png",
+    "label": "Clastic limestone",
+    "code": "628.png"
+  },
+  {
+    "filename": "629.png",
+    "label": "Fossiliferous clastic limestone",
+    "code": "629.png"
+  },
+  {
+    "filename": "630.png",
+    "label": "Nodular or irregularly bedded limestone",
+    "code": "630.png"
+  },
+  {
+    "filename": "631.png",
+    "label": "Limestone, irregular (burrow?) fillings of saccharoidal dolomite",
+    "code": "631.png"
+  },
+  {
+    "filename": "632.png",
+    "label": "Crossbedded limestone",
+    "code": "632.png"
+  },
+  {
+    "filename": "633.png",
+    "label": "Cherty crossbedded limestone",
+    "code": "633.png"
+  },
+  {
+    "filename": "634.png",
+    "label": "Cherty and sandy crossbedded clastic limestone",
+    "code": "634.png"
+  },
+  {
+    "filename": "635.png",
+    "label": "Oolitic limestone",
+    "code": "635.png"
+  },
+  {
+    "filename": "636.png",
+    "label": "Sandy limestone",
+    "code": "636.png"
+  },
+  {
+    "filename": "637.png",
+    "label": "Silty limestone",
+    "code": "637.png"
+  },
+  {
+    "filename": "638.png",
+    "label": "Argillaceous or shaly limestone",
+    "code": "638.png"
+  },
+  {
+    "filename": "639.png",
+    "label": "Cherty limestone",
+    "code": "639.png"
+  },
+  {
+    "filename": "640.png",
+    "label": "Cherty limestone",
+    "code": "640.png"
+  },
+  {
+    "filename": "641.png",
+    "label": "Dolomitic limestone, limy dolostone, or limy dolomite",
+    "code": "641.png"
+  },
+  {
+    "filename": "642.png",
+    "label": "Dolostone or dolomite",
+    "code": "642.png"
+  },
+  {
+    "filename": "643.png",
+    "label": "Crossbedded dolostone or dolomite",
+    "code": "643.png"
+  },
+  {
+    "filename": "644.png",
+    "label": "Oolitic dolostone or dolomite",
+    "code": "644.png"
+  },
+  {
+    "filename": "645.png",
+    "label": "Sandy dolostone or dolomite",
+    "code": "645.png"
+  },
+  {
+    "filename": "646.png",
+    "label": "Silty dolostone or dolomite",
+    "code": "646.png"
+  },
+  {
+    "filename": "647.png",
+    "label": "Argillaceous or shaly dolostone or dolomite",
+    "code": "647.png"
+  },
+  {
+    "filename": "648.png",
+    "label": "Cherty dolostone or dolomite",
+    "code": "648.png"
+  },
+  {
+    "filename": "649.png",
+    "label": "Bedded chert",
+    "code": "649.png"
+  },
+  {
+    "filename": "650.png",
+    "label": "Bedded chert",
+    "code": "650.png"
+  },
+  {
+    "filename": "651.png",
+    "label": "Fossiliferous bedded chert",
+    "code": "651.png"
+  },
+  {
+    "filename": "652.png",
+    "label": "Fossiliferous rock",
+    "code": "652.png"
+  },
+  {
+    "filename": "653.png",
+    "label": "Diatomaceous rock",
+    "code": "653.png"
+  },
+  {
+    "filename": "654.png",
+    "label": "Subgraywacke",
+    "code": "654.png"
+  },
+  {
+    "filename": "655.png",
+    "label": "Crossbedded subgraywacke",
+    "code": "655.png"
+  },
+  {
+    "filename": "656.png",
+    "label": "Ripple-bedded subgraywacke",
+    "code": "656.png"
+  },
+  {
+    "filename": "657.png",
+    "label": "Peat",
+    "code": "657.png"
+  },
+  {
+    "filename": "658.png",
+    "label": "Coal",
+    "code": "658.png"
+  },
+  {
+    "filename": "659.png",
+    "label": "Bony coal or impure coal",
+    "code": "659.png"
+  },
+  {
+    "filename": "660.png",
+    "label": "Underclay",
+    "code": "660.png"
+  },
+  {
+    "filename": "661.png",
+    "label": "Flint clay",
+    "code": "661.png"
+  },
+  {
+    "filename": "662.png",
+    "label": "Bentonite",
+    "code": "662.png"
+  },
+  {
+    "filename": "663.png",
+    "label": "Glauconite",
+    "code": "663.png"
+  },
+  {
+    "filename": "664.png",
+    "label": "Limonite",
+    "code": "664.png"
+  },
+  {
+    "filename": "665.png",
+    "label": "Siderite",
+    "code": "665.png"
+  },
+  {
+    "filename": "666.png",
+    "label": "Phosphatic-nodular rock",
+    "code": "666.png"
+  },
+  {
+    "filename": "667.png",
+    "label": "Gypsum",
+    "code": "667.png"
+  },
+  {
+    "filename": "668.png",
+    "label": "Salt",
+    "code": "668.png"
+  },
+  {
+    "filename": "669.png",
+    "label": "Interbedded sandstone and siltstone",
+    "code": "669.png"
+  },
+  {
+    "filename": "670.png",
+    "label": "Interbedded sandstone and shale",
+    "code": "670.png"
+  },
+  {
+    "filename": "671.png",
+    "label": "Interbedded ripplebedded sandstone and shale",
+    "code": "671.png"
+  },
+  {
+    "filename": "672.png",
+    "label": "Interbedded shale and silty limestone",
+    "code": "672.png"
+  },
+  {
+    "filename": "673.png",
+    "label": "Interbedded shale and limestone",
+    "code": "673.png"
+  },
+  {
+    "filename": "674.png",
+    "label": "Interbedded shale and limestone",
+    "code": "674.png"
+  },
+  {
+    "filename": "675.png",
+    "label": "Interbedded calcareous shale and limestone",
+    "code": "675.png"
+  },
+  {
+    "filename": "676.png",
+    "label": "Interbedded silty limestone and shale",
+    "code": "676.png"
+  },
+  {
+    "filename": "677.png",
+    "label": "Interbedded limestone and shale",
+    "code": "677.png"
+  },
+  {
+    "filename": "678.png",
+    "label": "Interbedded limestone and shale",
+    "code": "678.png"
+  },
+  {
+    "filename": "679.png",
+    "label": "Interbedded limestone and shale",
+    "code": "679.png"
+  },
+  {
+    "filename": "680.png",
+    "label": "Interbedded limestone and calcareous shale",
+    "code": "680.png"
+  },
+  {
+    "filename": "681.png",
+    "label": "Till or diamicton",
+    "code": "681.png"
+  },
+  {
+    "filename": "682.png",
+    "label": "Till or diamicton",
+    "code": "682.png"
+  },
+  {
+    "filename": "683.png",
+    "label": "Till or diamicton",
+    "code": "683.png"
+  },
+  {
+    "filename": "684.png",
+    "label": "Loess",
+    "code": "684.png"
+  },
+  {
+    "filename": "685.png",
+    "label": "Loess",
+    "code": "685.png"
+  },
+  {
+    "filename": "686.png",
+    "label": "Loess",
+    "code": "686.png"
+  },
+  {
+    "filename": "701.png",
+    "label": "Metamorphism",
+    "code": "701.png"
+  },
+  {
+    "filename": "702.png",
+    "label": "Quartzite",
+    "code": "702.png"
+  },
+  {
+    "filename": "703.png",
+    "label": "Slate",
+    "code": "703.png"
+  },
+  {
+    "filename": "704.png",
+    "label": "Schistose or gneissoid granite",
+    "code": "704.png"
+  },
+  {
+    "filename": "705.png",
+    "label": "Schist",
+    "code": "705.png"
+  },
+  {
+    "filename": "706.png",
+    "label": "Contorted schist",
+    "code": "706.png"
+  },
+  {
+    "filename": "707.png",
+    "label": "Schist and gneiss",
+    "code": "707.png"
+  },
+  {
+    "filename": "708.png",
+    "label": "Gneiss",
+    "code": "708.png"
+  },
+  {
+    "filename": "709.png",
+    "label": "Contorted gneiss",
+    "code": "709.png"
+  },
+  {
+    "filename": "710.png",
+    "label": "Soapstone, talc, or serpentinite",
+    "code": "710.png"
+  },
+  {
+    "filename": "711.png",
+    "label": "Tuffaceous rock",
+    "code": "711.png"
+  },
+  {
+    "filename": "712.png",
+    "label": "Crystal tuff",
+    "code": "712.png"
+  },
+  {
+    "filename": "713.png",
+    "label": "Volcanic breccia and tuff",
+    "code": "713.png"
+  },
+  {
+    "filename": "714.png",
+    "label": "Volcanic breccia or agglomerate",
+    "code": "714.png"
+  },
+  {
+    "filename": "715.png",
+    "label": "Volcanic breccia or agglomerate",
+    "code": "715.png"
+  },
+  {
+    "filename": "716.png",
+    "label": "Zeolitic rock",
+    "code": "716.png"
+  },
+  {
+    "filename": "717.png",
+    "label": "Basaltic flows",
+    "code": "717.png"
+  },
+  {
+    "filename": "718.png",
+    "label": "Granite",
+    "code": "718.png"
+  },
+  {
+    "filename": "719.png",
+    "label": "Granite",
+    "code": "719.png"
+  },
+  {
+    "filename": "720.png",
+    "label": "Banded igneous rock",
+    "code": "720.png"
+  },
+  {
+    "filename": "721.png",
+    "label": "Igneous rock",
+    "code": "721.png"
+  },
+  {
+    "filename": "722.png",
+    "label": "Igneous rock",
+    "code": "722.png"
+  },
+  {
+    "filename": "723.png",
+    "label": "Igneous rock",
+    "code": "723.png"
+  },
+  {
+    "filename": "724.png",
+    "label": "Igneous rock",
+    "code": "724.png"
+  },
+  {
+    "filename": "725.png",
+    "label": "Igneous rock",
+    "code": "725.png"
+  },
+  {
+    "filename": "726.png",
+    "label": "Igneous rock",
+    "code": "726.png"
+  },
+  {
+    "filename": "727.png",
+    "label": "Igneous rock",
+    "code": "727.png"
+  },
+  {
+    "filename": "728.png",
+    "label": "Igneous rock",
+    "code": "728.png"
+  },
+  {
+    "filename": "729.png",
+    "label": "Porphyritic rock",
+    "code": "729.png"
+  },
+  {
+    "filename": "730.png",
+    "label": "Porphyritic rock",
+    "code": "730.png"
+  },
+  {
+    "filename": "731.png",
+    "label": "Vitrophyre",
+    "code": "731.png"
+  },
+  {
+    "filename": "732.png",
+    "label": "Quartz",
+    "code": "732.png"
+  },
+  {
+    "filename": "733.png",
+    "label": "Ore",
+    "code": "733.png"
+  },
+  {
+    "filename": "ARG.png",
+    "label": "Argillite",
+    "code": "ARG.png"
+  },
+  {
+    "filename": "ASP.png",
+    "label": "Asphalt",
+    "code": "ASP.png"
+  },
+  {
+    "filename": "BAS.png",
+    "label": "Basalt",
+    "code": "BAS.png"
+  },
+  {
+    "filename": "BXX.png",
+    "label": "Breccia",
+    "code": "BXX.png"
+  },
+  {
+    "filename": "CH.png",
+    "label": "CH",
+    "code": "CH.png"
+  },
+  {
+    "filename": "CHT.png",
+    "label": "Chert",
+    "code": "CHT.png"
+  },
+  {
+    "filename": "CI.png",
+    "label": "CI",
+    "code": "CI.png"
+  },
+  {
+    "filename": "CI-CH.png",
+    "label": "CI-CH",
+    "code": "CI-CH.png"
+  },
+  {
+    "filename": "CL.png",
+    "label": "CL",
+    "code": "CL.png"
+  },
+  {
+    "filename": "CL-CI.png",
+    "label": "CL-CI",
+    "code": "CL-CI.png"
+  },
+  {
+    "filename": "COL.png",
+    "label": "Coal",
+    "code": "COL.png"
+  },
+  {
+    "filename": "FILL.png",
+    "label": "FILL",
+    "code": "FILL.png"
+  },
+  {
+    "filename": "GC.png",
+    "label": "GC",
+    "code": "GC.png"
+  },
+  {
+    "filename": "GM.png",
+    "label": "GM",
+    "code": "GM.png"
+  },
+  {
+    "filename": "GNE.png",
+    "label": "Gneiss",
+    "code": "GNE.png"
+  },
+  {
+    "filename": "GP.png",
+    "label": "GP",
+    "code": "GP.png"
+  },
+  {
+    "filename": "GRA.png",
+    "label": "Granite",
+    "code": "GRA.png"
+  },
+  {
+    "filename": "GW.png",
+    "label": "GW",
+    "code": "GW.png"
+  },
+  {
+    "filename": "MH.png",
+    "label": "MH",
+    "code": "MH.png"
+  },
+  {
+    "filename": "ML.png",
+    "label": "ML",
+    "code": "ML.png"
+  },
+  {
+    "filename": "OH.png",
+    "label": "OH",
+    "code": "OH.png"
+  },
+  {
+    "filename": "OL.png",
+    "label": "OL",
+    "code": "OL.png"
+  },
+  {
+    "filename": "PAV.png",
+    "label": "Pavers",
+    "code": "PAV.png"
+  },
+  {
+    "filename": "PHY.png",
+    "label": "Phyllite",
+    "code": "PHY.png"
+  },
+  {
+    "filename": "Pt.png",
+    "label": "Pt",
+    "code": "Pt.png"
+  },
+  {
+    "filename": "RockConglomerate.png",
+    "label": "Rock Conglomerate",
+    "code": "RockConglomerate.png"
+  },
+  {
+    "filename": "SC.png",
+    "label": "Sub Coarse",
+    "code": "SC.png"
+  },
+  {
+    "filename": "SLT.png",
+    "label": "Siltstone",
+    "code": "SLT.png"
+  },
+  {
+    "filename": "SM.png",
+    "label": "SM",
+    "code": "SM.png"
+  },
+  {
+    "filename": "SP.png",
+    "label": "SP",
+    "code": "SP.png"
+  },
+  {
+    "filename": "SST.png",
+    "label": "Sandstone",
+    "code": "SST.png"
+  },
+  {
+    "filename": "SW.png",
+    "label": "SW",
+    "code": "SW.png"
+  },
+  {
+    "filename": "TFF.png",
+    "label": "Tuff",
+    "code": "TFF.png"
+  }
+]

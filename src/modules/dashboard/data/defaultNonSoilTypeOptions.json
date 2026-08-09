@@ -1,0 +1,50 @@
+[
+  {
+    "id": "12436",
+    "name": "Concrete",
+    "code": "CCT",
+    "graphic": "715.png"
+  },
+  {
+    "id": "12437",
+    "name": "Asphalt",
+    "code": "AS",
+    "graphic": "606.png"
+  },
+  {
+    "id": "12438",
+    "name": "Pavers",
+    "code": "PAV",
+    "graphic": "679.png"
+  },
+  {
+    "id": "12439",
+    "name": "Sub Base Coarse",
+    "code": "SBSC",
+    "graphic": "605.png"
+  },
+  {
+    "id": "12440",
+    "name": "Mixture of Brick and Concrete",
+    "code": "BK",
+    "graphic": "606.png"
+  },
+  {
+    "id": "12441",
+    "name": "MULCH",
+    "code": "MLH",
+    "graphic": "657.png"
+  },
+  {
+    "id": "12442",
+    "name": "Crushed rock",
+    "code": "Crush",
+    "graphic": "631.png"
+  },
+  {
+    "id": "12443",
+    "name": "Coreloss",
+    "code": "CRL",
+    "graphic": "coreloss.png"
+  }
+]

@@ -1,10 +1,13 @@
 import type { InputHTMLAttributes } from "react";
 
-export function Input({
-    className = "",
-    ...props
-}: InputHTMLAttributes<HTMLInputElement>) {
-    return (
-        <input {...props} />
-    );
+type InputVariant = "ui" | "legacy";
+
+type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+  variant?: InputVariant;
+};
+
+export function Input({ className = "", variant = "legacy", ...props }: InputProps) {
+  const variantClass = variant === "ui" ? "ui-input" : "";
+
+  return <input className={[variantClass, className].filter(Boolean).join(" ")} {...props} />;
 }

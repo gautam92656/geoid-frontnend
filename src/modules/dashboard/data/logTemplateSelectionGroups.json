@@ -1,0 +1,1574 @@
+[
+  {
+    "name": "Sample",
+    "code": "all_samples",
+    "data": [
+      {
+        "name": "ASS",
+        "code": "ASS",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "SPT Sample",
+        "code": "SPT Sample",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "Mod Cal Sample",
+        "code": "Mod Cal Sample",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "CAL Sample",
+        "code": "CAL Sample",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "Dis",
+        "code": "Dis",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "Soil",
+        "code": "Soil",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "Acid Sulfate",
+        "code": "Acid Sulfate",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "Soil Sample",
+        "code": "Soil Sample",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "Bulk Disturbed",
+        "code": "Bulk Disturbed",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "Grab Sample",
+        "code": "Grab Sample",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "U50",
+        "code": "U50",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "U75",
+        "code": "U75",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "Shelby",
+        "code": "Shelby",
+        "group_code": "all_samples"
+      },
+      {
+        "name": "Core",
+        "code": "Core",
+        "group_code": "all_samples"
+      }
+    ]
+  },
+  {
+    "name": "In-situ Testing",
+    "code": "all_testings",
+    "data": [
+      {
+        "name": "DCP",
+        "code": "DCP",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT",
+        "code": "SPT",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "PP",
+        "code": "PP",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "UCS",
+        "code": "UCS",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "PSP",
+        "code": "PSP",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "ASS",
+        "code": "ASS",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CPT",
+        "code": "CPT",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DPSH",
+        "code": "DPSH",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SV",
+        "code": "SV",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "PID",
+        "code": "PID",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "EC",
+        "code": "Generic",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal",
+        "code": "Mod Cal",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL",
+        "code": "CAL",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DCP - Sowers",
+        "code": "DCP - Sowers",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS",
+        "code": "DMRS",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Torvane",
+        "code": "Torvane",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone",
+        "code": "Texas Cone",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "EC",
+        "code": "EC",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Blows",
+        "code": "SPT>Blows",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Blow/Interval",
+        "code": "SPT>Blow/Interval",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>N-Value",
+        "code": "SPT>N-Value",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>N-Value-Rounded",
+        "code": "SPT>N-Value-Rounded",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Recovery",
+        "code": "SPT>Recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Recovery-MM",
+        "code": "SPT>Recovery-MM",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Recovery-Rounded",
+        "code": "SPT>Recovery-Rounded",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Recovery-Percentage",
+        "code": "SPT>Recovery-Percentage",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Comments",
+        "code": "SPT>Comments",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>blows>n>recovery",
+        "code": "SPT>blows>n>recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>blows/interval>n",
+        "code": "SPT>blows/interval>n",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>blows/interval>(n)",
+        "code": "SPT>blows/interval>(n)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>blows/interval>n>recovery",
+        "code": "SPT>blows/interval>n>recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>blows/interval>n>recovery>comments",
+        "code": "SPT>blows/interval>n>recovery>comments",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Blows",
+        "code": "Mod Cal>Blows",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Blow/Interval",
+        "code": "Mod Cal>Blow/Interval",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>N",
+        "code": "Mod Cal>N-Value",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>N-Value-Rounded",
+        "code": "Mod Cal>N-Value-Rounded",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Recovery",
+        "code": "Mod Cal>Recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Recovery-MM",
+        "code": "Mod Cal>Recovery-MM",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Recovery-Rounded",
+        "code": "Mod Cal>Recovery-Rounded",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Recovery-Percentage",
+        "code": "Mod Cal>Recovery-Percentage",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Comments",
+        "code": "Mod Cal>Comments",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>blows>n>recovery",
+        "code": "Mod Cal>blows>n>recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>blows/interval>n",
+        "code": "Mod Cal>blows/interval>n",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>blows/interval>(n)",
+        "code": "Mod Cal>blows/interval>(n)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>blows/interval>n>recovery",
+        "code": "Mod Cal>blows/interval>n>recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>blows/interval>n>recovery>comments",
+        "code": "Mod Cal>blows/interval>n>recovery>comments",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Blows",
+        "code": "CAL>Blows",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Blow/Interval",
+        "code": "CAL>Blow/Interval",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>N",
+        "code": "CAL>N-Value",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>N-Value-Rounded",
+        "code": "CAL>N-Value-Rounded",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Recovery",
+        "code": "CAL>Recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Recovery-MM",
+        "code": "CAL>Recovery-MM",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Recovery-Rounded",
+        "code": "CAL>Recovery-Rounded",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Recovery-Percentage",
+        "code": "CAL>Recovery-Percentage",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Comments",
+        "code": "CAL>Comments",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>blows>n>recovery",
+        "code": "CAL>blows>n>recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>blows/interval>n",
+        "code": "CAL>blows/interval>n",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>blows/interval>(n)",
+        "code": "CAL>blows/interval>(n)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>blows/interval>n>recovery",
+        "code": "CAL>blows/interval>n>recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>blows/interval>n>recovery>comments",
+        "code": "CAL>blows/interval>n>recovery>comments",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Blows",
+        "code": "DMRS>Blows",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Blow/Interval",
+        "code": "DMRS>Blow/Interval",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>N-Value",
+        "code": "DMRS>N-Value",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>N-Value-Rounded",
+        "code": "DMRS>N-Value-Rounded",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Recovery",
+        "code": "DMRS>Recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Recovery-MM",
+        "code": "DMRS>Recovery-MM",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Recovery-Rounded",
+        "code": "DMRS>Recovery-Rounded",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Recovery-Percentage",
+        "code": "DMRS>Recovery-Percentage",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Comments",
+        "code": "DMRS>Comments",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>blows>n>recovery",
+        "code": "DMRS>blows>n>recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>blows/interval>n",
+        "code": "DMRS>blows/interval>n",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>blows/interval>(n)",
+        "code": "DMRS>blows/interval>(n)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>blows/interval>n>recovery",
+        "code": "DMRS>blows/interval>n>recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>blows/interval>n>recovery>comments",
+        "code": "DMRS>blows/interval>n>recovery>comments",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Blows",
+        "code": "Texas Cone>Blows",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Blow/Interval",
+        "code": "Texas Cone>Blow/Interval",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>N-Value",
+        "code": "Texas Cone>N-Value",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>N-Value-Rounded",
+        "code": "Texas Cone>N-Value-Rounded",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Recovery",
+        "code": "Texas Cone>Recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Recovery-MM",
+        "code": "Texas Cone>Recovery-MM",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Recovery-Rounded",
+        "code": "Texas Cone>Recovery-Rounded",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Recovery-Percentage",
+        "code": "Texas Cone>Recovery-Percentage",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Comments",
+        "code": "Texas Cone>Comments",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>blows>n>recovery",
+        "code": "Texas Cone>blows>n>recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>blows/interval>n",
+        "code": "Texas Cone>blows/interval>n",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>blows/interval>(n)",
+        "code": "Texas Cone>blows/interval>(n)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>blows/interval>n>recovery",
+        "code": "Texas Cone>blows/interval>n>recovery",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>blows/interval>n>recovery>comments",
+        "code": "Texas Cone>blows/interval>n>recovery>comments",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SV>Peak",
+        "code": "SV>Peak",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SV>Residual",
+        "code": "SV>Residual",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SV>Peak/Residual",
+        "code": "SV>Peak/Residual",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Torvane>Peak",
+        "code": "Torvane>Peak",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Torvane>Residual",
+        "code": "Torvane>Residual",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Torvane>Peak/Residual",
+        "code": "Torvane>Peak/Residual",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT> Blows-(n) WOH",
+        "code": "SPT> Blows-(n) WOH",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT Blows-(n) - new line for n",
+        "code": "SPT Blows-(n) - new line for n",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT N N60 (New line for N)",
+        "code": "SPT N N60 (New line for N)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT Blows-(n60) - new line for n60",
+        "code": "SPT Blows-(n60) - new line for n60",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Blows>N(new line for N value)",
+        "code": "SPT>Blows>N(new line for N value)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Blows>N(new line for N value) mm",
+        "code": "SPT>Blows>N(new line for N value) mm",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Blows/interval vertical",
+        "code": "SPT>Blows/interval vertical",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Blows/interval (mm) vertical",
+        "code": "SPT>Blows/interval (mm) vertical",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Blow/Interval WoH",
+        "code": "SPT>Blow/Interval WoH",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "SPT>Blow/Interval WoH (-)",
+        "code": "SPT>Blow/Interval WoH (-)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal WOH",
+        "code": "Mod Cal WOH",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal Blows-(n) - new line for n",
+        "code": "Mod Cal Blows-(n) - new line for n",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal Blows-(n60) - new line for n60",
+        "code": "Mod Cal Blows-(n60) - new line for n60",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Blows>N(new line for N value)",
+        "code": "Mod Cal>Blows>N(new line for N value)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Blows>N(new line for N value) mm",
+        "code": "Mod Cal>Blows>N(new line for N value) mm",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Blows/interval vertical",
+        "code": "Mod Cal>Blows/interval vertical",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Blows/interval (mm) vertical",
+        "code": "Mod Cal>Blows/interval (mm) vertical",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Blow/Interval WoH",
+        "code": "Mod Cal>Blow/Interval WoH",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Mod Cal>Blow/Interval WoH (-)",
+        "code": "Mod Cal>Blow/Interval WoH (-)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL WOH",
+        "code": "CAL WOH",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL Blows-(n) - new line for n",
+        "code": "CAL Blows-(n) - new line for n",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL Blows-(n60) - new line for n60",
+        "code": "CAL Blows-(n60) - new line for n60",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Blows>N(new line for N value)",
+        "code": "CAL>Blows>N(new line for N value)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Blows>N(new line for N value) mm",
+        "code": "CAL>Blows>N(new line for N value) mm",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Blows/interval vertical",
+        "code": "CAL>Blows/interval vertical",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Blows/interval (mm) vertical",
+        "code": "CAL>Blows/interval (mm) vertical",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Blow/Interval WoH",
+        "code": "CAL>Blow/Interval WoH",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "CAL>Blow/Interval WoH (-)",
+        "code": "CAL>Blow/Interval WoH (-)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS WOH",
+        "code": "DMRS WOH",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS Blows-(n) - new line for n",
+        "code": "DMRS Blows-(n) - new line for n",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS Blows-(n60) - new line for n60",
+        "code": "DMRS Blows-(n60) - new line for n60",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Blows>N(new line for N value)",
+        "code": "DMRS>Blows>N(new line for N value)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Blows>N(new line for N value) mm",
+        "code": "DMRS>Blows>N(new line for N value) mm",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Blows/interval vertical",
+        "code": "DMRS>Blows/interval vertical",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Blows/interval (mm) vertical",
+        "code": "DMRS>Blows/interval (mm) vertical",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Blow/Interval WoH",
+        "code": "DMRS>Blow/Interval WoH",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DMRS>Blow/Interval WoH (-)",
+        "code": "DMRS>Blow/Interval WoH (-)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "TPC>Blows>Drivedistance(line per blow)",
+        "code": "TPC>Blows>Drivedistance(line per blow)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone WOH",
+        "code": "Texas Cone WOH",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone Blows-(n) - new line for n",
+        "code": "Texas Cone Blows-(n) - new line for n",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone Blows-(n60) - new line for n60",
+        "code": "Texas Cone Blows-(n60) - new line for n60",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Blows>N(new line for N value)",
+        "code": "Texas Cone>Blows>N(new line for N value)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Blows>N(new line for N value) mm",
+        "code": "Texas Cone>Blows>N(new line for N value) mm",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Blows/interval vertical",
+        "code": "Texas Cone>Blows/interval vertical",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Blows/interval (mm) vertical",
+        "code": "Texas Cone>Blows/interval (mm) vertical",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Blow/Interval WoH",
+        "code": "Texas Cone>Blow/Interval WoH",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "Texas Cone>Blow/Interval WoH (-)",
+        "code": "Texas Cone>Blow/Interval WoH (-)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DCP - Sowers blow/interval (n)",
+        "code": "DCP - Sowers blow/interval (n)",
+        "group_code": "all_testings"
+      },
+      {
+        "name": "DCP - Sowers n",
+        "code": "DCP - Sowers n",
+        "group_code": "all_testings"
+      }
+    ]
+  },
+  {
+    "name": "Remarks",
+    "code": "all_remarks",
+    "data": [
+      {
+        "name": "Remarks",
+        "code": "Remarks",
+        "group_code": "all_remarks"
+      },
+      {
+        "name": "Logged Remarks",
+        "code": "Logged Remarks",
+        "group_code": "all_remarks"
+      },
+      {
+        "name": "Unlogged Remarks",
+        "code": "Unlogged Remarks",
+        "group_code": "all_remarks"
+      },
+      {
+        "name": "L-Pile Value",
+        "code": "L-Pile Value",
+        "group_code": "all_remarks"
+      }
+    ]
+  },
+  {
+    "name": "Water in/out",
+    "code": "all_waters",
+    "data": [
+      {
+        "name": "Ground Water",
+        "code": "Ground Water",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Ground Water (Elivated)",
+        "code": "Ground Water (Elivated)",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "In",
+        "code": "In",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Inflow",
+        "code": "Inflow",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Not Encountered",
+        "code": "Not Encountered",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Outflow",
+        "code": "Outflow",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Seepage Water",
+        "code": "Seepage Water",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Standing",
+        "code": "Standing",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Waterings",
+        "code": "Waterings",
+        "group_code": "all_waters"
+      }
+    ]
+  },
+  {
+    "name": "Subsurface Profile",
+    "code": "all_subsurface_profiles",
+    "data": [
+      {
+        "name": "Stiffness/Density/Strength",
+        "code": "subsurface_stiffness_density_strength",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Plasticity",
+        "code": "subsurface_plasticity",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Color",
+        "code": "subsurface_color",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Moisture",
+        "code": "moisture",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Notes",
+        "code": "subsurface_note",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Soil Origin",
+        "code": "soil_origin",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Classification Code",
+        "code": "classification_code",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Classification Name",
+        "code": "classification_name",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Weathering",
+        "code": "weathering",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Estimated Strength",
+        "code": "estimatedStrength",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Material Description",
+        "code": "materialDescription",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Size % Gravel",
+        "code": "size_gravel_percent",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Size % Sand",
+        "code": "size_sand_percent",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Size % Fines",
+        "code": "size_fines_percent",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Geomodal Layer",
+        "code": "geomodal_layer",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Alteration",
+        "code": "alteration",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Misc Features",
+        "code": "miscFeatures",
+        "group_code": "all_subsurface_profiles"
+      },
+      {
+        "name": "Misc Features Presence",
+        "code": "miscFeaturesPresence",
+        "group_code": "all_subsurface_profiles"
+      }
+    ]
+  },
+  {
+    "name": "Lab Testing",
+    "code": "all_lab_testings",
+    "data": [
+      {
+        "name": "Particle Size Distribution>Sieve 0.075mm",
+        "code": "Particle_Size_Distribution_Sieve 0.075mm",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Particle Size Distribution>Sieve 0.21mm",
+        "code": "Particle_Size_Distribution_Sieve 0.21mm",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Particle Size Distribution>Sieve 0.6mm",
+        "code": "Particle_Size_Distribution_Sieve 0.6mm",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Particle Size Distribution>Sieve 2.36mm",
+        "code": "Particle_Size_Distribution_Sieve 2.36mm",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Particle Size Distribution>Sieve 6.7mm",
+        "code": "Particle_Size_Distribution_Sieve 6.7mm",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Particle Size Distribution>Sieve 19mm",
+        "code": "Particle_Size_Distribution_Sieve 19mm",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Particle Size Distribution>Sieve 63mm",
+        "code": "Particle_Size_Distribution_Sieve 63mm",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Particle Size Distribution>Sieve 200mm",
+        "code": "Particle_Size_Distribution_Sieve 200mm",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Particle Size Distribution>D60",
+        "code": "Particle_Size_Distribution_D60",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Particle Size Distribution>D30",
+        "code": "Particle_Size_Distribution_D30",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Particle Size Distribution>D10",
+        "code": "Particle_Size_Distribution_D10",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Atterberg Limits>Plasticity Index % (PI)",
+        "code": "Atterberg_Limits_Plasticity Index % (PI)",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Atterberg Limits>Plasticity Limit% (PL)",
+        "code": "Atterberg_Limits_Plasticity Limit% (PL)",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Atterberg Limits>Liquid Limit % (LL)",
+        "code": "Atterberg_Limits_Liquid Limit % (LL)",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "IS50>Axial",
+        "code": "IS50_Axial",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "IS50>Diametral",
+        "code": "IS50_Diametral",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Moisture Content>Results",
+        "code": "Moisture_Content_Results",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "GS - Mechanical Grain Size>%Fines",
+        "code": "GS_-_Mechanical_Grain_Size_%Fines",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "GS - Mechanical Grain Size>%Sand",
+        "code": "GS_-_Mechanical_Grain_Size_%Sand",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "GS - Mechanical Grain Size>%Gravel",
+        "code": "GS_-_Mechanical_Grain_Size_%Gravel",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "w - Moisture Content>w",
+        "code": "w_-_Moisture_Content_w",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "C - Consolidation Test>C",
+        "code": "C_-_Consolidation_Test_C",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "L-Pile>KS",
+        "code": "L-Pile_KS",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "L-Pile>KC",
+        "code": "L-Pile_KC",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "L-Pile>E50",
+        "code": "L-Pile_E50",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "HCSI>HCSI Index",
+        "code": "HCSI_HCSI Index",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "DR - Relative Density>DR",
+        "code": "DR_-_Relative_Density_DR",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "k - Permeability Coefficient>k",
+        "code": "k_-_Permeability_Coefficient_k",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "q - Triaxial Test>q",
+        "code": "q_-_Triaxial_Test_q",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "UCS - Unconfined Compressive Strength>UCS",
+        "code": "UCS_-_Unconfined_Compressive_Strength_UCS",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "SB - Shear Box Test>SB",
+        "code": "SB_-_Shear_Box_Test_SB",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Y - Unit Weight>Y",
+        "code": "Y_-_Unit_Weight_Y",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Yd - Dry Unit Weight>Yd",
+        "code": "Yd_-_Dry_Unit_Weight_Yd",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "p - Density>p",
+        "code": "p_-_Density_p",
+        "group_code": "all_lab_testings"
+      },
+      {
+        "name": "Pd - Dry Density>Pd",
+        "code": "Pd_-_Dry_Density_Pd",
+        "group_code": "all_lab_testings"
+      }
+    ]
+  },
+  {
+    "name": "Remarks",
+    "code": "all_remarks",
+    "data": [
+      {
+        "name": "Remarks",
+        "code": "Remarks",
+        "group_code": "all_remarks"
+      },
+      {
+        "name": "Logged Remarks",
+        "code": "Logged Remarks",
+        "group_code": "all_remarks"
+      },
+      {
+        "name": "Unlogged Remarks",
+        "code": "Unlogged Remarks",
+        "group_code": "all_remarks"
+      },
+      {
+        "name": "L-Pile Value",
+        "code": "L-Pile Value",
+        "group_code": "all_remarks"
+      }
+    ]
+  },
+  {
+    "name": "Drilling Method",
+    "code": "all_drilling_methods",
+    "data": [
+      {
+        "name": "Drilling Method",
+        "code": "drill_method",
+        "group_code": "all_drilling_methods"
+      },
+      {
+        "name": "Drilling Method Comments",
+        "code": "drill_method_comments",
+        "group_code": "all_drilling_methods"
+      },
+      {
+        "name": "Resistance",
+        "code": "resistance",
+        "group_code": "all_drilling_methods"
+      },
+      {
+        "name": "Recovery",
+        "code": "drilling_recovery",
+        "group_code": "all_drilling_methods"
+      },
+      {
+        "name": "Recovery %",
+        "code": "drilling_recovery_percentage",
+        "group_code": "all_drilling_methods"
+      },
+      {
+        "name": "Casing",
+        "code": "casing",
+        "group_code": "all_drilling_methods"
+      },
+      {
+        "name": "Drilling Observation",
+        "code": "drilling_observation",
+        "group_code": "all_drilling_methods"
+      },
+      {
+        "name": "Drilling Observation Comments",
+        "code": "drilling_observation_comments",
+        "group_code": "all_drilling_methods"
+      }
+    ]
+  },
+  {
+    "name": "Water In/Out",
+    "code": "all_waters",
+    "data": [
+      {
+        "name": "Ground Water",
+        "code": "Ground Water",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Ground Water (Elivated)",
+        "code": "Ground Water (Elivated)",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "In",
+        "code": "In",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Inflow",
+        "code": "Inflow",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Not Encountered",
+        "code": "Not Encountered",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Outflow",
+        "code": "Outflow",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Seepage Water",
+        "code": "Seepage Water",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Standing",
+        "code": "Standing",
+        "group_code": "all_waters"
+      },
+      {
+        "name": "Waterings",
+        "code": "Waterings",
+        "group_code": "all_waters"
+      }
+    ]
+  },
+  {
+    "name": "Well Logs",
+    "code": "all_wells",
+    "data": [
+      {
+        "name": "Backfill Log",
+        "code": "backfill_logs",
+        "group_code": "all_wells"
+      },
+      {
+        "name": "Well Log",
+        "code": "well_logs",
+        "group_code": "all_wells"
+      },
+      {
+        "name": "Well Cover",
+        "code": "well_covers",
+        "group_code": "all_wells"
+      },
+      {
+        "name": "Well Probe",
+        "code": "well_probes",
+        "group_code": "all_wells"
+      },
+      {
+        "name": "Well Casing",
+        "code": "well_casings",
+        "group_code": "all_wells"
+      },
+      {
+        "name": "Well Diagram",
+        "code": "well_diagram_backfill_logs",
+        "group_code": "all_wells"
+      }
+    ]
+  },
+  {
+    "name": "Blows Per",
+    "code": "all_blows",
+    "data": [
+      {
+        "name": "Blows Per 150mm/6in",
+        "code": "blows_pre_testings",
+        "group_code": "all_blows"
+      }
+    ]
+  },
+  {
+    "name": "Scale",
+    "code": "all_scales",
+    "data": [
+      {
+        "name": "Depth",
+        "code": "depth",
+        "group_code": "all_scales"
+      },
+      {
+        "name": "Elevation",
+        "code": "elevation",
+        "group_code": "all_scales"
+      }
+    ]
+  },
+  {
+    "name": "Photo",
+    "code": "all_photos",
+    "data": [
+      {
+        "name": "Photo",
+        "code": "log_pdf_photos",
+        "group_code": "all_photos"
+      }
+    ]
+  },
+  {
+    "name": "Core Log",
+    "code": "all_core_log",
+    "data": [
+      {
+        "name": "RQD %",
+        "code": "rqd_defects",
+        "group_code": "all_core_log"
+      },
+      {
+        "name": "Recovery %",
+        "code": "tcr_defects",
+        "group_code": "all_core_log"
+      },
+      {
+        "name": "Length Of Core Recovery ",
+        "code": "tcr_recovery",
+        "group_code": "all_core_log"
+      },
+      {
+        "name": "Length Of Core Recovery in Feet",
+        "code": "tcr_recovery_feet",
+        "group_code": "all_core_log"
+      },
+      {
+        "name": "Run Length",
+        "code": "run_length",
+        "group_code": "all_core_log"
+      },
+      {
+        "name": "Drill Rate",
+        "code": "drill_rate",
+        "group_code": "all_core_log"
+      },
+      {
+        "name": "Run Type",
+        "code": "run_type",
+        "group_code": "all_core_log"
+      },
+      {
+        "name": "Fracture Index",
+        "code": "fracture_index",
+        "group_code": "all_core_log"
+      },
+      {
+        "name": "RMR",
+        "code": "rmr",
+        "group_code": "all_core_log"
+      },
+      {
+        "name": "Solid Core Recovery",
+        "code": "solid_core_recovery",
+        "group_code": "all_core_log"
+      },
+      {
+        "name": "SCR %",
+        "code": "solid_core_recovery_percentage",
+        "group_code": "all_core_log"
+      }
+    ]
+  },
+  {
+    "name": "CPT Module",
+    "code": "all_cpt_module",
+    "data": [
+      {
+        "name": "Point Resistance",
+        "code": "cpt_point_resistance",
+        "group_code": "all_cpt_module"
+      },
+      {
+        "name": "Sleeve Friction",
+        "code": "cpt_sleeve_friction",
+        "group_code": "all_cpt_module"
+      },
+      {
+        "name": "Pore Pressure",
+        "code": "cpt_pore_pressure",
+        "group_code": "all_cpt_module"
+      },
+      {
+        "name": "Hydrostatic Pore Pressure",
+        "code": "cpt_hydrostatic_pore_pressure",
+        "group_code": "all_cpt_module"
+      },
+      {
+        "name": "Corrected Friction Ratio (%)",
+        "code": "cpt_friction_ratio",
+        "group_code": "all_cpt_module"
+      },
+      {
+        "name": "Uncorrected Friction Ratio (%)",
+        "code": "cpt_uncorrected_friction_ratio",
+        "group_code": "all_cpt_module"
+      },
+      {
+        "name": "Corrected Tip Resistance",
+        "code": "cpt_corrected_tip_resistance",
+        "group_code": "all_cpt_module"
+      },
+      {
+        "name": "Soil Behavior Type Index",
+        "code": "cpt_soil_behavior_type_index",
+        "group_code": "all_cpt_module"
+      },
+      {
+        "name": "Normalized Tip Resistance",
+        "code": "cpt_normalized_tip_resistance",
+        "group_code": "all_cpt_module"
+      },
+      {
+        "name": "Estimated SPT N-value",
+        "code": "cpt_estimated_spt_n_value",
+        "group_code": "all_cpt_module"
+      },
+      {
+        "name": "Undrained Shear Strength",
+        "code": "cpt_undrained_shear_strength",
+        "group_code": "all_cpt_module"
+      },
+      {
+        "name": "Normalized Soil Behavior Type",
+        "code": "cpt_normalized_soil_behavior_type",
+        "group_code": "all_cpt_module"
+      }
+    ]
+  },
+  {
+    "name": "MWD Data",
+    "code": "all_mwd_data",
+    "data": [
+      {
+        "name": "Depth",
+        "code": "mwd_depth",
+        "group_code": "all_mwd_data"
+      },
+      {
+        "name": "Time",
+        "code": "mwd_time",
+        "group_code": "all_mwd_data"
+      },
+      {
+        "name": "Penetration Rate",
+        "code": "mwd_penetration_rate",
+        "group_code": "all_mwd_data"
+      },
+      {
+        "name": "RPM",
+        "code": "mwd_rpm",
+        "group_code": "all_mwd_data"
+      },
+      {
+        "name": "Crowd Pressure",
+        "code": "mwd_crowd_pressure",
+        "group_code": "all_mwd_data"
+      },
+      {
+        "name": "Vib",
+        "code": "mwd_vib",
+        "group_code": "all_mwd_data"
+      },
+      {
+        "name": "Injection Pressure",
+        "code": "mwd_injection_pressure",
+        "group_code": "all_mwd_data"
+      },
+      {
+        "name": "Flow",
+        "code": "mwd_flow",
+        "group_code": "all_mwd_data"
+      },
+      {
+        "name": "Volume",
+        "code": "mwd_volume",
+        "group_code": "all_mwd_data"
+      },
+      {
+        "name": "Torque Force",
+        "code": "mwd_torque_force",
+        "group_code": "all_mwd_data"
+      },
+      {
+        "name": "Crowd Force",
+        "code": "mwd_crowd_force",
+        "group_code": "all_mwd_data"
+      }
+    ]
+  },
+  {
+    "name": "Other Data Sources",
+    "code": "all_others",
+    "data": [
+      {
+        "name": "Defect Graphic",
+        "code": "defect_description",
+        "group_code": "all_others"
+      },
+      {
+        "name": "Recovery",
+        "code": "recovery",
+        "group_code": "all_others"
+      },
+      {
+        "name": "Graphic Log",
+        "code": "graphic_log",
+        "group_code": "all_others"
+      },
+      {
+        "name": "Defect Spacing",
+        "code": "defectSpacing",
+        "group_code": "all_others"
+      },
+      {
+        "name": "Rqd Defects",
+        "code": "rqd_defects_description",
+        "group_code": "all_others"
+      },
+      {
+        "name": "CPT_NEW",
+        "code": "cpt_new",
+        "group_code": "all_others"
+      }
+    ]
+  }
+]

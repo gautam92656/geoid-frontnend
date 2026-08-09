@@ -1,0 +1,109 @@
+/* ─── Toast notifications ─── */
+
+.geoid-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 280px;
+  max-width: 360px;
+  padding: 12px 14px;
+  background: var(--surface-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-inter), Arial, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  backdrop-filter: blur(8px);
+}
+
+.geoid-toast > div:first-child {
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.geoid-toast > div:last-child {
+  flex: 1;
+  margin: 0;
+  word-break: break-word;
+}
+
+.geoid-toast__icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.geoid-toast__icon svg {
+  display: block;
+}
+
+.geoid-toast--success .geoid-toast__icon {
+  background: var(--color-success-light);
+  color: var(--color-success);
+}
+
+.geoid-toast--error .geoid-toast__icon {
+  background: var(--color-danger-light);
+  color: var(--color-danger);
+}
+
+.geoid-toast--success {
+  border-color: rgba(5, 150, 105, 0.18);
+}
+
+.geoid-toast--error {
+  border-color: rgba(220, 38, 38, 0.18);
+}
+
+@keyframes geoid-toast-enter {
+  from {
+    opacity: 0;
+    transform: translateX(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes geoid-toast-exit {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(8px) scale(0.98);
+  }
+}
+
+.geoid-toast[data-visible="true"] {
+  animation: geoid-toast-enter 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.geoid-toast[data-visible="false"] {
+  animation: geoid-toast-exit 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@media (max-width: 480px) {
+  .geoid-toast {
+    min-width: 0;
+    max-width: calc(100vw - 32px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .geoid-toast[data-visible="true"],
+  .geoid-toast[data-visible="false"] {
+    animation: none;
+  }
+}

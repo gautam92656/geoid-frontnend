@@ -13,10 +13,6 @@ const PAGE_CONTENT: Record<string, { title: string; description: string }> = {
     title: "Assets",
     description: "Browse and manage your project assets and resources.",
   },
-  settings: {
-    title: "Settings",
-    description: "Configure your account, company, and application preferences.",
-  },
 };
 
 type PageProps = {

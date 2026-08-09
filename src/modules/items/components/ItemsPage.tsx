@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { Container } from "react-bootstrap";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
 import { Label } from "@/shared/components/ui/Label";
-import { ApiError } from "@/shared/services/apiClient";
+import { API_ERROR_MESSAGES, API_MESSAGES } from "@/shared/constants/apiMessages";
+import { showApiError, showApiSuccess } from "@/shared/utils/apiToast";
 import { createItem, deleteItem, listItems, updateItem } from "../services/itemApi";
 import type { Item, ItemPayload } from "../types";
 
@@ -42,7 +42,7 @@ export function ItemsPage() {
       const result = await listItems();
       setItems(result.data);
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Failed to load items.");
+      showApiError(err, API_ERROR_MESSAGES.LOAD_ITEMS);
     } finally {
       setLoading(false);
     }
@@ -84,17 +84,17 @@ export function ItemsPage() {
       };
 
       if (editingItem) {
-        await updateItem(editingItem.id, payload);
-        toast.success("Item updated.");
+        const { message } = await updateItem(editingItem.id, payload);
+        showApiSuccess(message, API_MESSAGES.ITEM_UPDATED);
       } else {
-        await createItem(payload);
-        toast.success("Item created.");
+        const { message } = await createItem(payload);
+        showApiSuccess(message, API_MESSAGES.ITEM_ADDED);
       }
 
       resetForm();
       await loadItems();
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Failed to save item.");
+      showApiError(err, API_ERROR_MESSAGES.SAVE_ITEM);
     } finally {
       setSaving(false);
     }
@@ -105,12 +105,12 @@ export function ItemsPage() {
 
     setDeletingId(item.id);
     try {
-      await deleteItem(item.id);
-      toast.success("Item deleted.");
+      const { message } = await deleteItem(item.id);
+      showApiSuccess(message, API_MESSAGES.ITEM_DELETED);
       if (editingItem?.id === item.id) resetForm();
       await loadItems();
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : "Failed to delete item.");
+      showApiError(err, API_ERROR_MESSAGES.DELETE_ITEM);
     } finally {
       setDeletingId(null);
     }
