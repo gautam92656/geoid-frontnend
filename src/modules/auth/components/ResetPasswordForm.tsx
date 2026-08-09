@@ -2,17 +2,17 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
 import { Label } from "@/shared/components/ui/Label";
-import { ApiError } from "@/shared/services/apiClient";
+import { API_ERROR_MESSAGES } from "@/shared/constants/apiMessages";
+import { showApiError, showApiSuccess } from "@/shared/utils/apiToast";
 import { resetPassword } from "../services/authApi";
 
 const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+[\]{};':"\\|,.<>/?`~]).+$/;
 const PASSWORD_MIN_LENGTH = 8;
 
-export function ResetPasswordForm({ token }: { token: string }) {
+export function ResetPasswordForm({ email }: { email: string }) {
     const router = useRouter();
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -60,10 +60,11 @@ export function ResetPasswordForm({ token }: { token: string }) {
 
         setIsSubmitting(true);
         try {
-            await resetPassword(token, password, confirmPassword);
+            const { data: result, message } = await resetPassword(email, password, confirmPassword);
+            showApiSuccess(message ?? result.message, "Password reset successfully.");
             router.push("/password-changed");
         } catch (err) {
-            toast.error(err instanceof ApiError ? err.message : "Unable to reset password. Please try again.");
+            showApiError(err, API_ERROR_MESSAGES.RESET_PASSWORD);
         } finally {
             setIsSubmitting(false);
         }

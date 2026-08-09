@@ -3,7 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "react-bootstrap";
-import logo from "@/assets/image/logo.svg";
+import {
+  COMPANY_LOGO_ALT,
+  COMPANY_LOGO_HEIGHT,
+  COMPANY_LOGO_PATH,
+  COMPANY_LOGO_WIDTH,
+} from "@/shared/constants/branding";
 
 export function Footer() {
   return (
@@ -13,7 +18,12 @@ export function Footer() {
           <div className="footer__top">
             <div className="footer__brand">
               <Link href="/" className="footer__logo-link">
-                <Image src={logo} alt="GeoID" />
+                <Image
+                  src={COMPANY_LOGO_PATH}
+                  alt={COMPANY_LOGO_ALT}
+                  width={COMPANY_LOGO_WIDTH}
+                  height={COMPANY_LOGO_HEIGHT}
+                />
               </Link>
               <p className="footer__tagline">
                 Cloud-based boring log software for geotechnical engineers.

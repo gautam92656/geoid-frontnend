@@ -4,7 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "@/store/hooks";
 import Image from "next/image";
-import logo from "@/assets/image/logo.svg";
+import {
+  COMPANY_LOGO_ALT,
+  COMPANY_LOGO_HEIGHT,
+  COMPANY_LOGO_PATH,
+  COMPANY_LOGO_WIDTH,
+} from "@/shared/constants/branding";
 import { Container } from "react-bootstrap";
 
 const NAV_LINKS = [
@@ -59,7 +64,13 @@ export function Navbar() {
           <div className="navbar-main">
             <div className="logo">
               <Link href="/" className="navbar__logo">
-                <Image src={logo} alt="GeoID" priority />
+                <Image
+                  src={COMPANY_LOGO_PATH}
+                  alt={COMPANY_LOGO_ALT}
+                  width={COMPANY_LOGO_WIDTH}
+                  height={COMPANY_LOGO_HEIGHT}
+                  priority
+                />
               </Link>
             </div>
 
@@ -118,7 +129,12 @@ export function Navbar() {
       >
         <div className="navbar__drawer-header">
           <Link href="/" className="navbar__logo" onClick={close}>
-            <Image src={logo} alt="GeoID" width={120} height={32} />
+            <Image
+              src={COMPANY_LOGO_PATH}
+              alt={COMPANY_LOGO_ALT}
+              width={COMPANY_LOGO_WIDTH}
+              height={COMPANY_LOGO_HEIGHT}
+            />
           </Link>
           <button
             type="button"
@@ -130,7 +146,7 @@ export function Navbar() {
           </button>
         </div>
 
-        <nav className="navbar__drawer-nav">
+        <nav className="navbar__drawer-nav ui-scrollbar">
           {NAV_LINKS.map(({ label, href }) => (
             <Link key={href} href={href} className="navbar__drawer-link" onClick={close}>
               {label}

@@ -1,31 +1,32 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
+import {
+  DataTable,
+  SortableColumnHeader,
+  TablePagination,
+  TableSearch,
+  type ColumnDef,
+} from "@/shared/components/ui";
+import { useTableSort } from "@/shared/hooks/useTableSort";import {
+  DEFAULT_TABLE_PAGE_SIZE,
+  MAX_TABLE_PAGE_SIZE,
+  TABLE_PAGE_SIZE_OPTIONS,
+} from "@/shared/constants/pagination";
+import { useDebouncedValue } from "@/shared/hooks/useDebouncedValue";
+import { API_ERROR_MESSAGES } from "@/shared/constants/apiMessages";
+import { showApiError } from "@/shared/utils/apiToast";
+import { listProjects } from "../services/projectApi";
+import { getProjectDisplayLabel } from "../utils/projectUtils";
+import { projectDetailPath } from "../utils/projectPaths";
+import type { Project } from "../types/project";
+import { ProjectSchedule } from "./ProjectSchedule";
 
-const PROJECTS = [
-  {
-    id: "13659",
-    name: "Geotechnical Investigation Report",
-    location: "Lot 1103 Darmain Drive Greenvale",
-  },
-  {
-    id: "13658",
-    name: "Geotechnical Investigation Report",
-    location: "Lot 1102 Darmain Drive Greenvale",
-  },
-  {
-    id: "13657",
-    name: "Geotechnical Investigation Report",
-    location: "Lot 1101 Darmain Drive Greenvale",
-  },
-  {
-    id: "13656",
-    name: "Geotechnical Investigation Report",
-    location: "Lot 1100 Darmain Drive Greenvale",
-  },
-] as const;
+const PROJECT_SECTION_GRID =
+  "minmax(180px, 1.1fr) minmax(200px, 1.4fr) minmax(220px, 1.5fr)";
 
 const TABS = [
   { id: "projects", label: "Projects" },
@@ -34,143 +35,233 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]["id"];
 
-function LocationIcon() {
+function getProjectSortValue(project: Project, field: string): string | number {
+  switch (field) {
+    case "projectNumber":
+      return project.projectNo;
+    case "name":
+      return project.name;
+    case "location":
+      return project.location;
+    default:
+      return "";
+  }
+}
+
+function ColumnHeader({
+  children,
+  field,
+  sortField,
+  sortOrder,
+  onSort,
+}: Readonly<{
+  children: ReactNode;
+  field: string;
+  sortField: string | null;
+  sortOrder: "asc" | "desc";
+  onSort: (field: string) => void;
+}>) {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M12 21s7-4.5 7-10a7 7 0 10-14 0c0 5.5 7 10 7 10z"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-      <circle cx="12" cy="11" r="2.5" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
+    <SortableColumnHeader
+      field={field}
+      activeField={sortField}
+      activeOrder={sortOrder}
+      onSort={onSort}
+    >
+      {children}
+    </SortableColumnHeader>
   );
 }
 
-function ChevronRightIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M5 12l5 5L19 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-export function ProjectsSection() {
-  const [activeTab, setActiveTab] = useState<TabId>("projects");
+export function ProjectsSection() {  const [activeTab, setActiveTab] = useState<TabId>("projects");
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebouncedValue(search.trim());
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [scheduleProjects, setScheduleProjects] = useState<Project[]>([]);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState<number>(DEFAULT_TABLE_PAGE_SIZE);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [scheduleLoading, setScheduleLoading] = useState(false);
+  const hasMounted = useRef(false);
+  const { sort, toggleSort, sortedData } = useTableSort(projects, getProjectSortValue);
 
-  const filteredProjects = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    if (!query) return PROJECTS;
+  const loadProjects = useCallback(
+    async (nextPage: number, nextPageSize: number, nextSearch = debouncedSearch) => {
+      setLoading(true);
+      try {
+        const result = await listProjects(nextPage, nextPageSize, nextSearch || undefined);
+        setProjects(result.data);
+        setTotal(result.total);
+        setPage(nextPage);
+        setPageSize(nextPageSize);
+      } catch (err) {
+        showApiError(err, API_ERROR_MESSAGES.LOAD_PROJECTS);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [debouncedSearch]
+  );
 
-    return PROJECTS.filter(
-      (project) =>
-        project.id.includes(query) ||
-        project.name.toLowerCase().includes(query) ||
-        project.location.toLowerCase().includes(query)
-    );
-  }, [search]);
+  const loadScheduleProjects = useCallback(async () => {
+    setScheduleLoading(true);
+    try {
+      const result = await listProjects(1, MAX_TABLE_PAGE_SIZE);
+      setScheduleProjects(result.data);
+    } catch (err) {
+      showApiError(err, API_ERROR_MESSAGES.LOAD_PROJECT_SCHEDULE);
+    } finally {
+      setScheduleLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      void loadProjects(1, DEFAULT_TABLE_PAGE_SIZE, "");
+      return;
+    }
+
+    void loadProjects(1, pageSize);
+  }, [debouncedSearch, loadProjects]);
+
+  useEffect(() => {
+    if (activeTab !== "schedule") return;
+    void loadScheduleProjects();
+  }, [activeTab, loadScheduleProjects]);
+
+  const emptyMessage = search.trim()
+    ? "No projects match your search."
+    : "No projects yet.";
+
+  const columns: ColumnDef<Project>[] = useMemo(
+    () => [
+      {
+        id: "projectNumber",
+        header: (
+          <ColumnHeader
+            field="projectNumber"
+            sortField={sort.field}
+            sortOrder={sort.order}
+            onSort={toggleSort}
+          >
+            Project Number
+          </ColumnHeader>
+        ),
+        cell: (project) => (
+          <Link href={projectDetailPath(project.id)} className="data-table__link">
+            {getProjectDisplayLabel(project)}
+          </Link>
+        ),
+      },
+      {
+        id: "name",
+        header: (
+          <ColumnHeader field="name" sortField={sort.field} sortOrder={sort.order} onSort={toggleSort}>
+            Project Name
+          </ColumnHeader>
+        ),
+        cell: (project) => <span className="data-table__text">{project.name}</span>,
+      },
+      {
+        id: "location",
+        header: (
+          <ColumnHeader
+            field="location"
+            sortField={sort.field}
+            sortOrder={sort.order}
+            onSort={toggleSort}
+          >
+            Location
+          </ColumnHeader>
+        ),
+        cell: (project) => (
+          <span className="data-table__text" title={project.location}>
+            {project.location}
+          </span>
+        ),
+      },
+    ],
+    [sort.field, sort.order, toggleSort]
+  );
+
+  const handlePageChange = useCallback(
+    (nextPage: number) => {
+      void loadProjects(nextPage, pageSize);
+    },
+    [loadProjects, pageSize]
+  );
+
+  const handlePageSizeChange = useCallback(
+    (nextPageSize: number) => {
+      void loadProjects(1, nextPageSize);
+    },
+    [loadProjects]
+  );
 
   return (
     <section className="dashboard-workspace">
       <Container fluid className="dashboard-workspace__container">
-        <div className="dashboard-workspace__layout">
-          <div className="dashboard-workspace__main">
-            <div className="dashboard-workspace__tabs" role="tablist" aria-label="Project views">
-              {TABS.map((tab) => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={activeTab === tab.id}
-                  className={`dashboard-workspace__tab${activeTab === tab.id ? " is-active" : ""}`}
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="dashboard-projects-card">
-              {activeTab === "projects" ? (
-                <>
-                  <div className="dashboard-projects-card__header">
-                    <h2 className="dashboard-projects-card__title">Projects</h2>
-                    <div className="dashboard-projects-card__actions">
-                      <span className="dashboard-projects-card__recent">Recently Viewed</span>
-                      <button type="button" className="dashboard-projects-card__filter-btn">
-                        <CheckIcon />
-                        All Projects
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="dashboard-projects-card__search">
-                    <input
-                      type="search"
-                      placeholder="Search projects..."
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                      aria-label="Search projects"
-                    />
-                  </div>
-
-                  <ul className="dashboard-projects-list">
-                    {filteredProjects.map((project) => (
-                      <li key={project.id}>
-                        <button type="button" className="dashboard-projects-list__item">
-                          <div className="dashboard-projects-list__content">
-                            <span className="dashboard-projects-list__name">
-                              {project.id}: {project.name}
-                            </span>
-                            <span className="dashboard-projects-list__location">
-                              <LocationIcon />
-                              {project.location}
-                            </span>
-                          </div>
-                          <ChevronRightIcon />
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              ) : (
-                <div className="dashboard-projects-card__placeholder">
-                  <h2 className="dashboard-projects-card__title">Project Schedule</h2>
-                  <p>Calendar view coming soon.</p>
-                </div>
-              )}
-            </div>
+        <div className="dashboard-workspace__panel">
+          <div className="dashboard-workspace__tabs" role="tablist" aria-label="Project views">
+            {TABS.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={activeTab === tab.id}
+                className={`dashboard-workspace__tab${activeTab === tab.id ? " is-active" : ""}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
 
-          <aside className="dashboard-workspace__sidebar">
-            <div className="dashboard-sidebar-card">
-              <h3 className="dashboard-sidebar-card__title">Status Activity</h3>
-              <p className="dashboard-sidebar-card__empty">No new notifications</p>
-            </div>
+          <div className="dashboard-projects-card asset-card--table">
+            {activeTab === "projects" ? (
+              <>
+                <div className="asset-card__toolbar">
+                  <div className="asset-card__filters">
+                    <TableSearch
+                      value={search}
+                      onChange={setSearch}
+                      placeholder="Search project number, project name, or location"
+                      ariaLabel="Search projects"
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
 
-            <div className="dashboard-sidebar-card dashboard-sidebar-card--knowledge">
-              <div className="dashboard-sidebar-card__icon" aria-hidden="true">
-                i
-              </div>
-              <h3 className="dashboard-sidebar-card__title">Knowledge Base</h3>
-              <p className="dashboard-sidebar-card__text">
-                Contact support to learn more about our products and get professional help
-              </p>
-              <Link href="/dashboard/knowledge-base" className="dashboard-sidebar-card__btn">
-                View Now
-              </Link>
-            </div>
-          </aside>
+                <div className="asset-card__table-wrap ui-scrollbar">
+                  <DataTable
+                    columns={columns}
+                    data={sortedData}
+                    getRowId={(project) => String(project.id)}
+                    gridTemplateColumns={PROJECT_SECTION_GRID}
+                    emptyMessage={
+                      loading
+                        ? "Loading projects…"
+                        : emptyMessage
+                    }
+                  />
+                </div>
+
+                <TablePagination
+                  page={page}
+                  pageSize={pageSize}
+                  total={total}
+                  pageSizeOptions={TABLE_PAGE_SIZE_OPTIONS}
+                  onPageChange={handlePageChange}
+                  onPageSizeChange={handlePageSizeChange}
+                  loading={loading}
+                />
+              </>
+            ) : (
+              <ProjectSchedule projects={scheduleProjects} loading={scheduleLoading} />
+            )}
+          </div>
         </div>
       </Container>
     </section>

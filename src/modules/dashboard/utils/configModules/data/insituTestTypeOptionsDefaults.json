@@ -1,0 +1,608 @@
+[
+  {
+    "id": "dcp",
+    "name": "DCP",
+    "active": true,
+    "graphic": "graphic_00.png",
+    "enableSegregatedGraphic": false,
+    "topGraphic": null,
+    "bottomGraphic": null,
+    "depthFrequencyEnabled": false,
+    "depthFrequency": null,
+    "enableSampleLogging": false,
+    "enableSubsurfaceLogging": false,
+    "defaultSampleTypeId": null,
+    "enableAutoSampleDescription": false,
+    "settings": {
+      "otherSettings": [
+        {
+          "name": "Intervals",
+          "description": "The intervals to use for the DCP Test",
+          "params": [
+            {
+              "name": null,
+              "active": true,
+              "interval": 43.75,
+              "value": null,
+              "metricName": "45mm Intervals",
+              "imperialName": "1.75in Intervals"
+            },
+            {
+              "name": null,
+              "active": true,
+              "interval": 50,
+              "value": null,
+              "metricName": "50mm Intervals",
+              "imperialName": "2in Intervals"
+            },
+            {
+              "name": null,
+              "active": true,
+              "interval": 100,
+              "value": null,
+              "metricName": "100mm Intervals",
+              "imperialName": "4in Intervals"
+            },
+            {
+              "name": null,
+              "active": true,
+              "interval": 150,
+              "value": null,
+              "metricName": "150mm Intervals",
+              "imperialName": "6in Intervals"
+            },
+            {
+              "name": null,
+              "active": true,
+              "interval": 300,
+              "value": null,
+              "metricName": "300mm Intervals",
+              "imperialName": "12in Intervals"
+            },
+            {
+              "name": "Blow Based Intervals",
+              "active": true,
+              "interval": null,
+              "value": null,
+              "metricName": null,
+              "imperialName": null
+            }
+          ]
+        },
+        {
+          "name": "DCP end depth",
+          "description": "Include the DCP end depth in the result",
+          "enabled": true
+        },
+        {
+          "name": "DCP start Depth",
+          "description": "Enable and Include the DCP start depth in the result",
+          "enabled": false,
+          "value": null
+        },
+        {
+          "name": "Enable Multiple DCP",
+          "description": "Enable Multiple DCP Tests per borehole",
+          "enabled": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "spt",
+    "name": "SPT",
+    "active": true,
+    "graphic": "graphic_00.png",
+    "enableSegregatedGraphic": false,
+    "topGraphic": null,
+    "bottomGraphic": null,
+    "depthFrequencyEnabled": false,
+    "depthFrequency": null,
+    "enableSampleLogging": false,
+    "enableSubsurfaceLogging": false,
+    "defaultSampleTypeId": null,
+    "enableAutoSampleDescription": false,
+    "settings": {
+      "otherSettings": [
+        {
+          "name": "Intervals",
+          "params": [
+            {
+              "name": "3 Intervals",
+              "active": true,
+              "interval": 3,
+              "value": null,
+              "metricName": null,
+              "imperialName": null
+            },
+            {
+              "name": "4 Intervals",
+              "active": true,
+              "interval": 4,
+              "value": null,
+              "metricName": null,
+              "imperialName": null
+            },
+            {
+              "name": "5 Intervals",
+              "active": true,
+              "interval": 5,
+              "value": null,
+              "metricName": null,
+              "imperialName": null
+            }
+          ],
+          "defaultInterval": null
+        },
+        {
+          "name": "Include SPT N Value text field",
+          "description": "Includes an additional text field for N-value, to allow text to be added without impacting the stored numerical result",
+          "enabled": true
+        },
+        {
+          "name": "SPT 6 Drives of 75mm",
+          "description": "The n value will be calculated as the blows from the last 4 drives",
+          "enabled": false
+        },
+        {
+          "name": "SPT N Value Correction",
+          "description": "If value is 0.6, n value = calculated n X 60%. eg if it was 10 it should now be 6.",
+          "enabled": false,
+          "value": 0.6
+        },
+        {
+          "name": "Always flag SPT Auto Sample",
+          "description": "The auto sample SPT option will be set to Yes, by default if this is turned on.",
+          "enabled": true
+        },
+        {
+          "name": "Hammer and Weights",
+          "enabled": false
+        },
+        {
+          "name": "N Value for Label override",
+          "description": "Once N reaches this value the label will update with the default text",
+          "value": 50
+        },
+        {
+          "name": "Default refusal SPT N Value label",
+          "description": "This will be the default label value incase of Refusal, e.g. 'Refusal' or '>50'",
+          "enabled": false,
+          "value": null
+        },
+        {
+          "name": "Predictive Consistency and Density",
+          "description": "Add test result values to qualitative Consistency and Density terms so Tablogs can preselect the correct Density/Consistency value when you add a Subsurface profile at a correlating depth.",
+          "enabled": false,
+          "density": [],
+          "consistency": []
+        },
+        {
+          "name": "Choose reason for 0 blows",
+          "description": "Allow distinguishing between WoH & WoR",
+          "enabled": false
+        },
+        {
+          "name": "SPT Recovery Calculation",
+          "description": "Turn SPT Recovery Auto Calculation Off/On in SPT Test.",
+          "enabled": true
+        },
+        {
+          "name": "N-Value Auto Calculation",
+          "description": "Enables N-Value Auto Calculation",
+          "enabled": true
+        },
+        {
+          "name": "N-Value Calculation Based on complete drives",
+          "description": "N-Value Only Auto Calculates when drive distance 2 and 3 are to full 6\" depth (or 150mm)",
+          "enabled": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "pp",
+    "name": "PP",
+    "active": true,
+    "graphic": "graphic_00.png",
+    "enableSegregatedGraphic": false,
+    "topGraphic": null,
+    "bottomGraphic": null,
+    "depthFrequencyEnabled": false,
+    "depthFrequency": null,
+    "enableSampleLogging": false,
+    "enableSubsurfaceLogging": false,
+    "defaultSampleTypeId": null,
+    "enableAutoSampleDescription": false,
+    "settings": {
+      "otherSettings": [
+        {
+          "name": "PP Correction Factor",
+          "description": "If the value is 0.6, PP reading is calculated as 60% of the raw value. For example, if the raw PP reading value was 10, the new PP reading value would be 6.",
+          "enabled": false,
+          "value": null
+        }
+      ],
+      "unitSettings": [
+        {
+          "unit": null,
+          "column": "raw_pp_reading_unit",
+          "unitType": null,
+          "dataField": "pp_reading_raw",
+          "displayName": "Raw PP-Reading"
+        },
+        {
+          "unit": null,
+          "column": "pp_reading_unit",
+          "unitType": null,
+          "dataField": "pp_reading",
+          "displayName": "PP-Reading"
+        }
+      ],
+      "order": 3
+    }
+  },
+  {
+    "id": "ucs",
+    "name": "UCS",
+    "active": true,
+    "graphic": "graphic_00.png",
+    "enableSegregatedGraphic": false,
+    "topGraphic": null,
+    "bottomGraphic": null,
+    "depthFrequencyEnabled": false,
+    "depthFrequency": null,
+    "enableSampleLogging": false,
+    "enableSubsurfaceLogging": false,
+    "defaultSampleTypeId": null,
+    "enableAutoSampleDescription": false,
+    "settings": {
+      "otherSettings": [],
+      "unitSettings": [
+        {
+          "unit": null,
+          "column": "ucs_reading_unit",
+          "unitType": null,
+          "dataField": "ucs_reading",
+          "displayName": "UCS-Reading"
+        }
+      ],
+      "order": 10
+    }
+  },
+  {
+    "id": "psp",
+    "name": "PSP",
+    "active": true,
+    "graphic": "graphic_00.png",
+    "enableSegregatedGraphic": false,
+    "topGraphic": null,
+    "bottomGraphic": null,
+    "depthFrequencyEnabled": false,
+    "depthFrequency": null,
+    "enableSampleLogging": false,
+    "enableSubsurfaceLogging": false,
+    "defaultSampleTypeId": null,
+    "enableAutoSampleDescription": false,
+    "settings": {
+      "otherSettings": [
+        {
+          "name": "Intervals",
+          "description": "The intervals to use for the PSP Test",
+          "params": [
+            {
+              "name": null,
+              "active": true,
+              "interval": 43.75,
+              "value": null,
+              "metricName": "45mm Intervals",
+              "imperialName": "1.75in Intervals"
+            },
+            {
+              "name": null,
+              "active": true,
+              "interval": 50,
+              "value": null,
+              "metricName": "50mm Intervals",
+              "imperialName": "2in Intervals"
+            },
+            {
+              "name": null,
+              "active": true,
+              "interval": 100,
+              "value": null,
+              "metricName": "100mm Intervals",
+              "imperialName": "4in Intervals"
+            },
+            {
+              "name": null,
+              "active": true,
+              "interval": 150,
+              "value": null,
+              "metricName": "150mm Intervals",
+              "imperialName": "6in Intervals"
+            },
+            {
+              "name": null,
+              "active": true,
+              "interval": 300,
+              "value": null,
+              "metricName": "300mm Intervals",
+              "imperialName": "12in Intervals"
+            },
+            {
+              "name": "Blow Based Intervals",
+              "active": true,
+              "interval": null,
+              "value": null,
+              "metricName": null,
+              "imperialName": null
+            }
+          ]
+        },
+        {
+          "name": "PSP end depth",
+          "description": "Include the PSP end depth in the result",
+          "enabled": false
+        },
+        {
+          "name": "PSP start Depth",
+          "description": "Enable and Include the PSP start depth in the result",
+          "enabled": false,
+          "value": null
+        },
+        {
+          "name": "Enable Multiple PSP",
+          "description": "Enable Multiple PSP Tests per borehole",
+          "enabled": false
+        }
+      ],
+      "order": 7
+    }
+  },
+  {
+    "id": "ass",
+    "name": "ASS",
+    "active": true,
+    "graphic": "graphic_00.png",
+    "enableSegregatedGraphic": false,
+    "topGraphic": null,
+    "bottomGraphic": null,
+    "depthFrequencyEnabled": false,
+    "depthFrequency": null,
+    "enableSampleLogging": false,
+    "enableSubsurfaceLogging": false,
+    "defaultSampleTypeId": null,
+    "enableAutoSampleDescription": false,
+    "settings": {
+      "otherSettings": [],
+      "order": 5
+    }
+  },
+  {
+    "id": "cpt",
+    "name": "CPT",
+    "active": true,
+    "graphic": "graphic_00.png",
+    "enableSegregatedGraphic": false,
+    "topGraphic": null,
+    "bottomGraphic": null,
+    "depthFrequencyEnabled": false,
+    "depthFrequency": null,
+    "enableSampleLogging": false,
+    "enableSubsurfaceLogging": false,
+    "defaultSampleTypeId": null,
+    "enableAutoSampleDescription": false,
+    "settings": {
+      "otherSettings": [],
+      "unitSettings": [
+        {
+          "unit": null,
+          "column": "cpt_data_unit",
+          "unitType": null,
+          "dataField": "cpt_data",
+          "displayName": "Result"
+        }
+      ],
+      "order": 8
+    }
+  },
+  {
+    "id": "dpsh",
+    "name": "DPSH",
+    "active": true,
+    "graphic": "graphic_00.png",
+    "enableSegregatedGraphic": false,
+    "topGraphic": null,
+    "bottomGraphic": null,
+    "depthFrequencyEnabled": false,
+    "depthFrequency": null,
+    "enableSampleLogging": false,
+    "enableSubsurfaceLogging": false,
+    "defaultSampleTypeId": null,
+    "enableAutoSampleDescription": false,
+    "settings": {
+      "otherSettings": [
+        {
+          "name": "Intervals",
+          "description": "The intervals to use for the DPSH Test",
+          "params": [
+            {
+              "name": null,
+              "active": true,
+              "interval": 50,
+              "value": null,
+              "metricName": "50mm Intervals",
+              "imperialName": "2in Intervals"
+            },
+            {
+              "name": null,
+              "active": true,
+              "interval": 100,
+              "value": null,
+              "metricName": "100mm Intervals",
+              "imperialName": "4in Intervals"
+            },
+            {
+              "name": null,
+              "active": true,
+              "interval": 150,
+              "value": null,
+              "metricName": "150mm Intervals",
+              "imperialName": "6in Intervals"
+            },
+            {
+              "name": null,
+              "active": true,
+              "interval": 300,
+              "value": null,
+              "metricName": "300mm Intervals",
+              "imperialName": "12in Intervals"
+            },
+            {
+              "name": null,
+              "active": true,
+              "interval": 450,
+              "value": null,
+              "metricName": null,
+              "imperialName": "18in Intervals"
+            },
+            {
+              "name": "Blow Based Intervals",
+              "active": true,
+              "interval": null,
+              "value": null,
+              "metricName": null,
+              "imperialName": null
+            }
+          ]
+        },
+        {
+          "name": "DPSH end depth",
+          "description": "Incluide the DPSH end depth in the result",
+          "enabled": true
+        }
+      ],
+      "order": 9
+    }
+  },
+  {
+    "id": "sv",
+    "name": "SV",
+    "active": true,
+    "graphic": "graphic_00.png",
+    "enableSegregatedGraphic": false,
+    "topGraphic": null,
+    "bottomGraphic": null,
+    "depthFrequencyEnabled": false,
+    "depthFrequency": null,
+    "enableSampleLogging": false,
+    "enableSubsurfaceLogging": false,
+    "defaultSampleTypeId": null,
+    "enableAutoSampleDescription": false,
+    "settings": {
+      "otherSettings": [
+        {
+          "name": "SV Correction Factor",
+          "description": "If the value is 0.6, both the peak and residual are calculated as 60% of the raw value. For example, if the raw peak value was 10, the new peak value would be 6.",
+          "enabled": false,
+          "value": 1
+        }
+      ],
+      "unitSettings": [
+        {
+          "unit": null,
+          "column": "raw_sv_peak_unit",
+          "unitType": null,
+          "dataField": "raw_sv_peak",
+          "displayName": "Raw Peak"
+        },
+        {
+          "unit": null,
+          "column": "raw_sv_residual_unit",
+          "unitType": null,
+          "dataField": "raw_sv_residual",
+          "displayName": "Raw Residual"
+        },
+        {
+          "unit": null,
+          "column": "sv_peak_unit",
+          "unitType": null,
+          "dataField": "sv_peak",
+          "displayName": "Peak"
+        },
+        {
+          "unit": null,
+          "column": "sv_residual_unit",
+          "unitType": null,
+          "dataField": "sv_residual",
+          "displayName": "Residual"
+        }
+      ],
+      "order": 4
+    }
+  },
+  {
+    "id": "pid",
+    "name": "PID",
+    "active": true,
+    "graphic": "graphic_00.png",
+    "enableSegregatedGraphic": false,
+    "topGraphic": null,
+    "bottomGraphic": null,
+    "depthFrequencyEnabled": false,
+    "depthFrequency": null,
+    "enableSampleLogging": false,
+    "enableSubsurfaceLogging": false,
+    "defaultSampleTypeId": null,
+    "enableAutoSampleDescription": false,
+    "settings": {
+      "otherSettings": [],
+      "unitSettings": [
+        {
+          "unit": null,
+          "column": "ppm_unit",
+          "unitType": null,
+          "dataField": "other_comment",
+          "displayName": "PPM"
+        }
+      ],
+      "order": 6
+    }
+  },
+  {
+    "id": "ec",
+    "name": "EC",
+    "active": true,
+    "graphic": "graphic_00.png",
+    "enableSegregatedGraphic": false,
+    "topGraphic": null,
+    "bottomGraphic": null,
+    "depthFrequencyEnabled": false,
+    "depthFrequency": null,
+    "enableSampleLogging": false,
+    "enableSubsurfaceLogging": false,
+    "defaultSampleTypeId": null,
+    "enableAutoSampleDescription": false,
+    "settings": {
+      "otherSettings": [
+        {
+          "name": "Rename Comment Field",
+          "description": "Change the field name of 'Comment' for Generic Tests in Insitu Test.",
+          "enabled": false,
+          "value": null
+        }
+      ],
+      "unitSettings": [
+        {
+          "unit": null,
+          "column": "generic_value_unit",
+          "unitType": null,
+          "dataField": "other_comment",
+          "displayName": "Value"
+        }
+      ],
+      "order": 11
+    }
+  }
+]

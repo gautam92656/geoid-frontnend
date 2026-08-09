@@ -6,7 +6,8 @@ import { useState } from "react";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
 import { Label } from "@/shared/components/ui/Label";
-import { ApiError } from "@/shared/services/apiClient";
+import { API_ERROR_MESSAGES } from "@/shared/constants/apiMessages";
+import { getApiErrorMessage, showApiError, showApiSuccess } from "@/shared/utils/apiToast";
 import { registerUser } from "../services/authApi";
 
 const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
@@ -75,20 +76,21 @@ export function RegisterForm() {
 
         setSubmitting(true);
         try {
-            const result = await registerUser({
+            const { data: result, message } = await registerUser({
                 firstName: firstName.trim(),
                 lastName: lastName.trim(),
                 email: email.trim(),
                 password,
                 confirmPassword,
-                role: "COMMUNITY_USER",
                 termsAndConditions: agreed,
             });
+            showApiSuccess(message ?? result.message, "Account created. Please verify your email.");
             router.push(`/verify-account?email=${encodeURIComponent(result.email)}`);
         } catch (err) {
             setErrors({
-                form: err instanceof ApiError ? err.message : "Something went wrong. Please try again.",
+                form: getApiErrorMessage(err, API_ERROR_MESSAGES.REGISTER),
             });
+            showApiError(err, API_ERROR_MESSAGES.REGISTER);
         } finally {
             setSubmitting(false);
         }

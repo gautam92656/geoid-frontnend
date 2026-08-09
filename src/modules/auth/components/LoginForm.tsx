@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useAppDispatch } from "@/store/hooks";
 import { login } from "@/store/slices/authSlice";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
 import { Label } from "@/shared/components/ui/Label";
-import { ApiError } from "@/shared/services/apiClient";
+import { API_ERROR_MESSAGES } from "@/shared/constants/apiMessages";
+import { showApiError, showApiSuccess } from "@/shared/utils/apiToast";
 import { isUnverifiedLoginResponse, loginUser } from "../services/authApi";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -56,9 +56,10 @@ export function LoginForm() {
 
         setIsSubmitting(true);
         try {
-            const result = await loginUser({ email: email.trim(), password });
+            const { data: result, message } = await loginUser({ email: email.trim(), password });
 
             if (isUnverifiedLoginResponse(result)) {
+                showApiSuccess(message ?? result.message, "Verification code sent.");
                 router.push(`/check-email?email=${encodeURIComponent(result.email)}`);
                 return;
             }
@@ -66,7 +67,7 @@ export function LoginForm() {
             dispatch(login({ token: result.token, user: result.user }));
             router.push("/dashboard");
         } catch (err) {
-            toast.error(err instanceof ApiError ? err.message : "Unable to sign in. Please try again.");
+            showApiError(err, API_ERROR_MESSAGES.SIGN_IN);
         } finally {
             setIsSubmitting(false);
         }

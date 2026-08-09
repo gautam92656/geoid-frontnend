@@ -8,9 +8,15 @@ export type AuthUser = {
   firstName: string;
   lastName: string;
   email: string;
-  role: string;
+  phoneCode: string | null;
+  phoneNumber: string | null;
+  termsAndConditions: boolean;
   isEmailVerified: boolean;
-  isOnboardingComplete: boolean;
+  role: "user" | "super_admin";
+  companyName: string | null;
+  companyLogoUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type LoginSuccessResponse = {
@@ -26,15 +32,12 @@ export type LoginUnverifiedResponse = {
 
 export type LoginResponse = LoginSuccessResponse | LoginUnverifiedResponse;
 
-export type UserRole = "PENDANT_OWNER" | "COMMUNITY_USER" | "BOTH";
-
 export type RegisterPayload = {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
-  role: UserRole;
   termsAndConditions: boolean;
 };
 
@@ -56,11 +59,27 @@ export type ForgotPasswordResponse = {
   email: string;
 };
 
-export type VerifyResetTokenResponse = {
-  message: string;
-  valid: boolean;
-};
-
 export type ResetPasswordResponse = {
   message: string;
+  email: string;
+};
+
+export type ChangePasswordPayload = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
+export type ChangePasswordResponse = {
+  message: string;
+};
+
+export type ResendOtpPayload = {
+  email: string;
+  otpType: "register" | "forgot_password";
+};
+
+export type ResendOtpResponse = {
+  message: string;
+  email: string;
 };

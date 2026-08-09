@@ -1,0 +1,33 @@
+/* ─── Shared scrollbar utility (modal style) ─── */
+
+:root {
+  --ui-scrollbar-size: 8px;
+  --ui-scrollbar-track: #f3f4f6;
+  --ui-scrollbar-thumb: #d1d5db;
+  --ui-scrollbar-thumb-hover: #9ca3af;
+}
+
+.ui-scrollbar {
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ui-scrollbar-thumb) var(--ui-scrollbar-track);
+}
+
+.ui-scrollbar::-webkit-scrollbar {
+  width: var(--ui-scrollbar-size);
+  height: var(--ui-scrollbar-size);
+}
+
+.ui-scrollbar::-webkit-scrollbar-track {
+  background: var(--ui-scrollbar-track);
+  border-radius: 999px;
+}
+
+.ui-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--ui-scrollbar-thumb);
+  border-radius: 999px;
+}
+
+.ui-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--ui-scrollbar-thumb-hover);
+}

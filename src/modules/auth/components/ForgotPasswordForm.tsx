@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
 import { Label } from "@/shared/components/ui/Label";
-import { ApiError } from "@/shared/services/apiClient";
+import { API_ERROR_MESSAGES } from "@/shared/constants/apiMessages";
+import { showApiError, showApiSuccess } from "@/shared/utils/apiToast";
 import { forgotPassword } from "../services/authApi";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -45,10 +45,11 @@ export function ForgotPasswordForm() {
         setIsSubmitting(true);
         try {
             const trimmedEmail = email.trim();
-            await forgotPassword(trimmedEmail);
-            router.push(`/check-email?email=${encodeURIComponent(trimmedEmail)}`);
+            const { data: result, message } = await forgotPassword(trimmedEmail);
+            showApiSuccess(message ?? result.message, "Reset link sent.");
+            router.push(`/reset-password?email=${encodeURIComponent(trimmedEmail)}`);
         } catch (err) {
-            toast.error(err instanceof ApiError ? err.message : "Unable to send reset link. Please try again.");
+            showApiError(err, API_ERROR_MESSAGES.FORGOT_PASSWORD);
         } finally {
             setIsSubmitting(false);
         }
