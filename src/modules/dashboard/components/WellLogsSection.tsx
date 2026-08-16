@@ -26,9 +26,9 @@ type WellLogsSectionProps = Readonly<{
 }>;
 
 export function WellLogsSection({
-  projectId: _projectId,
-  logId: _logId,
-  logConfigurationId: _logConfigurationId,
+  projectId,
+  logId,
+  logConfigurationId,
 }: WellLogsSectionProps) {
   const [activeTab, setActiveTab] = useState<WellLogTabId>("well-logs");
 
@@ -62,17 +62,41 @@ export function WellLogsSection({
         aria-label={activeLabel}
       >
         {activeTab === "well-logs" ? (
-          <WellLogsList />
+          <WellLogsList
+            projectId={projectId}
+            logId={logId}
+            logConfigurationId={logConfigurationId}
+          />
         ) : activeTab === "well-covers" ? (
-          <WellCoversList />
+          <WellCoversList
+            projectId={projectId}
+            logId={logId}
+            logConfigurationId={logConfigurationId}
+          />
         ) : activeTab === "well-probes" ? (
-          <WellProbesList />
+          <WellProbesList
+            projectId={projectId}
+            logId={logId}
+            logConfigurationId={logConfigurationId}
+          />
         ) : activeTab === "well-backfills" ? (
-          <WellBackfillsList />
+          <WellBackfillsList
+            projectId={projectId}
+            logId={logId}
+            logConfigurationId={logConfigurationId}
+          />
         ) : activeTab === "well-casings" ? (
-          <WellCasingsList />
+          <WellCasingsList
+            projectId={projectId}
+            logId={logId}
+            logConfigurationId={logConfigurationId}
+          />
         ) : (
-          <WellCasingTopsList />
+          <WellCasingTopsList
+            projectId={projectId}
+            logId={logId}
+            logConfigurationId={logConfigurationId}
+          />
         )}
       </div>
     </section>

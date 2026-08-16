@@ -559,7 +559,7 @@ export function ManageCoreDefectTypesModal({
                           onChange={(event) => setGraphicFilter(event.target.value)}
                         />
                         <span
-                          className="manage-origins-modal__graphic-preview"
+                          className="manage-origins-modal__graphic-preview manage-origins-modal__graphic-preview--zoomed"
                           style={
                             selectedGraphicUrl
                               ? { backgroundImage: `url("${selectedGraphicUrl}")` }
@@ -608,7 +608,7 @@ export function ManageCoreDefectTypesModal({
                               .filter(Boolean)
                               .join(" ")}
                             disabled={submitting}
-                            title={`${graphic.label} (${graphic.code})`}
+                            title={graphic.label}
                             onClick={() =>
                               patchDraft({
                                 graphic: isNoGraphic ? "" : graphic.filename,
@@ -619,7 +619,7 @@ export function ManageCoreDefectTypesModal({
                               {graphic.label}
                             </span>
                             <span
-                              className="manage-origins-modal__graphic-option-image"
+                              className="manage-origins-modal__graphic-option-image manage-origins-modal__graphic-option-image--zoomed"
                               style={{ backgroundImage: `url("${url}")` }}
                             />
                           </button>

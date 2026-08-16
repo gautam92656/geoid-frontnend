@@ -46,6 +46,7 @@ type DraftForm = {
   tablogsAlias: string;
   graphic: string;
   recordDepthTo: boolean;
+  allowNegativeDepth: boolean;
 };
 
 const NEW_TYPE_LABEL = "New Well Probe Type";
@@ -57,6 +58,7 @@ function optionToDraft(option: WellProbeTypeOption | null): DraftForm {
       tablogsAlias: "",
       graphic: DEFAULT_WELL_PROBE_GRAPHIC,
       recordDepthTo: true,
+      allowNegativeDepth: false,
     };
   }
 
@@ -65,6 +67,7 @@ function optionToDraft(option: WellProbeTypeOption | null): DraftForm {
     tablogsAlias: option.tablogsAlias ?? "",
     graphic: option.graphic ?? DEFAULT_WELL_PROBE_GRAPHIC,
     recordDepthTo: Boolean(option.recordDepthTo),
+    allowNegativeDepth: Boolean(option.allowNegativeDepth),
   };
 }
 
@@ -75,6 +78,7 @@ function draftToOption(draft: DraftForm, id: string): WellProbeTypeOption {
     tablogsAlias: draft.tablogsAlias.trim() || null,
     graphic: draft.graphic.trim() || DEFAULT_WELL_PROBE_GRAPHIC,
     recordDepthTo: draft.recordDepthTo,
+    allowNegativeDepth: draft.allowNegativeDepth,
   });
 }
 
@@ -652,6 +656,21 @@ export function ManageWellProbeTypesModal({
                         />
                         <span>Record depth to</span>
                       </label>
+                      <label
+                        className="manage-insitu-modal__toggle-inline"
+                        htmlFor={`${formId}-negative-depth`}
+                      >
+                        <Toggle
+                          id={`${formId}-negative-depth`}
+                          checked={draft.allowNegativeDepth}
+                          disabled={submitting}
+                          onChange={(checked) => patchDraft({ allowNegativeDepth: checked })}
+                        />
+                        <span>Allow negative depth</span>
+                      </label>
+                      <p className="manage-insitu-modal__hint">
+                        Negative depths allow you to display well probes above the ground
+                      </p>
                     </div>
 
                     <div className="manage-well-probe-modal__graphic-block">

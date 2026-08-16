@@ -136,6 +136,14 @@ function DragHandleIcon() {
   );
 }
 
+function HelpIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-2h2v2zm1.07-7.75-.9.92A1.99 1.99 0 0 0 12 12h-1v-1c0-.55.22-1.05.59-1.41l1.24-1.26A1 1 0 0 0 13 7a1 1 0 1 0-2 0H9a3 3 0 1 1 5.07 2.25z" />
+    </svg>
+  );
+}
+
 export function ManageDrillingTypesModal({
   open,
   options,
@@ -710,47 +718,75 @@ export function ManageDrillingTypesModal({
                       <p className="manage-insitu-modal__error">{graphicsError}</p>
                     ) : null}
 
-                    <div className="manage-insitu-modal__settings">
-                      <label
-                        className="manage-insitu-modal__toggle-inline"
-                        htmlFor={`${formId}-recovery`}
-                      >
-                        <Toggle
-                          id={`${formId}-recovery`}
-                          checked={draft.enableRecoveryField}
-                          disabled={submitting}
-                          onChange={(checked) => patchDraft({ enableRecoveryField: checked })}
-                        />
-                        <span>Enable Recovery Field</span>
-                      </label>
+                    <div className="manage-insitu-modal__section manage-drilling-modal__field-options">
+                      <div className="manage-insitu-modal__section-head">
+                        <h4 className="manage-insitu-modal__section-title">Field options</h4>
+                        <p className="manage-insitu-modal__section-desc">
+                          Control which optional fields appear on the Drilling Method form when this
+                          type is selected.
+                        </p>
+                      </div>
 
-                      <label
-                        className="manage-insitu-modal__toggle-inline"
-                        htmlFor={`${formId}-windowed`}
-                      >
-                        <Toggle
-                          id={`${formId}-windowed`}
-                          checked={draft.enableWindowedWindowless}
-                          disabled={submitting}
-                          onChange={(checked) =>
-                            patchDraft({ enableWindowedWindowless: checked })
-                          }
-                        />
-                        <span>Enable Windowed / Windowless</span>
-                      </label>
+                      <div className="manage-drilling-modal__toggles">
+                        <label
+                          className="manage-insitu-modal__toggle-inline"
+                          htmlFor={`${formId}-recovery`}
+                        >
+                          <Toggle
+                            id={`${formId}-recovery`}
+                            checked={draft.enableRecoveryField}
+                            disabled={submitting}
+                            onChange={(checked) => patchDraft({ enableRecoveryField: checked })}
+                          />
+                          <span>Enable Recovery Field</span>
+                          <span
+                            className="manage-insitu-modal__help"
+                            title="Shows the Recovery (m) input on the log drilling method form."
+                          >
+                            <HelpIcon />
+                          </span>
+                        </label>
 
-                      <label
-                        className="manage-insitu-modal__toggle-inline"
-                        htmlFor={`${formId}-water`}
-                      >
-                        <Toggle
-                          id={`${formId}-water`}
-                          checked={draft.waterAdded}
-                          disabled={submitting}
-                          onChange={(checked) => patchDraft({ waterAdded: checked })}
-                        />
-                        <span>Water Added</span>
-                      </label>
+                        <label
+                          className="manage-insitu-modal__toggle-inline"
+                          htmlFor={`${formId}-windowed`}
+                        >
+                          <Toggle
+                            id={`${formId}-windowed`}
+                            checked={draft.enableWindowedWindowless}
+                            disabled={submitting}
+                            onChange={(checked) =>
+                              patchDraft({ enableWindowedWindowless: checked })
+                            }
+                          />
+                          <span>Enable Windowed / Windowless</span>
+                          <span
+                            className="manage-insitu-modal__help"
+                            title="Shows the Windowed / Windowless select on the log drilling method form."
+                          >
+                            <HelpIcon />
+                          </span>
+                        </label>
+
+                        <label
+                          className="manage-insitu-modal__toggle-inline"
+                          htmlFor={`${formId}-water`}
+                        >
+                          <Toggle
+                            id={`${formId}-water`}
+                            checked={draft.waterAdded}
+                            disabled={submitting}
+                            onChange={(checked) => patchDraft({ waterAdded: checked })}
+                          />
+                          <span>Enable Water Added</span>
+                          <span
+                            className="manage-insitu-modal__help"
+                            title="Shows the Water Added (L) input on the log drilling method form."
+                          >
+                            <HelpIcon />
+                          </span>
+                        </label>
+                      </div>
                     </div>
 
                     {isEditing ? (

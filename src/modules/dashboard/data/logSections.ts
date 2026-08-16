@@ -7,7 +7,7 @@ export const LOG_SECTIONS = [
   { id: "drilling-observations", label: "Drilling Observations" },
   { id: "water-observations", label: "Water Observations" },
   { id: "well-logs", label: "Well Logs" },
-  { id: "photos", label: "Log Photos" },
+  // { id: "photos", label: "Log Photos" },
   { id: "samples", label: "Samples" },
   { id: "lab-tests", label: "Lab Tests" },
   { id: "core-logging", label: "Core Logging" },

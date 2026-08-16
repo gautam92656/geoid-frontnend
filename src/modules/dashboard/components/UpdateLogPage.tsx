@@ -42,8 +42,12 @@ import { LogReportSection } from "./LogReportSection";
 import { SubsurfaceSection } from "./SubsurfaceSection";
 import { InsituTestsSection } from "./InsituTestsSection";
 import { RemarksSection } from "./RemarksSection";
+import { SamplesSection } from "./SamplesSection";
 import { DrillingObservationsSection } from "./DrillingObservationsSection";
 import { WellLogsSection } from "./WellLogsSection";
+import { WaterObservationsSection } from "./WaterObservationsSection";
+import { CoreLoggingSection } from "./CoreLoggingSection";
+import { LogLabTestsSection } from "./LogLabTestsSection";
 import { ProjectSidebar, type ProjectSidebarSectionId } from "./ProjectSidebar";
 import { useLogReportPreviewState } from "../hooks/useLogReportPreviewState";
 import { listLogSubsurfaces } from "../services/subsurfaceApi";
@@ -784,6 +788,12 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
                     logId={log.id}
                     logConfigurationId={form.logConfigId}
                   />
+                ) : activeSection === "samples" ? (
+                  <SamplesSection
+                    projectId={project.id}
+                    logId={log.id}
+                    logConfigurationId={form.logConfigId}
+                  />
                 ) : activeSection === "drilling-observations" ? (
                   <DrillingObservationsSection
                     projectId={project.id}
@@ -792,6 +802,24 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
                   />
                 ) : activeSection === "well-logs" ? (
                   <WellLogsSection
+                    projectId={project.id}
+                    logId={log.id}
+                    logConfigurationId={form.logConfigId}
+                  />
+                ) : activeSection === "water-observations" ? (
+                  <WaterObservationsSection
+                    projectId={project.id}
+                    logId={log.id}
+                    logConfigurationId={form.logConfigId}
+                  />
+                ) : activeSection === "core-logging" ? (
+                  <CoreLoggingSection
+                    projectId={project.id}
+                    logId={log.id}
+                    logConfigurationId={form.logConfigId}
+                  />
+                ) : activeSection === "lab-tests" ? (
+                  <LogLabTestsSection
                     projectId={project.id}
                     logId={log.id}
                     logConfigurationId={form.logConfigId}

@@ -348,29 +348,41 @@ function validateDraft(
 function buildPenetrationPayloads(
   selectedType: InsituTestTypeOption,
   draft: DraftState,
-  mode: "add" | "edit",
+  _mode: "add" | "edit",
   intervalLabel: string
 ): InsituTestFormSubmitPayload[] {
-  const rows =
-    mode === "edit" ? draft.rows : draft.rows.filter((row) => row.value.trim());
-  const effectiveRows = rows.length > 0 ? rows : draft.rows.slice(0, 1);
+  void _mode;
+  if (draft.rows.length === 0) return [];
 
-  return effectiveRows.map((row) => ({
-    depthFrom: mmToMeters(row.depthFromMm) || "0",
-    depthTo: mmToMeters(row.depthToMm),
-    testTypeId: selectedType.id,
-    testTypeName: selectedType.name,
-    results: row.value.trim(),
-    comments: draft.comments.trim(),
-    resultValues: {
-      interval: draft.interval,
-      intervalLabel,
-      depthFromMm: row.depthFromMm,
-      depthToMm: row.depthToMm,
-      blowCount: row.value.trim(),
-      value: row.value.trim(),
+  const rows = draft.rows;
+  const first = rows[0];
+  const last = rows[rows.length - 1] ?? first;
+  const results = rows.map((row) => row.value.trim()).join(", ");
+
+  return [
+    {
+      depthFrom: mmToMeters(first.depthFromMm) || "0",
+      depthTo: mmToMeters(last.depthToMm),
+      testTypeId: selectedType.id,
+      testTypeName: selectedType.name,
+      results,
+      comments: draft.comments.trim(),
+      resultValues: {
+        interval: draft.interval,
+        intervalLabel,
+        rows: rows.map((row) => ({
+          id: row.id,
+          depthFromMm: row.depthFromMm,
+          depthToMm: row.depthToMm,
+          value: row.value.trim(),
+        })),
+        depthFromMm: first.depthFromMm,
+        depthToMm: last.depthToMm,
+        blowCount: results,
+        value: results,
+      },
     },
-  }));
+  ];
 }
 
 export function EditInsituTestModal({
@@ -647,7 +659,6 @@ export function EditInsituTestModal({
         intervalOptions.find((entry) => entry.value === draft.interval)?.label ??
         draft.interval;
       payloads = buildPenetrationPayloads(selectedType, draft, mode, intervalLabel);
-      if (mode === "edit") payloads = payloads.slice(0, 1);
     } else if (descriptor.kind === "spt") {
       const intervalLabel =
         intervalOptions.find((entry) => entry.value === draft.interval)?.label ??

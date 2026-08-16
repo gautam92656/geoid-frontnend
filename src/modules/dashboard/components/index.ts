@@ -15,6 +15,8 @@ export { ManageProjectDetailsFieldsModal } from "./ManageProjectDetailsFieldsMod
 export { EquipmentTypeField } from "./EquipmentTypeField";
 export { AddEquipmentModal } from "./AddEquipmentModal";
 export { AddLogModal } from "./AddLogModal";
+export { CreateLabTestRequestModal } from "./CreateLabTestRequestModal";
+export { LabTestsSection } from "./LabTestsSection";
 export { ProjectDetailsForm } from "./ProjectDetailsForm";
 export { ProjectOverviewSections } from "./ProjectOverviewSections";
 export { ProjectSidebar } from "./ProjectSidebar";

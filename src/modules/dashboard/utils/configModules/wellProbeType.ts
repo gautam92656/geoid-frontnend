@@ -17,6 +17,8 @@ export type WellProbeTypeOption = ModuleNamedOption & {
   graphic?: string | null;
   /** When true, record depth-to for this probe/instrument type. */
   recordDepthTo?: boolean;
+  /** When true, well probes may use depths above ground (negative). */
+  allowNegativeDepth?: boolean;
 };
 
 export const DEFAULT_WELL_PROBE_GRAPHIC = "probe_graphic_01.png";
@@ -42,6 +44,7 @@ export const DEFAULT_WELL_PROBE_TYPE_OPTIONS: WellProbeTypeOption[] = [
     tablogsAlias: "soil-vapour",
     graphic: DEFAULT_WELL_PROBE_GRAPHIC,
     recordDepthTo: true,
+    allowNegativeDepth: false,
   },
 ];
 
@@ -131,6 +134,7 @@ export function createBlankWellProbeTypeOption(
     tablogsAlias: partial?.tablogsAlias ?? null,
     graphic: partial?.graphic ?? DEFAULT_WELL_PROBE_GRAPHIC,
     recordDepthTo: partial?.recordDepthTo ?? true,
+    allowNegativeDepth: Boolean(partial?.allowNegativeDepth),
   };
 }
 
@@ -172,6 +176,10 @@ export function parseWellProbeTypeOption(
       : DEFAULT_WELL_PROBE_GRAPHIC,
     recordDepthTo:
       recordDepthRaw === undefined ? true : asBool(recordDepthRaw, true),
+    allowNegativeDepth: asBool(
+      value.allowNegativeDepth ?? value.allow_negative_depth ?? value.negativeDepth,
+      false
+    ),
   });
 }
 
@@ -209,6 +217,7 @@ export function toWellProbeTypeModuleNamedOption(option: WellProbeTypeOption): M
     tablogsAlias: option.tablogsAlias ?? null,
     graphic: option.graphic ?? null,
     recordDepthTo: Boolean(option.recordDepthTo),
+    allowNegativeDepth: Boolean(option.allowNegativeDepth),
   };
 }
 

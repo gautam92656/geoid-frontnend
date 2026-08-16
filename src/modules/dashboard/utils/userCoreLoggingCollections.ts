@@ -19,16 +19,44 @@ import {
   toInfillMaterialModuleNamedOption,
   type InfillMaterialOption,
 } from "./configModules/infillMaterial";
+import {
+  parseSurfaceShapeOptions,
+  toSurfaceShapeModuleNamedOption,
+  type SurfaceShapeOption,
+} from "./configModules/surfaceShape";
+import {
+  parseSurfaceRoughnessOptions,
+  toSurfaceRoughnessModuleNamedOption,
+  type SurfaceRoughnessOption,
+} from "./configModules/surfaceRoughness";
+import {
+  parseDefectOpennessOptions,
+  toDefectOpennessModuleNamedOption,
+  type DefectOpennessOption,
+} from "./configModules/defectOpenness";
+import {
+  parseDefectCoatingOptions,
+  toDefectCoatingModuleNamedOption,
+  type DefectCoatingOption,
+} from "./configModules/defectCoating";
 import { CORE_LOGGING_MODULE_ID } from "./configModules/modules/core-logging";
 import {
   getUserApertureColors,
   getUserApertureMinerals,
   getUserCoreDefectTypes,
   getUserInfillMaterials,
+  getUserSurfaceShapes,
+  getUserSurfaceRoughnesses,
+  getUserDefectOpennesses,
+  getUserDefectCoatings,
   saveUserApertureColors,
   saveUserApertureMinerals,
   saveUserCoreDefectTypes,
   saveUserInfillMaterials,
+  saveUserSurfaceShapes,
+  saveUserSurfaceRoughnesses,
+  saveUserDefectOpennesses,
+  saveUserDefectCoatings,
 } from "../services/configModulesApi";
 
 /** Module slugs whose core-logging collections live in dedicated user tables. */
@@ -41,6 +69,10 @@ export type UserCoreLoggingCollections = {
   apertureColors: ColorOption[];
   apertureMinerals: ApertureMineralOption[];
   infillMaterials: InfillMaterialOption[];
+  surfaceShapes: SurfaceShapeOption[];
+  surfaceRoughnesses: SurfaceRoughnessOption[];
+  defectOpennesses: DefectOpennessOption[];
+  defectCoatings: DefectCoatingOption[];
 };
 
 export function moduleUsesUserCoreLoggingCollections(
@@ -101,22 +133,90 @@ export function mergeUserInfillMaterialsIntoModuleSettings(
   };
 }
 
+export function mergeUserSurfaceShapesIntoModuleSettings(
+  moduleSettings: StoredModuleSettings,
+  options: SurfaceShapeOption[]
+): StoredModuleSettings {
+  return {
+    ...moduleSettings,
+    dataTypeOptions: {
+      ...moduleSettings.dataTypeOptions,
+      "surface-shapes": options.map((entry) => toSurfaceShapeModuleNamedOption(entry)),
+    },
+  };
+}
+
+export function mergeUserSurfaceRoughnessesIntoModuleSettings(
+  moduleSettings: StoredModuleSettings,
+  options: SurfaceRoughnessOption[]
+): StoredModuleSettings {
+  return {
+    ...moduleSettings,
+    dataTypeOptions: {
+      ...moduleSettings.dataTypeOptions,
+      "surface-roughnesses": options.map((entry) =>
+        toSurfaceRoughnessModuleNamedOption(entry)
+      ),
+    },
+  };
+}
+
+export function mergeUserDefectOpennessesIntoModuleSettings(
+  moduleSettings: StoredModuleSettings,
+  options: DefectOpennessOption[]
+): StoredModuleSettings {
+  return {
+    ...moduleSettings,
+    dataTypeOptions: {
+      ...moduleSettings.dataTypeOptions,
+      "defect-opennesses": options.map((entry) =>
+        toDefectOpennessModuleNamedOption(entry)
+      ),
+    },
+  };
+}
+
+export function mergeUserDefectCoatingsIntoModuleSettings(
+  moduleSettings: StoredModuleSettings,
+  options: DefectCoatingOption[]
+): StoredModuleSettings {
+  return {
+    ...moduleSettings,
+    dataTypeOptions: {
+      ...moduleSettings.dataTypeOptions,
+      "defect-coatings": options.map((entry) => toDefectCoatingModuleNamedOption(entry)),
+    },
+  };
+}
+
 export function mergeUserCoreLoggingCollectionsIntoModuleSettings(
   moduleSettings: StoredModuleSettings,
   collections: UserCoreLoggingCollections
 ): StoredModuleSettings {
-  return mergeUserInfillMaterialsIntoModuleSettings(
-    mergeUserApertureMineralsIntoModuleSettings(
-      mergeUserApertureColorsIntoModuleSettings(
-        mergeUserCoreDefectTypesIntoModuleSettings(
-          moduleSettings,
-          collections.coreDefectTypes
+  return mergeUserDefectCoatingsIntoModuleSettings(
+    mergeUserDefectOpennessesIntoModuleSettings(
+      mergeUserSurfaceRoughnessesIntoModuleSettings(
+        mergeUserSurfaceShapesIntoModuleSettings(
+          mergeUserInfillMaterialsIntoModuleSettings(
+            mergeUserApertureMineralsIntoModuleSettings(
+              mergeUserApertureColorsIntoModuleSettings(
+                mergeUserCoreDefectTypesIntoModuleSettings(
+                  moduleSettings,
+                  collections.coreDefectTypes
+                ),
+                collections.apertureColors
+              ),
+              collections.apertureMinerals
+            ),
+            collections.infillMaterials
+          ),
+          collections.surfaceShapes
         ),
-        collections.apertureColors
+        collections.surfaceRoughnesses
       ),
-      collections.apertureMinerals
+      collections.defectOpennesses
     ),
-    collections.infillMaterials
+    collections.defectCoatings
   );
 }
 
@@ -151,11 +251,19 @@ export async function loadUserCoreLoggingCollectionsForEnabledModules(
         apertureColorsResponse,
         apertureMineralsResponse,
         infillMaterialsResponse,
+        surfaceShapesResponse,
+        surfaceRoughnessesResponse,
+        defectOpennessesResponse,
+        defectCoatingsResponse,
       ] = await Promise.all([
         getUserCoreDefectTypes(moduleSlug, logConfigurationId),
         getUserApertureColors(moduleSlug, logConfigurationId),
         getUserApertureMinerals(moduleSlug, logConfigurationId),
         getUserInfillMaterials(moduleSlug, logConfigurationId),
+        getUserSurfaceShapes(moduleSlug, logConfigurationId),
+        getUserSurfaceRoughnesses(moduleSlug, logConfigurationId),
+        getUserDefectOpennesses(moduleSlug, logConfigurationId),
+        getUserDefectCoatings(moduleSlug, logConfigurationId),
       ]);
 
       result[moduleSlug] = {
@@ -163,6 +271,10 @@ export async function loadUserCoreLoggingCollectionsForEnabledModules(
         apertureColors: parseColorOptions(apertureColorsResponse.data, []),
         apertureMinerals: parseApertureMineralOptions(apertureMineralsResponse.data, []),
         infillMaterials: parseInfillMaterialOptions(infillMaterialsResponse.data, []),
+        surfaceShapes: parseSurfaceShapeOptions(surfaceShapesResponse.data, []),
+        surfaceRoughnesses: parseSurfaceRoughnessOptions(surfaceRoughnessesResponse.data, []),
+        defectOpennesses: parseDefectOpennessOptions(defectOpennessesResponse.data, []),
+        defectCoatings: parseDefectCoatingOptions(defectCoatingsResponse.data, []),
       };
     })
   );
@@ -204,4 +316,40 @@ export async function persistUserInfillMaterials(
 ): Promise<InfillMaterialOption[]> {
   const { data } = await saveUserInfillMaterials(moduleSlug, options, logConfigurationId);
   return parseInfillMaterialOptions(data, options);
+}
+
+export async function persistUserSurfaceShapes(
+  moduleSlug: string,
+  options: SurfaceShapeOption[],
+  logConfigurationId: string | number
+): Promise<SurfaceShapeOption[]> {
+  const { data } = await saveUserSurfaceShapes(moduleSlug, options, logConfigurationId);
+  return parseSurfaceShapeOptions(data, options);
+}
+
+export async function persistUserSurfaceRoughnesses(
+  moduleSlug: string,
+  options: SurfaceRoughnessOption[],
+  logConfigurationId: string | number
+): Promise<SurfaceRoughnessOption[]> {
+  const { data } = await saveUserSurfaceRoughnesses(moduleSlug, options, logConfigurationId);
+  return parseSurfaceRoughnessOptions(data, options);
+}
+
+export async function persistUserDefectOpennesses(
+  moduleSlug: string,
+  options: DefectOpennessOption[],
+  logConfigurationId: string | number
+): Promise<DefectOpennessOption[]> {
+  const { data } = await saveUserDefectOpennesses(moduleSlug, options, logConfigurationId);
+  return parseDefectOpennessOptions(data, options);
+}
+
+export async function persistUserDefectCoatings(
+  moduleSlug: string,
+  options: DefectCoatingOption[],
+  logConfigurationId: string | number
+): Promise<DefectCoatingOption[]> {
+  const { data } = await saveUserDefectCoatings(moduleSlug, options, logConfigurationId);
+  return parseDefectCoatingOptions(data, options);
 }

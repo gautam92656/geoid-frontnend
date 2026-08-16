@@ -7,6 +7,7 @@ import {
   FormField,
   Input,
   Select,
+  Toggle,
   TrashIcon,
   UiButton,
   ProjectModalPortal,
@@ -45,6 +46,7 @@ type DraftForm = {
   name: string;
   tablogsAlias: string;
   graphic: string;
+  allowNegativeDepth: boolean;
 };
 
 const NEW_TYPE_LABEL = "New Well Backfill Type";
@@ -55,6 +57,7 @@ function optionToDraft(option: WellBackfillTypeOption | null): DraftForm {
       name: "",
       tablogsAlias: "",
       graphic: DEFAULT_WELL_BACKFILL_GRAPHIC,
+      allowNegativeDepth: false,
     };
   }
 
@@ -62,6 +65,7 @@ function optionToDraft(option: WellBackfillTypeOption | null): DraftForm {
     name: option.name,
     tablogsAlias: option.tablogsAlias ?? "",
     graphic: option.graphic ?? DEFAULT_WELL_BACKFILL_GRAPHIC,
+    allowNegativeDepth: Boolean(option.allowNegativeDepth),
   };
 }
 
@@ -71,6 +75,7 @@ function draftToOption(draft: DraftForm, id: string): WellBackfillTypeOption {
     name: draft.name.trim(),
     tablogsAlias: draft.tablogsAlias.trim() || null,
     graphic: draft.graphic.trim() || DEFAULT_WELL_BACKFILL_GRAPHIC,
+    allowNegativeDepth: draft.allowNegativeDepth,
   });
 }
 
@@ -634,6 +639,24 @@ export function ManageWellBackfillTypesModal({
                           onChange={(value) => patchDraft({ tablogsAlias: value })}
                         />
                       </FormField>
+                    </div>
+
+                    <div className="manage-insitu-modal__settings">
+                      <label
+                        className="manage-insitu-modal__toggle-inline"
+                        htmlFor={`${formId}-negative-depth`}
+                      >
+                        <Toggle
+                          id={`${formId}-negative-depth`}
+                          checked={draft.allowNegativeDepth}
+                          disabled={submitting}
+                          onChange={(checked) => patchDraft({ allowNegativeDepth: checked })}
+                        />
+                        <span>Allow negative depth</span>
+                      </label>
+                      <p className="manage-insitu-modal__hint">
+                        Negative depths allow you to display well backfills above the ground
+                      </p>
                     </div>
 
                     <div className="manage-water-obs-modal__graphic-block">
