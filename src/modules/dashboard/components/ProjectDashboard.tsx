@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Project } from "../types/project";
 import { getProjectDisplayLabel, getProjectTitle } from "../utils/projectUtils";
+import { LabTestsSection } from "./LabTestsSection";
 import { ProjectDetailsForm } from "./ProjectDetailsForm";
 import { ProjectOverviewSections } from "./ProjectOverviewSections";
 import { ProjectSidebar, type ProjectSidebarSectionId } from "./ProjectSidebar";
@@ -175,6 +176,10 @@ export function ProjectDashboard({ project: initialProject }: ProjectDashboardPr
                 {activeTab === "details" ? (
                   <ProjectDetailsForm project={project} onProjectUpdate={setProject} />
                 ) : null}
+              </div>
+            ) : activeSection === "lab-tests" ? (
+              <div className="project-dashboard__content">
+                <LabTestsSection project={project} />
               </div>
             ) : (
               <div className="project-dashboard__content">

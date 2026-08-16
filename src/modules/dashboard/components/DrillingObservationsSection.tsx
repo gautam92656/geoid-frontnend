@@ -22,9 +22,9 @@ type DrillingObservationsSectionProps = Readonly<{
 }>;
 
 export function DrillingObservationsSection({
-  projectId: _projectId,
-  logId: _logId,
-  logConfigurationId: _logConfigurationId,
+  projectId,
+  logId,
+  logConfigurationId,
 }: DrillingObservationsSectionProps) {
   const [activeTab, setActiveTab] = useState<DrillingObservationTabId>("methods");
 
@@ -58,13 +58,29 @@ export function DrillingObservationsSection({
         aria-label={activeLabel}
       >
         {activeTab === "methods" ? (
-          <DrillingMethodsList />
+          <DrillingMethodsList
+            projectId={projectId}
+            logId={logId}
+            logConfigurationId={logConfigurationId}
+          />
         ) : activeTab === "resistances" ? (
-          <DrillingResistancesList />
+          <DrillingResistancesList
+            projectId={projectId}
+            logId={logId}
+            logConfigurationId={logConfigurationId}
+          />
         ) : activeTab === "casings" ? (
-          <DrillingCasingsList />
+          <DrillingCasingsList
+            projectId={projectId}
+            logId={logId}
+            logConfigurationId={logConfigurationId}
+          />
         ) : (
-          <DrillingObservationsList />
+          <DrillingObservationsList
+            projectId={projectId}
+            logId={logId}
+            logConfigurationId={logConfigurationId}
+          />
         )}
       </div>
     </section>

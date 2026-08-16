@@ -598,10 +598,8 @@ export function calculateSptNValue(
 }
 
 export function formatIntervalRowsSummary(rows: readonly InsituIntervalRow[]): string {
-  const filled = rows.map((row) => asString(row.value).trim()).filter(Boolean);
-  if (!filled.length) return "";
-  if (filled.length === 1) return filled[0];
-  return filled.join(" / ");
+  if (!rows.length) return "";
+  return rows.map((row) => asString(row.value).trim()).join(", ");
 }
 
 export function formatSptResultsSummary(
@@ -696,6 +694,40 @@ export function parseRowsFromResultValues(
       depthToMm: asString(row.depthToMm),
       value: asString(row.value),
     }));
+  }
+
+  const commaSeparated = asString(fallbackResult);
+  if (commaSeparated.includes(",")) {
+    const parts = commaSeparated.split(",").map((part) => part.trim());
+    const fromMm =
+      asString(values?.depthFromMm).trim() ||
+      (fallbackDepthFromM ? metersToMm(fallbackDepthFromM) : "0.00");
+    const toMm =
+      asString(values?.depthToMm).trim() ||
+      (fallbackDepthToM ? metersToMm(fallbackDepthToM) : fromMm);
+    const start = Number(fromMm);
+    const end = Number(toMm);
+    const span =
+      Number.isFinite(start) && Number.isFinite(end) && parts.length > 1
+        ? (end - start) / parts.length
+        : null;
+
+    return parts.map((value, index) => {
+      const rowFrom =
+        span == null || !Number.isFinite(start)
+          ? fromMm
+          : (start + span * index).toFixed(2);
+      const rowTo =
+        span == null || !Number.isFinite(start)
+          ? toMm
+          : (start + span * (index + 1)).toFixed(2);
+      return {
+        id: createIntervalRowId(),
+        depthFromMm: rowFrom,
+        depthToMm: rowTo,
+        value,
+      };
+    });
   }
 
   const blowCount = asString(

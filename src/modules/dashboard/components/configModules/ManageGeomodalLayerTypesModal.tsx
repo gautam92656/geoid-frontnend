@@ -656,7 +656,7 @@ export function ManageGeomodalLayerTypesModal({
                               .filter(Boolean)
                               .join(" ")}
                             disabled={submitting}
-                            title={`${graphic.label} (${graphic.code})`}
+                            title={graphic.label}
                             onClick={() =>
                               patchDraft({
                                 graphic: isNoGraphic ? "" : graphic.filename,

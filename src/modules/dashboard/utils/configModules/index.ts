@@ -196,6 +196,46 @@ export {
 } from "./infillMaterial";
 
 export {
+  DEFAULT_SURFACE_SHAPE_OPTIONS,
+  createBlankSurfaceShapeOption,
+  parseSurfaceShapeOption,
+  parseSurfaceShapeOptions,
+  cloneSurfaceShapeOption,
+  toSurfaceShapeModuleNamedOption,
+  type SurfaceShapeOption,
+} from "./surfaceShape";
+
+export {
+  DEFAULT_SURFACE_ROUGHNESS_OPTIONS,
+  createBlankSurfaceRoughnessOption,
+  parseSurfaceRoughnessOption,
+  parseSurfaceRoughnessOptions,
+  cloneSurfaceRoughnessOption,
+  toSurfaceRoughnessModuleNamedOption,
+  type SurfaceRoughnessOption,
+} from "./surfaceRoughness";
+
+export {
+  DEFAULT_DEFECT_OPENNESS_OPTIONS,
+  createBlankDefectOpennessOption,
+  parseDefectOpennessOption,
+  parseDefectOpennessOptions,
+  cloneDefectOpennessOption,
+  toDefectOpennessModuleNamedOption,
+  type DefectOpennessOption,
+} from "./defectOpenness";
+
+export {
+  DEFAULT_DEFECT_COATING_OPTIONS,
+  createBlankDefectCoatingOption,
+  parseDefectCoatingOption,
+  parseDefectCoatingOptions,
+  cloneDefectCoatingOption,
+  toDefectCoatingModuleNamedOption,
+  type DefectCoatingOption,
+} from "./defectCoating";
+
+export {
   DEFAULT_FINISHING_REASON_OPTIONS,
   createBlankFinishingReasonOption,
   parseFinishingReasonOption,

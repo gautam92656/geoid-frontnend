@@ -23,5 +23,9 @@ export { CoreLoggingModuleSettingsPanel } from "./CoreLoggingModuleSettingsPanel
 export { ManageApertureMineralsModal } from "./ManageApertureMineralsModal";
 export { ManageApertureColorsModal } from "./ManageApertureColorsModal";
 export { ManageInfillMaterialsModal } from "./ManageInfillMaterialsModal";
+export { ManageSurfaceShapesModal } from "./ManageSurfaceShapesModal";
+export { ManageSurfaceRoughnessModal } from "./ManageSurfaceRoughnessModal";
+export { ManageDefectOpennessModal } from "./ManageDefectOpennessModal";
+export { ManageDefectCoatingsModal } from "./ManageDefectCoatingsModal";
 export { ManageCoreDefectTypesModal } from "./ManageCoreDefectTypesModal";
 export { ManageDefaultSampleTypeModal } from "./ManageDefaultSampleTypeModal";

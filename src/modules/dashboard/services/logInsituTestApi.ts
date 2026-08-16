@@ -12,6 +12,7 @@ type ListInsituTestOptions = {
   search?: string;
   includeDeleted?: boolean;
   onlyDeleted?: boolean;
+  sampleId?: string | number;
   sortBy?: string;
   sortOrder?: "asc" | "desc";
 };
@@ -37,6 +38,9 @@ export async function listLogInsituTests(
   if (trimmedSearch) params.search = trimmedSearch;
   if (options.includeDeleted) params.includeDeleted = "true";
   if (options.onlyDeleted) params.onlyDeleted = "true";
+  if (options.sampleId != null && String(options.sampleId).trim()) {
+    params.sampleId = String(options.sampleId).trim();
+  }
 
   const res = await apiClient.get<ApiEnvelope<PaginatedLogInsituTests>>(
     basePath(projectId, logId),

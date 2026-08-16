@@ -15,6 +15,8 @@ export type WellBackfillTypeOption = ModuleNamedOption & {
   tablogsAlias?: string | null;
   /** Filename under public/well-backfill (e.g. 01.png). */
   graphic?: string | null;
+  /** When true, well backfills may use depths above ground (negative). */
+  allowNegativeDepth?: boolean;
 };
 
 export const DEFAULT_WELL_BACKFILL_GRAPHIC = "01.png";
@@ -86,6 +88,16 @@ export const FALLBACK_WELL_BACKFILL_GRAPHICS: readonly string[] = [
   "43.png",
 ];
 
+function asBool(value: unknown, fallback = false): boolean {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "number") return value !== 0;
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    return normalized === "1" || normalized === "true" || normalized === "yes";
+  }
+  return fallback;
+}
+
 function asNullableString(value: unknown): string | null {
   if (typeof value !== "string") return null;
   const trimmed = value.trim();
@@ -155,6 +167,7 @@ export function createBlankWellBackfillTypeOption(
     name: partial?.name ?? "",
     tablogsAlias: partial?.tablogsAlias ?? null,
     graphic: partial?.graphic ?? DEFAULT_WELL_BACKFILL_GRAPHIC,
+    allowNegativeDepth: Boolean(partial?.allowNegativeDepth),
   };
 }
 
@@ -188,6 +201,10 @@ export function parseWellBackfillTypeOption(
     graphic: graphicRaw
       ? normalizeWellBackfillGraphicFilename(graphicRaw) || graphicRaw
       : DEFAULT_WELL_BACKFILL_GRAPHIC,
+    allowNegativeDepth: asBool(
+      value.allowNegativeDepth ?? value.allow_negative_depth ?? value.negativeDepth,
+      false
+    ),
   });
 }
 
@@ -228,6 +245,7 @@ export function toWellBackfillTypeModuleNamedOption(
     name: option.name,
     tablogsAlias: option.tablogsAlias ?? null,
     graphic: option.graphic ?? null,
+    allowNegativeDepth: Boolean(option.allowNegativeDepth),
   };
 }
 

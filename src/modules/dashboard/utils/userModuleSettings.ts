@@ -51,6 +51,14 @@ export function hydrateModuleSettingsFromUserCatalog(
           next.modules[moduleId]?.dataTypeOptions["aperture-minerals"] ?? [],
         "infill-materials":
           next.modules[moduleId]?.dataTypeOptions["infill-materials"] ?? [],
+        "surface-shapes":
+          next.modules[moduleId]?.dataTypeOptions["surface-shapes"] ?? [],
+        "surface-roughnesses":
+          next.modules[moduleId]?.dataTypeOptions["surface-roughnesses"] ?? [],
+        "defect-opennesses":
+          next.modules[moduleId]?.dataTypeOptions["defect-opennesses"] ?? [],
+        "defect-coatings":
+          next.modules[moduleId]?.dataTypeOptions["defect-coatings"] ?? [],
         "remark-types": next.modules[moduleId]?.dataTypeOptions["remark-types"] ?? [],
         "remarks-quick-notes":
           next.modules[moduleId]?.dataTypeOptions["remarks-quick-notes"] ?? [],

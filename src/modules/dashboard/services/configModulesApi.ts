@@ -12,6 +12,10 @@ import type { CoreDefectTypeOption } from "../utils/configModules/coreDefectType
 import type { ColorOption } from "../utils/configModules/colorOption";
 import type { ApertureMineralOption } from "../utils/configModules/apertureMineral";
 import type { InfillMaterialOption } from "../utils/configModules/infillMaterial";
+import type { SurfaceShapeOption } from "../utils/configModules/surfaceShape";
+import type { SurfaceRoughnessOption } from "../utils/configModules/surfaceRoughness";
+import type { DefectOpennessOption } from "../utils/configModules/defectOpenness";
+import type { DefectCoatingOption } from "../utils/configModules/defectCoating";
 import type { DrillingTypeOption } from "../utils/configModules/drillingType";
 import type { DrillingResistanceOption } from "../utils/configModules/drillingResistance";
 import type { DrillingObservationOption } from "../utils/configModules/drillingObservation";
@@ -791,6 +795,354 @@ export async function deleteUserInfillMaterial(
 ): Promise<{ message?: string }> {
   const res = await apiClient.delete<ApiEnvelope<{ deleted: boolean }>>(
     `/config-modules/mine/infill-materials/${encodeURIComponent(moduleSlug)}/${encodeURIComponent(optionKey)}`,
+    { params: configParams(logConfigurationId) }
+  );
+  return { message: res.data.message };
+}
+
+/** Common surface-shape catalog defaults for a module template. */
+export async function getSurfaceShapeTemplates(
+  moduleSlug: string
+): Promise<{ data: SurfaceShapeOption[] }> {
+  const res = await apiClient.get<ApiEnvelope<SurfaceShapeOption[]>>(
+    `/config-modules/surface-shape-templates/${encodeURIComponent(moduleSlug)}`
+  );
+  return { data: res.data.data };
+}
+
+/** Configuration-scoped surface shapes (auto-seeded from templates on first load). */
+export async function getUserSurfaceShapes(
+  moduleSlug: string,
+  logConfigurationId: string | number
+): Promise<{ data: SurfaceShapeOption[] }> {
+  const res = await apiClient.get<ApiEnvelope<SurfaceShapeOption[]>>(
+    `/config-modules/mine/surface-shapes/${encodeURIComponent(moduleSlug)}`,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data };
+}
+
+/** Replace the full surface-shape list for a module on this log configuration. */
+export async function saveUserSurfaceShapes(
+  moduleSlug: string,
+  options: SurfaceShapeOption[],
+  logConfigurationId: string | number
+): Promise<{ data: SurfaceShapeOption[]; message?: string }> {
+  const res = await apiClient.put<ApiEnvelope<SurfaceShapeOption[]>>(
+    `/config-modules/mine/surface-shapes/${encodeURIComponent(moduleSlug)}`,
+    { options },
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function resetUserSurfaceShapes(
+  moduleSlug: string,
+  logConfigurationId: string | number
+): Promise<{ data: SurfaceShapeOption[]; message?: string }> {
+  const res = await apiClient.post<ApiEnvelope<SurfaceShapeOption[]>>(
+    `/config-modules/mine/surface-shapes/${encodeURIComponent(moduleSlug)}/reset`,
+    undefined,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function createUserSurfaceShape(
+  moduleSlug: string,
+  option: SurfaceShapeOption,
+  logConfigurationId: string | number
+): Promise<{ data: SurfaceShapeOption; message?: string }> {
+  const res = await apiClient.post<ApiEnvelope<SurfaceShapeOption>>(
+    `/config-modules/mine/surface-shapes/${encodeURIComponent(moduleSlug)}`,
+    option,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function updateUserSurfaceShape(
+  moduleSlug: string,
+  optionKey: string,
+  option: SurfaceShapeOption,
+  logConfigurationId: string | number
+): Promise<{ data: SurfaceShapeOption; message?: string }> {
+  const res = await apiClient.patch<ApiEnvelope<SurfaceShapeOption>>(
+    `/config-modules/mine/surface-shapes/${encodeURIComponent(moduleSlug)}/${encodeURIComponent(optionKey)}`,
+    option,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function deleteUserSurfaceShape(
+  moduleSlug: string,
+  optionKey: string,
+  logConfigurationId: string | number
+): Promise<{ message?: string }> {
+  const res = await apiClient.delete<ApiEnvelope<{ deleted: boolean }>>(
+    `/config-modules/mine/surface-shapes/${encodeURIComponent(moduleSlug)}/${encodeURIComponent(optionKey)}`,
+    { params: configParams(logConfigurationId) }
+  );
+  return { message: res.data.message };
+}
+
+/** Common surface-roughness catalog defaults for a module template. */
+export async function getSurfaceRoughnessTemplates(
+  moduleSlug: string
+): Promise<{ data: SurfaceRoughnessOption[] }> {
+  const res = await apiClient.get<ApiEnvelope<SurfaceRoughnessOption[]>>(
+    `/config-modules/surface-roughness-templates/${encodeURIComponent(moduleSlug)}`
+  );
+  return { data: res.data.data };
+}
+
+/** Configuration-scoped surface roughness values (auto-seeded from templates on first load). */
+export async function getUserSurfaceRoughnesses(
+  moduleSlug: string,
+  logConfigurationId: string | number
+): Promise<{ data: SurfaceRoughnessOption[] }> {
+  const res = await apiClient.get<ApiEnvelope<SurfaceRoughnessOption[]>>(
+    `/config-modules/mine/surface-roughnesses/${encodeURIComponent(moduleSlug)}`,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data };
+}
+
+/** Replace the full surface-roughness list for a module on this log configuration. */
+export async function saveUserSurfaceRoughnesses(
+  moduleSlug: string,
+  options: SurfaceRoughnessOption[],
+  logConfigurationId: string | number
+): Promise<{ data: SurfaceRoughnessOption[]; message?: string }> {
+  const res = await apiClient.put<ApiEnvelope<SurfaceRoughnessOption[]>>(
+    `/config-modules/mine/surface-roughnesses/${encodeURIComponent(moduleSlug)}`,
+    { options },
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function resetUserSurfaceRoughnesses(
+  moduleSlug: string,
+  logConfigurationId: string | number
+): Promise<{ data: SurfaceRoughnessOption[]; message?: string }> {
+  const res = await apiClient.post<ApiEnvelope<SurfaceRoughnessOption[]>>(
+    `/config-modules/mine/surface-roughnesses/${encodeURIComponent(moduleSlug)}/reset`,
+    undefined,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function createUserSurfaceRoughness(
+  moduleSlug: string,
+  option: SurfaceRoughnessOption,
+  logConfigurationId: string | number
+): Promise<{ data: SurfaceRoughnessOption; message?: string }> {
+  const res = await apiClient.post<ApiEnvelope<SurfaceRoughnessOption>>(
+    `/config-modules/mine/surface-roughnesses/${encodeURIComponent(moduleSlug)}`,
+    option,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function updateUserSurfaceRoughness(
+  moduleSlug: string,
+  optionKey: string,
+  option: SurfaceRoughnessOption,
+  logConfigurationId: string | number
+): Promise<{ data: SurfaceRoughnessOption; message?: string }> {
+  const res = await apiClient.patch<ApiEnvelope<SurfaceRoughnessOption>>(
+    `/config-modules/mine/surface-roughnesses/${encodeURIComponent(moduleSlug)}/${encodeURIComponent(optionKey)}`,
+    option,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function deleteUserSurfaceRoughness(
+  moduleSlug: string,
+  optionKey: string,
+  logConfigurationId: string | number
+): Promise<{ message?: string }> {
+  const res = await apiClient.delete<ApiEnvelope<{ deleted: boolean }>>(
+    `/config-modules/mine/surface-roughnesses/${encodeURIComponent(moduleSlug)}/${encodeURIComponent(optionKey)}`,
+    { params: configParams(logConfigurationId) }
+  );
+  return { message: res.data.message };
+}
+
+/** Common defect-openness catalog defaults for a module template. */
+export async function getDefectOpennessTemplates(
+  moduleSlug: string
+): Promise<{ data: DefectOpennessOption[] }> {
+  const res = await apiClient.get<ApiEnvelope<DefectOpennessOption[]>>(
+    `/config-modules/defect-openness-templates/${encodeURIComponent(moduleSlug)}`
+  );
+  return { data: res.data.data };
+}
+
+/** Configuration-scoped defect openness values (auto-seeded from templates on first load). */
+export async function getUserDefectOpennesses(
+  moduleSlug: string,
+  logConfigurationId: string | number
+): Promise<{ data: DefectOpennessOption[] }> {
+  const res = await apiClient.get<ApiEnvelope<DefectOpennessOption[]>>(
+    `/config-modules/mine/defect-opennesses/${encodeURIComponent(moduleSlug)}`,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data };
+}
+
+/** Replace the full defect-openness list for a module on this log configuration. */
+export async function saveUserDefectOpennesses(
+  moduleSlug: string,
+  options: DefectOpennessOption[],
+  logConfigurationId: string | number
+): Promise<{ data: DefectOpennessOption[]; message?: string }> {
+  const res = await apiClient.put<ApiEnvelope<DefectOpennessOption[]>>(
+    `/config-modules/mine/defect-opennesses/${encodeURIComponent(moduleSlug)}`,
+    { options },
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function resetUserDefectOpennesses(
+  moduleSlug: string,
+  logConfigurationId: string | number
+): Promise<{ data: DefectOpennessOption[]; message?: string }> {
+  const res = await apiClient.post<ApiEnvelope<DefectOpennessOption[]>>(
+    `/config-modules/mine/defect-opennesses/${encodeURIComponent(moduleSlug)}/reset`,
+    undefined,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function createUserDefectOpenness(
+  moduleSlug: string,
+  option: DefectOpennessOption,
+  logConfigurationId: string | number
+): Promise<{ data: DefectOpennessOption; message?: string }> {
+  const res = await apiClient.post<ApiEnvelope<DefectOpennessOption>>(
+    `/config-modules/mine/defect-opennesses/${encodeURIComponent(moduleSlug)}`,
+    option,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function updateUserDefectOpenness(
+  moduleSlug: string,
+  optionKey: string,
+  option: DefectOpennessOption,
+  logConfigurationId: string | number
+): Promise<{ data: DefectOpennessOption; message?: string }> {
+  const res = await apiClient.patch<ApiEnvelope<DefectOpennessOption>>(
+    `/config-modules/mine/defect-opennesses/${encodeURIComponent(moduleSlug)}/${encodeURIComponent(optionKey)}`,
+    option,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function deleteUserDefectOpenness(
+  moduleSlug: string,
+  optionKey: string,
+  logConfigurationId: string | number
+): Promise<{ message?: string }> {
+  const res = await apiClient.delete<ApiEnvelope<{ deleted: boolean }>>(
+    `/config-modules/mine/defect-opennesses/${encodeURIComponent(moduleSlug)}/${encodeURIComponent(optionKey)}`,
+    { params: configParams(logConfigurationId) }
+  );
+  return { message: res.data.message };
+}
+
+/** Common defect-coating catalog defaults for a module template. */
+export async function getDefectCoatingTemplates(
+  moduleSlug: string
+): Promise<{ data: DefectCoatingOption[] }> {
+  const res = await apiClient.get<ApiEnvelope<DefectCoatingOption[]>>(
+    `/config-modules/defect-coating-templates/${encodeURIComponent(moduleSlug)}`
+  );
+  return { data: res.data.data };
+}
+
+/** Configuration-scoped defect coatings (auto-seeded from templates on first load). */
+export async function getUserDefectCoatings(
+  moduleSlug: string,
+  logConfigurationId: string | number
+): Promise<{ data: DefectCoatingOption[] }> {
+  const res = await apiClient.get<ApiEnvelope<DefectCoatingOption[]>>(
+    `/config-modules/mine/defect-coatings/${encodeURIComponent(moduleSlug)}`,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data };
+}
+
+/** Replace the full defect-coating list for a module on this log configuration. */
+export async function saveUserDefectCoatings(
+  moduleSlug: string,
+  options: DefectCoatingOption[],
+  logConfigurationId: string | number
+): Promise<{ data: DefectCoatingOption[]; message?: string }> {
+  const res = await apiClient.put<ApiEnvelope<DefectCoatingOption[]>>(
+    `/config-modules/mine/defect-coatings/${encodeURIComponent(moduleSlug)}`,
+    { options },
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function resetUserDefectCoatings(
+  moduleSlug: string,
+  logConfigurationId: string | number
+): Promise<{ data: DefectCoatingOption[]; message?: string }> {
+  const res = await apiClient.post<ApiEnvelope<DefectCoatingOption[]>>(
+    `/config-modules/mine/defect-coatings/${encodeURIComponent(moduleSlug)}/reset`,
+    undefined,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function createUserDefectCoating(
+  moduleSlug: string,
+  option: DefectCoatingOption,
+  logConfigurationId: string | number
+): Promise<{ data: DefectCoatingOption; message?: string }> {
+  const res = await apiClient.post<ApiEnvelope<DefectCoatingOption>>(
+    `/config-modules/mine/defect-coatings/${encodeURIComponent(moduleSlug)}`,
+    option,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function updateUserDefectCoating(
+  moduleSlug: string,
+  optionKey: string,
+  option: DefectCoatingOption,
+  logConfigurationId: string | number
+): Promise<{ data: DefectCoatingOption; message?: string }> {
+  const res = await apiClient.patch<ApiEnvelope<DefectCoatingOption>>(
+    `/config-modules/mine/defect-coatings/${encodeURIComponent(moduleSlug)}/${encodeURIComponent(optionKey)}`,
+    option,
+    { params: configParams(logConfigurationId) }
+  );
+  return { data: res.data.data, message: res.data.message };
+}
+
+export async function deleteUserDefectCoating(
+  moduleSlug: string,
+  optionKey: string,
+  logConfigurationId: string | number
+): Promise<{ message?: string }> {
+  const res = await apiClient.delete<ApiEnvelope<{ deleted: boolean }>>(
+    `/config-modules/mine/defect-coatings/${encodeURIComponent(moduleSlug)}/${encodeURIComponent(optionKey)}`,
     { params: configParams(logConfigurationId) }
   );
   return { message: res.data.message };

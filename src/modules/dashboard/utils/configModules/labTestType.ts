@@ -1,5 +1,7 @@
-import { LAB_TEST_TYPES } from "../../data/supplierOptions";
 import { isRecord } from "./helpers";
+import labTestAliasTables from "./data/labTestAliasTables.json";
+import labTestTablogsAliasFields from "./data/labTestTablogsAliasFields.json";
+import labTestTypeOptionsDefaults from "./data/labTestTypeOptionsDefaults.json";
 import {
   getInsituTestTypeGraphicUrl,
   normalizeInsituGraphicFilename,
@@ -11,7 +13,7 @@ import type { ModuleNamedOption } from "./types";
 /** Alias tables available when configuring a lab test type (Tablogs-aligned). */
 export const LAB_TEST_ALIAS_TABLE_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
   { value: "", label: "Select Alias Table" },
-  ...LAB_TEST_TYPES.map((name) => ({ value: name, label: name })),
+  ...labTestAliasTables.map((name) => ({ value: name, label: name })),
 ];
 
 /** Common TabLogs result-field aliases for the result table design columns. */
@@ -20,35 +22,7 @@ export const LAB_TEST_RESULT_TABLOGS_ALIAS_OPTIONS: ReadonlyArray<{
   label: string;
 }> = [
   { value: "", label: "Select TabLogs Alias Field" },
-  { value: "Moisture Content", label: "Moisture Content" },
-  { value: "Natural Moisture Content", label: "Natural Moisture Content" },
-  { value: "Liquid Limit", label: "Liquid Limit" },
-  { value: "Plastic Limit", label: "Plastic Limit" },
-  { value: "Plasticity Index", label: "Plasticity Index" },
-  { value: "Linear Shrinkage", label: "Linear Shrinkage" },
-  { value: "Passing 75um", label: "Passing 75um" },
-  { value: "Passing 2.36mm", label: "Passing 2.36mm" },
-  { value: "Passing 4.75mm", label: "Passing 4.75mm" },
-  { value: "Passing 19mm", label: "Passing 19mm" },
-  { value: "D10", label: "D10" },
-  { value: "D30", label: "D30" },
-  { value: "D60", label: "D60" },
-  { value: "Cu", label: "Cu" },
-  { value: "Cc", label: "Cc" },
-  { value: "Unit Weight", label: "Unit Weight" },
-  { value: "Dry Unit Weight", label: "Dry Unit Weight" },
-  { value: "Density", label: "Density" },
-  { value: "Dry Density", label: "Dry Density" },
-  { value: "Relative Density", label: "Relative Density" },
-  { value: "Specific Gravity", label: "Specific Gravity" },
-  { value: "Permeability", label: "Permeability" },
-  { value: "UCS", label: "UCS" },
-  { value: "IS50", label: "IS50" },
-  { value: "Cohesion", label: "Cohesion" },
-  { value: "Friction Angle", label: "Friction Angle" },
-  { value: "Result", label: "Result" },
-  { value: "Value", label: "Value" },
-  { value: "Comment", label: "Comment" },
+  ...labTestTablogsAliasFields.map((name) => ({ value: name, label: name })),
 ];
 
 export const DEFAULT_LAB_TEST_TYPE_GRAPHIC = "graphic_00.png";
@@ -307,12 +281,7 @@ export function toLabTestTypeModuleNamedOption(option: LabTestTypeOption): Modul
   };
 }
 
-/** Default lab test types aligned with supplier / Tablogs lists. */
-export const DEFAULT_LAB_TEST_TYPE_OPTIONS: LabTestTypeOption[] = LAB_TEST_TYPES.map((name) =>
-  createLabTestTypeOption(slugifyLabTestTypeId(name) || name, name, {
-    aliasTable: name,
-    active: true,
-    graphic: DEFAULT_LAB_TEST_TYPE_GRAPHIC,
-    labTestResultFields: [createBlankLabTestResultField()],
-  })
+/** Default lab test types aligned with the Tablogs catalog. */
+export const DEFAULT_LAB_TEST_TYPE_OPTIONS: LabTestTypeOption[] = parseLabTestTypeOptions(
+  labTestTypeOptionsDefaults
 );

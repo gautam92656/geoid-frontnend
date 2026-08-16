@@ -10,6 +10,22 @@ import {
   DEFAULT_INFILL_MATERIAL_OPTIONS,
   toInfillMaterialModuleNamedOption,
 } from "../infillMaterial";
+import {
+  DEFAULT_SURFACE_SHAPE_OPTIONS,
+  toSurfaceShapeModuleNamedOption,
+} from "../surfaceShape";
+import {
+  DEFAULT_SURFACE_ROUGHNESS_OPTIONS,
+  toSurfaceRoughnessModuleNamedOption,
+} from "../surfaceRoughness";
+import {
+  DEFAULT_DEFECT_OPENNESS_OPTIONS,
+  toDefectOpennessModuleNamedOption,
+} from "../defectOpenness";
+import {
+  DEFAULT_DEFECT_COATING_OPTIONS,
+  toDefectCoatingModuleNamedOption,
+} from "../defectCoating";
 import { isRecord } from "../helpers";
 import type { CoreLoggingModuleConfig, ModuleNamedOption, ModuleSettingsSpec } from "../types";
 
@@ -18,6 +34,10 @@ export const CORE_DEFECT_TYPES_DATA_TYPE_ID = "core-defect-types" as const;
 export const APERTURE_MINERALS_DATA_TYPE_ID = "aperture-minerals" as const;
 export const APERTURE_COLORS_DATA_TYPE_ID = "aperture-colors" as const;
 export const INFILL_MATERIALS_DATA_TYPE_ID = "infill-materials" as const;
+export const SURFACE_SHAPES_DATA_TYPE_ID = "surface-shapes" as const;
+export const SURFACE_ROUGHNESSES_DATA_TYPE_ID = "surface-roughnesses" as const;
+export const DEFECT_OPENNESSES_DATA_TYPE_ID = "defect-opennesses" as const;
+export const DEFECT_COATINGS_DATA_TYPE_ID = "defect-coatings" as const;
 
 export const DEFAULT_APERTURE_COLOR_OPTIONS: ModuleNamedOption[] = [
   { id: "none", name: "None", color: "#000000" },
@@ -30,6 +50,10 @@ const DEFAULT_ALLOW_USERS_TO_MANAGE: Record<string, boolean> = {
   "aperture-colors": true,
   "aperture-minerals": true,
   "infill-materials": true,
+  "surface-shapes": true,
+  "surface-roughnesses": true,
+  "defect-opennesses": true,
+  "defect-coatings": true,
 };
 
 function parseNamedOptionsList(value: unknown): ModuleNamedOption[] {
@@ -180,6 +204,10 @@ export const coreLoggingModule: ModuleSettingsSpec = {
     { id: "aperture-colors", name: "Aperture Colors", editable: true },
     { id: "aperture-minerals", name: "Aperture Minerals", editable: true },
     { id: "infill-materials", name: "Infill Materials", editable: true },
+    { id: "surface-shapes", name: "Surface Shapes", editable: true },
+    { id: "surface-roughnesses", name: "Surface Roughness", editable: true },
+    { id: "defect-opennesses", name: "Defect Openness", editable: true },
+    { id: "defect-coatings", name: "Defect Coatings", editable: true },
   ],
   defaultOptions: {
     "core-defect-types": DEFAULT_CORE_DEFECT_TYPE_OPTIONS.map((entry) =>
@@ -191,6 +219,18 @@ export const coreLoggingModule: ModuleSettingsSpec = {
     ),
     "infill-materials": DEFAULT_INFILL_MATERIAL_OPTIONS.map((entry) =>
       toInfillMaterialModuleNamedOption(entry)
+    ),
+    "surface-shapes": DEFAULT_SURFACE_SHAPE_OPTIONS.map((entry) =>
+      toSurfaceShapeModuleNamedOption(entry)
+    ),
+    "surface-roughnesses": DEFAULT_SURFACE_ROUGHNESS_OPTIONS.map((entry) =>
+      toSurfaceRoughnessModuleNamedOption(entry)
+    ),
+    "defect-opennesses": DEFAULT_DEFECT_OPENNESS_OPTIONS.map((entry) =>
+      toDefectOpennessModuleNamedOption(entry)
+    ),
+    "defect-coatings": DEFAULT_DEFECT_COATING_OPTIONS.map((entry) =>
+      toDefectCoatingModuleNamedOption(entry)
     ),
   },
   enrichDefaults: (settings) => ({

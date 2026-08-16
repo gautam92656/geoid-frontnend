@@ -1070,6 +1070,10 @@ export function LogConfigurationDetailPage({
             "aperture-colors",
             "aperture-minerals",
             "infill-materials",
+            "surface-shapes",
+            "surface-roughnesses",
+            "defect-opennesses",
+            "defect-coatings",
           ] as const;
           let patched = false;
           const nextOptions = { ...adopted.dataTypeOptions };

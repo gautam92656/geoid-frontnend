@@ -4,6 +4,7 @@ export type LogInsituTest = {
   id: string;
   logId: number;
   projectId: number;
+  sampleId: string | null;
   depthFrom: string;
   depthTo: string;
   testTypeId: string;
@@ -25,6 +26,7 @@ export type LogInsituTestPayload = {
   results?: string;
   comments?: string;
   resultValues?: InsituTestResultValues;
+  sampleId?: string | number | null;
   sortOrder?: number;
 };
 

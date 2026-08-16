@@ -704,40 +704,7 @@ export function ManageLabTestTypesModal({
                 </aside>
 
                 <div className="project-modal__split-main">
-                  <div className="manage-lab-test-modal__title-row">
-                    <h3 className="project-modal__split-main-title">{panelTitle}</h3>
-                    {isEditing ? (
-                      <label
-                        className="manage-insitu-modal__toggle-inline manage-lab-test-modal__active-toggle"
-                        htmlFor={`${formId}-active`}
-                      >
-                        <Toggle
-                          id={`${formId}-active`}
-                          checked={draft.active}
-                          disabled={submitting}
-                          onChange={(checked) => {
-                            patchDraft({ active: checked });
-                            if (selectedId) {
-                              setEntries((current) =>
-                                current.map((entry) =>
-                                  entry.id === selectedId
-                                    ? { ...entry, active: checked }
-                                    : entry
-                                )
-                              );
-                            }
-                          }}
-                        />
-                        <span>Active</span>
-                        <span
-                          className="manage-insitu-modal__help"
-                          title="Inactive types stay available for reference but are listed separately."
-                        >
-                          <HelpIcon />
-                        </span>
-                      </label>
-                    ) : null}
-                  </div>
+                  <h3 className="project-modal__split-main-title">{panelTitle}</h3>
                   {isAdding ? (
                     <p className="project-modal__split-main-subtitle">
                       Create a new lab test type, or select one that has been created in other Log
@@ -745,9 +712,9 @@ export function ManageLabTestTypesModal({
                     </p>
                   ) : null}
 
-                  <div className="project-modal__fields project-modal__fields--stack manage-origins-modal__fields">
+                  <div className="project-modal__fields project-modal__fields--stack manage-origins-modal__fields manage-insitu-modal__fields">
                     {isAdding && companySelectOptions.length > 0 ? (
-                      <>
+                      <section className="manage-insitu-modal__section">
                         <FormField
                           label="Select Existing Lab Test Type"
                           htmlFor={`${formId}-existing`}
@@ -765,150 +732,239 @@ export function ManageLabTestTypesModal({
                         <p className="manage-origins-modal__hint">
                           or - create a new lab test type from scratch
                         </p>
-                        <div className="manage-origins-modal__divider" aria-hidden="true" />
-                      </>
+                      </section>
                     ) : null}
 
-                    <FormField
-                      label="Lab Test Type Name"
-                      required
-                      error={errors.name}
-                      htmlFor={`${formId}-name`}
-                      className="project-modal__field--full"
-                    >
-                      <Input
-                        id={`${formId}-name`}
-                        variant="ui"
-                        type="text"
-                        placeholder="Lab Test Type Name"
-                        value={draft.name}
-                        disabled={submitting}
-                        maxLength={MODULE_OPTION_NAME_MAX_LENGTH}
-                        onChange={(event) => patchDraft({ name: event.target.value })}
-                      />
-                    </FormField>
-
-                    <FormField
-                      label="External Alias (Optional)"
-                      htmlFor={`${formId}-external-alias`}
-                      className="project-modal__field--full"
-                    >
-                      <Input
-                        id={`${formId}-external-alias`}
-                        variant="ui"
-                        type="text"
-                        placeholder="External Alias"
-                        value={draft.externalAlias}
-                        disabled={submitting}
-                        maxLength={MODULE_OPTION_NAME_MAX_LENGTH}
-                        onChange={(event) => patchDraft({ externalAlias: event.target.value })}
-                      />
-                    </FormField>
-
-                    <FormField
-                      label="Select Alias Table"
-                      htmlFor={`${formId}-alias-table`}
-                      className="project-modal__field--full"
-                    >
-                      <Select
-                        id={`${formId}-alias-table`}
-                        value={draft.aliasTable}
-                        disabled={submitting}
-                        options={aliasTableOptions}
-                        placeholder="Select Alias Table"
-                        search
-                        searchPlaceholder="Search alias tables…"
-                        onChange={(value) => patchDraft({ aliasTable: value })}
-                      />
-                    </FormField>
-
-                    <div className="manage-insitu-modal__graphics-row">
-                      <div className="manage-insitu-modal__graphic-col">
-                        <span className="manage-insitu-modal__field-label">Plot Graphic</span>
-                        <button
-                          type="button"
-                          className="manage-insitu-modal__graphic-card"
-                          disabled={submitting || graphicsLoading}
-                          onClick={() => setGraphicPickerOpen(true)}
-                        >
-                          {selectedGraphicUrl ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={selectedGraphicUrl}
-                              alt={labTestGraphicLabel(draft.graphic)}
-                              className="manage-insitu-modal__graphic-card-image"
-                            />
-                          ) : (
-                            <span className="manage-insitu-modal__graphic-card-placeholder">
-                              Select Graphic
-                            </span>
-                          )}
-                          <span className="manage-insitu-modal__graphic-card-title">
-                            {labTestGraphicLabel(draft.graphic)}
-                          </span>
-                        </button>
+                    <section className="manage-insitu-modal__section">
+                      <div className="manage-insitu-modal__section-head">
+                        <h4 className="manage-insitu-modal__section-title">Details</h4>
                       </div>
-                    </div>
 
-                    {graphicsError ? (
-                      <p className="manage-insitu-modal__error">{graphicsError}</p>
-                    ) : null}
-
-                    <label
-                      className="manage-insitu-modal__toggle-inline"
-                      htmlFor={`${formId}-data-plot`}
-                    >
-                      <Toggle
-                        id={`${formId}-data-plot`}
-                        checked={draft.addAsSelectedDataPlot}
-                        disabled={submitting}
-                        onChange={(checked) =>
-                          patchDraft({ addAsSelectedDataPlot: checked })
-                        }
-                      />
-                      <span>Add as selected data plot borelogs</span>
-                    </label>
-
-                    <div className="manage-origins-modal__divider" aria-hidden="true" />
-
-                    <div className="manage-lab-test-modal__result-header">
-                      <p className="manage-lab-test-modal__result-title">
-                        Test Result Table Design
-                      </p>
-                      <UiButton
-                        type="button"
-                        variant="primary"
-                        size="sm"
-                        disabled={
-                          submitting ||
-                          draft.resultFields.length >= LAB_TEST_RESULT_FIELDS_MAX_COUNT
-                        }
-                        aria-label="Add result field column"
-                        onClick={handleAddResultField}
+                      <FormField
+                        label="Lab Test Type Name"
+                        required
+                        error={errors.name}
+                        htmlFor={`${formId}-name`}
+                        className="project-modal__field--full"
                       >
-                        +
-                      </UiButton>
-                    </div>
+                        <Input
+                          id={`${formId}-name`}
+                          variant="ui"
+                          type="text"
+                          placeholder="Lab Test Type Name"
+                          value={draft.name}
+                          disabled={submitting}
+                          maxLength={MODULE_OPTION_NAME_MAX_LENGTH}
+                          onChange={(event) => patchDraft({ name: event.target.value })}
+                        />
+                      </FormField>
 
-                    <div className="manage-lab-test-modal__result-row ui-scrollbar">
-                      {draft.resultFields.length === 0 ? (
-                        <p className="manage-lab-test-modal__result-empty">
-                          No result fields yet. Use + to add a column.
-                        </p>
-                      ) : (
-                        draft.resultFields.map((field, index) => (
-                          <div key={field.id} className="manage-lab-test-modal__result-col">
-                            <FormField
-                              label="Field Name"
-                              htmlFor={`${formId}-result-name-${field.id}`}
-                              className="project-modal__field--full"
+                      <FormField
+                        label="External Alias (Optional)"
+                        htmlFor={`${formId}-external-alias`}
+                        className="project-modal__field--full"
+                      >
+                        <Input
+                          id={`${formId}-external-alias`}
+                          variant="ui"
+                          type="text"
+                          placeholder="External Alias"
+                          value={draft.externalAlias}
+                          disabled={submitting}
+                          maxLength={MODULE_OPTION_NAME_MAX_LENGTH}
+                          onChange={(event) => patchDraft({ externalAlias: event.target.value })}
+                        />
+                      </FormField>
+
+                      <FormField
+                        label="Select Alias Table"
+                        htmlFor={`${formId}-alias-table`}
+                        className="project-modal__field--full"
+                      >
+                        <Select
+                          id={`${formId}-alias-table`}
+                          value={draft.aliasTable}
+                          disabled={submitting}
+                          options={aliasTableOptions}
+                          placeholder="Select Alias Table"
+                          search
+                          searchPlaceholder="Search alias tables…"
+                          onChange={(value) => patchDraft({ aliasTable: value })}
+                        />
+                      </FormField>
+
+                      {isEditing ? (
+                        <div className="manage-insitu-modal__option-row">
+                          <div className="manage-insitu-modal__option-main">
+                            <span className="manage-insitu-modal__option-label">
+                              Active Lab Test Type
+                            </span>
+                            <span
+                              className="manage-insitu-modal__help"
+                              title="Inactive types stay available for reference but are listed separately."
                             >
-                              <div className="manage-lab-test-modal__result-name-row">
+                              <HelpIcon />
+                            </span>
+                          </div>
+                          <div className="manage-insitu-modal__option-controls">
+                            <Toggle
+                              id={`${formId}-active`}
+                              checked={draft.active}
+                              disabled={submitting}
+                              onChange={(checked) => {
+                                patchDraft({ active: checked });
+                                if (selectedId) {
+                                  setEntries((current) =>
+                                    current.map((entry) =>
+                                      entry.id === selectedId
+                                        ? { ...entry, active: checked }
+                                        : entry
+                                    )
+                                  );
+                                }
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ) : null}
+                    </section>
+
+                    <section className="manage-insitu-modal__section">
+                      <div className="manage-insitu-modal__section-head">
+                        <h4 className="manage-insitu-modal__section-title">Graphics</h4>
+                      </div>
+                      <div className="manage-insitu-modal__graphics-row manage-lab-test-modal__graphics-row">
+                        <div className="manage-insitu-modal__graphic-col">
+                          <span className="manage-insitu-modal__field-label">Plot Graphic</span>
+                          <button
+                            type="button"
+                            className="manage-insitu-modal__graphic-card"
+                            disabled={submitting || graphicsLoading}
+                            onClick={() => setGraphicPickerOpen(true)}
+                          >
+                            {selectedGraphicUrl ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={selectedGraphicUrl}
+                                alt={labTestGraphicLabel(draft.graphic)}
+                                className="manage-insitu-modal__graphic-card-image"
+                              />
+                            ) : (
+                              <span className="manage-insitu-modal__graphic-card-placeholder">
+                                Select Graphic
+                              </span>
+                            )}
+                            <span className="manage-insitu-modal__graphic-card-title">
+                              {labTestGraphicLabel(draft.graphic)}
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                      {graphicsError ? (
+                        <p className="manage-insitu-modal__error">{graphicsError}</p>
+                      ) : null}
+                    </section>
+
+                    <section className="manage-insitu-modal__section">
+                      <div className="manage-insitu-modal__section-head">
+                        <h4 className="manage-insitu-modal__section-title">Logging Options</h4>
+                      </div>
+                      <div className="manage-insitu-modal__options-list">
+                        <div className="manage-insitu-modal__option-row">
+                          <div className="manage-insitu-modal__option-main">
+                            <span className="manage-insitu-modal__option-label">
+                              Add as selected data plot borelogs
+                            </span>
+                            <span
+                              className="manage-insitu-modal__help"
+                              title="Include this lab test type as a selected data plot in borelogs."
+                            >
+                              <HelpIcon />
+                            </span>
+                          </div>
+                          <div className="manage-insitu-modal__option-controls">
+                            <Toggle
+                              id={`${formId}-data-plot`}
+                              checked={draft.addAsSelectedDataPlot}
+                              disabled={submitting}
+                              onChange={(checked) =>
+                                patchDraft({ addAsSelectedDataPlot: checked })
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <section className="manage-insitu-modal__section">
+                      <div className="manage-lab-test-modal__result-header">
+                        <div className="manage-insitu-modal__section-head">
+                          <h4 className="manage-insitu-modal__section-title">
+                            Test Result Table Design
+                          </h4>
+                          <p className="manage-insitu-modal__section-desc">
+                            Each card is a column in the lab test result table.
+                          </p>
+                        </div>
+                        <UiButton
+                          type="button"
+                          variant="primary"
+                          size="sm"
+                          disabled={
+                            submitting ||
+                            draft.resultFields.length >= LAB_TEST_RESULT_FIELDS_MAX_COUNT
+                          }
+                          aria-label="Add result field column"
+                          onClick={handleAddResultField}
+                        >
+                          Add Column
+                        </UiButton>
+                      </div>
+
+                      {draft.resultFields.length === 0 ? (
+                        <div className="manage-lab-test-modal__result-empty">
+                          <p className="manage-lab-test-modal__result-empty-text">
+                            No result columns yet.
+                          </p>
+                          <UiButton
+                            type="button"
+                            variant="secondary"
+                            size="sm"
+                            disabled={submitting}
+                            onClick={handleAddResultField}
+                          >
+                            Add Column
+                          </UiButton>
+                        </div>
+                      ) : (
+                        <div className="manage-lab-test-modal__result-row ui-scrollbar">
+                          {draft.resultFields.map((field, index) => (
+                            <div key={field.id} className="manage-lab-test-modal__result-col">
+                              <div className="manage-lab-test-modal__result-col-head">
+                                <span className="manage-lab-test-modal__result-col-title">
+                                  Column {index + 1}
+                                </span>
+                                <button
+                                  type="button"
+                                  className="manage-lab-test-modal__result-remove"
+                                  disabled={submitting}
+                                  aria-label={`Remove column ${index + 1}`}
+                                  onClick={() => handleRemoveResultField(field.id)}
+                                >
+                                  <CloseFieldIcon />
+                                </button>
+                              </div>
+
+                              <FormField
+                                label="Field Name"
+                                htmlFor={`${formId}-result-name-${field.id}`}
+                                className="project-modal__field--full"
+                              >
                                 <Input
                                   id={`${formId}-result-name-${field.id}`}
                                   variant="ui"
                                   type="text"
-                                  placeholder="Field Name"
+                                  placeholder="e.g. Moisture"
                                   value={field.name}
                                   disabled={submitting}
                                   maxLength={MODULE_OPTION_NAME_MAX_LENGTH}
@@ -916,74 +972,67 @@ export function ManageLabTestTypesModal({
                                     patchResultField(field.id, { name: event.target.value })
                                   }
                                 />
-                                <button
-                                  type="button"
-                                  className="manage-lab-test-modal__result-remove"
+                              </FormField>
+
+                              <FormField
+                                label="External Alias"
+                                htmlFor={`${formId}-result-alias-${field.id}`}
+                                className="project-modal__field--full"
+                              >
+                                <Input
+                                  id={`${formId}-result-alias-${field.id}`}
+                                  variant="ui"
+                                  type="text"
+                                  placeholder="Optional"
+                                  value={field.externalAlias ?? ""}
                                   disabled={submitting}
-                                  aria-label={`Remove result field ${index + 1}`}
-                                  onClick={() => handleRemoveResultField(field.id)}
-                                >
-                                  <CloseFieldIcon />
-                                </button>
-                              </div>
-                            </FormField>
+                                  maxLength={MODULE_OPTION_NAME_MAX_LENGTH}
+                                  onChange={(event) =>
+                                    patchResultField(field.id, {
+                                      externalAlias: event.target.value,
+                                    })
+                                  }
+                                />
+                              </FormField>
 
-                            <FormField
-                              label="External Alias (Optional)"
-                              htmlFor={`${formId}-result-alias-${field.id}`}
-                              className="project-modal__field--full"
-                            >
-                              <Input
-                                id={`${formId}-result-alias-${field.id}`}
-                                variant="ui"
-                                type="text"
-                                placeholder="External Alias (Optional)"
-                                value={field.externalAlias ?? ""}
-                                disabled={submitting}
-                                maxLength={MODULE_OPTION_NAME_MAX_LENGTH}
-                                onChange={(event) =>
-                                  patchResultField(field.id, {
-                                    externalAlias: event.target.value,
-                                  })
-                                }
-                              />
-                            </FormField>
-
-                            <FormField
-                              label="Select TabLogs Alias Field"
-                              htmlFor={`${formId}-result-tablogs-${field.id}`}
-                              className="project-modal__field--full"
-                            >
-                              <Select
-                                id={`${formId}-result-tablogs-${field.id}`}
-                                value={field.tablogsAlias ?? ""}
-                                disabled={submitting}
-                                options={resultAliasOptions}
-                                placeholder="Select TabLogs Alias Field"
-                                search
-                                searchPlaceholder="Search TabLogs aliases…"
-                                onChange={(value) =>
-                                  patchResultField(field.id, { tablogsAlias: value })
-                                }
-                              />
-                            </FormField>
-                          </div>
-                        ))
+                              <FormField
+                                label="TabLogs Alias"
+                                htmlFor={`${formId}-result-tablogs-${field.id}`}
+                                className="project-modal__field--full"
+                              >
+                                <Select
+                                  id={`${formId}-result-tablogs-${field.id}`}
+                                  value={field.tablogsAlias ?? ""}
+                                  disabled={submitting}
+                                  options={resultAliasOptions}
+                                  placeholder="Select alias"
+                                  search
+                                  searchPlaceholder="Search aliases…"
+                                  onChange={(value) =>
+                                    patchResultField(field.id, { tablogsAlias: value })
+                                  }
+                                />
+                              </FormField>
+                            </div>
+                          ))}
+                        </div>
                       )}
-                    </div>
+                    </section>
 
                     {isEditing ? (
-                      <UiButton
-                        type="button"
-                        variant="secondary"
-                        size="sm"
-                        className="ui-btn--danger project-modal__delete-option"
-                        disabled={submitting}
-                        onClick={requestDelete}
-                      >
-                        <TrashIcon />
-                        Delete Lab Test Type
-                      </UiButton>
+                      <div className="manage-insitu-modal__danger-zone">
+                        <UiButton
+                          type="button"
+                          variant="secondary"
+                          size="sm"
+                          className="ui-btn--danger project-modal__delete-option"
+                          disabled={submitting}
+                          onClick={requestDelete}
+                        >
+                          <TrashIcon />
+                          Delete Lab Test Type
+                        </UiButton>
+                      </div>
                     ) : null}
                   </div>
                 </div>
