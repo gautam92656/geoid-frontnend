@@ -22,6 +22,7 @@ import {
   polishResolvedHfText,
   reportPageHeightPx,
   reportPageWidthPx,
+  type DcpPoint,
   type LogReportSelection,
   type PreviewStratum,
 } from "../utils/logReportPreviewUtils";
@@ -64,6 +65,8 @@ type LogReportComposedSheetProps = Readonly<{
   supplierLabel?: string | null;
   /** Saved subsurface layers; when provided, drives the report body instead of demo strata. */
   subsurfaceLayers?: PreviewStratum[] | null;
+  /** Saved DCP-family insitu test readings, plotted on the DCP Graph column. */
+  dcpPoints?: DcpPoint[] | null;
   className?: string;
   style?: CSSProperties;
 }>;
@@ -95,12 +98,15 @@ function columnSource(column: LogTemplateColumn): string {
 
 function columnKind(
   column: LogTemplateColumn
-): "depth" | "graphic" | "chart" | "origin" | "classification" | "description" | "consistency" | "moisture" | "remarks" | "method" | "text" {
+): "depth" | "graphic" | "well_diagram" | "chart" | "origin" | "classification" | "description" | "consistency" | "moisture" | "remarks" | "method" | "text" {
   const source = columnSource(column);
   const label = `${column.text ?? ""} ${column.code ?? ""}`.toLowerCase();
   const type = column.column_type;
 
   if (type === "scale" || source.includes("depth") || label.includes("depth")) return "depth";
+  if (type === "graphic" && (source.includes("well") || label.includes("well"))) {
+    return "well_diagram";
+  }
   if (type === "graphic" || label.includes("graphic")) return "graphic";
   if (type === "chart" || source.includes("dcp") || label.includes("dcp")) return "chart";
   if (source.includes("origin") || label.includes("origin")) return "origin";
@@ -111,10 +117,101 @@ function columnKind(
   if (source.includes("consist") || label.includes("consist")) return "consistency";
   if (source.includes("moisture") || label.includes("moisture")) return "moisture";
   if (source.includes("remark") || label.includes("remark")) return "remarks";
-  if (source.includes("drill") || label.includes("drilling") || label.includes("method")) {
+  if (
+    label.includes("drilling method") ||
+    source.includes("drill_method") ||
+    source.includes("all_drilling_methods") ||
+    source.includes("drill") ||
+    label.includes("drilling")
+  ) {
     return "method";
   }
   return "text";
+}
+
+function buildDcpAxisTicks(column: LogTemplateColumn): {
+  ticks: number[];
+  axisMin: number;
+  axisMax: number;
+  axisRange: number;
+} {
+  const series = column.chart_data?.[0];
+  const axisMin = Number(series?.axis_bounds_min ?? column.axis_bounds_min ?? 0) || 0;
+  const axisMaxRaw = Number(series?.axis_bounds_max ?? column.axis_bounds_max ?? 25);
+  const axisMax = Number.isFinite(axisMaxRaw) && axisMaxRaw > axisMin ? axisMaxRaw : 25;
+  const axisStepRaw = Number(series?.axis_units_minor ?? column.axis_units_minor ?? 5);
+  const axisStep = Number.isFinite(axisStepRaw) && axisStepRaw > 0 ? axisStepRaw : 5;
+  const axisRange = axisMax - axisMin || 1;
+
+  const ticks: number[] = [];
+  for (let value = axisMin; value <= axisMax + 1e-6; value += axisStep) {
+    ticks.push(Math.round(value * 100) / 100);
+  }
+
+  return { ticks, axisMin, axisMax, axisRange };
+}
+
+function isDrillingMethodColumn(column: LogTemplateColumn): boolean {
+  const label = `${column.text ?? ""} ${column.code ?? ""}`.toLowerCase();
+  const source = columnSource(column);
+  return (
+    label.includes("drilling method") ||
+    source.includes("drill_method") ||
+    source.includes("all_drilling_methods")
+  );
+}
+
+function isDcpGraphColumn(column: LogTemplateColumn): boolean {
+  if (column.column_type === "chart") return true;
+  const label = `${column.text ?? ""} ${column.code ?? ""}`.toLowerCase();
+  return label.includes("dcp graph") || label.includes("dcp");
+}
+
+function isMethodDcpDividerPair(
+  column: LogTemplateColumn,
+  nextColumn: LogTemplateColumn | null
+): boolean {
+  if (!nextColumn) return false;
+  return isDrillingMethodColumn(column) && isDcpGraphColumn(nextColumn);
+}
+
+/** Vertical divider in the column-header / first content band. */
+function hasContentBandDividerRight(
+  column: LogTemplateColumn,
+  nextColumn: LogTemplateColumn | null
+): boolean {
+  if (!nextColumn) return false;
+  if (isMethodDcpDividerPair(column, nextColumn)) return true;
+  if (columnKind(nextColumn) === "remarks") return true;
+  return false;
+}
+
+function methodDcpDividerClasses(
+  column: LogTemplateColumn,
+  nextColumn: LogTemplateColumn | null,
+  prevColumn: LogTemplateColumn | null
+): string {
+  const classes: string[] = [];
+  if (isMethodDcpDividerPair(column, nextColumn)) {
+    classes.push("has-method-dcp-divider");
+  }
+  if (prevColumn && isMethodDcpDividerPair(prevColumn, column)) {
+    classes.push("has-after-drilling-method");
+  }
+  return classes.join(" ");
+}
+
+function contentBandBorderClass(
+  column: LogTemplateColumn,
+  nextColumn: LogTemplateColumn | null,
+  prevColumn: LogTemplateColumn | null = null
+): string {
+  return [
+    hasContentBandDividerRight(column, nextColumn) ? "has-content-band-divider" : "",
+    methodDcpDividerClasses(column, nextColumn, prevColumn),
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 
 function HfSectionGrid({
@@ -264,44 +361,141 @@ function HfSectionGrid({
   );
 }
 
-function DcpChartStub() {
+function DcpChart({
+  column,
+  points,
+  pageMetres,
+}: {
+  column: LogTemplateColumn;
+  points: DcpPoint[];
+  pageMetres: number;
+}) {
+  const { ticks, axisMin, axisRange } = buildDcpAxisTicks(column);
+  const series = column.chart_data?.[0];
+  const symbolColor = String(series?.symbol_color ?? series?.line_color ?? "#000");
+
   return (
     <div className="log-report-composed__dcp">
-      <div className="log-report-composed__dcp-scale">
-        {[0, 5, 10, 15, 20, 25].map((tick) => (
-          <span key={tick}>{tick}</span>
+      <div className="log-report-composed__dcp-plot">
+        {ticks.map((tick) => (
+          <span
+            key={`grid-${tick}`}
+            className="log-report-composed__dcp-gridline"
+            style={{ left: `${((tick - axisMin) / axisRange) * 100}%` }}
+          />
         ))}
+        {(() => {
+          const visiblePoints = points.filter(
+            (point) => pageMetres > 0 && point.depthM <= pageMetres
+          );
+          // A lone reading renders as a tiny speck otherwise; extend it into a
+          // visible stem so a single-entry DCP test doesn't look like nothing.
+          const isSingleEntry = visiblePoints.length === 1;
+
+          return visiblePoints.map((point, index) => {
+            const left = `${Math.min(100, Math.max(0, ((point.blows - axisMin) / axisRange) * 100))}%`;
+            const top = `${Math.min(100, Math.max(0, (point.depthM / pageMetres) * 100))}%`;
+            return (
+              <span key={`${point.depthM}-${index}`}>
+                {isSingleEntry ? (
+                  <span
+                    className="log-report-composed__dcp-single-stem"
+                    style={{ left, top, background: symbolColor }}
+                  />
+                ) : null}
+                <span
+                  className="log-report-composed__dcp-dot"
+                  style={{ left, top, background: symbolColor }}
+                />
+              </span>
+            );
+          });
+        })()}
       </div>
-      <div className="log-report-composed__dcp-plot" />
     </div>
   );
 }
 
-function GraphicHatch({ hatch }: { hatch: PreviewStratum["hatch"] }) {
-  return <div className={`log-report-composed__hatch log-report-composed__hatch--${hatch}`} />;
+function GraphicHatch({ stratum }: { stratum: PreviewStratum }) {
+  if (stratum.graphicUrl) {
+    return (
+      <div
+        className="log-report-composed__hatch log-report-composed__hatch--image"
+        style={{
+          backgroundImage: `url(${stratum.graphicUrl})`,
+          backgroundColor: stratum.fillOverrideColor || undefined,
+        }}
+      >
+        {stratum.graphicColorOverlay ? (
+          <div
+            className="log-report-composed__hatch-overlay"
+            style={{ background: stratum.graphicColorOverlay }}
+          />
+        ) : null}
+      </div>
+    );
+  }
+  return (
+    <div className={`log-report-composed__hatch log-report-composed__hatch--${stratum.hatch}`} />
+  );
 }
 
-function DepthScale({ stratum }: { stratum: PreviewStratum }) {
+const METRES_TO_FEET = 3.28084;
+
+function isFeetDepthColumn(column: LogTemplateColumn): boolean {
+  const label = `${column.text ?? ""} ${column.code ?? ""}`.toLowerCase();
+  return label.includes("(ft)") || label.includes("_ft") || label.includes(" ft");
+}
+
+function DepthTicks({
+  column,
+  pageMetres,
+}: {
+  column: LogTemplateColumn;
+  pageMetres: number;
+}) {
+  const toDisplayUnit = isFeetDepthColumn(column)
+    ? (metres: number) => metres * METRES_TO_FEET
+    : (metres: number) => metres;
+
+  const stepRaw = Number(column.majorStep ?? 1);
+  const step = Number.isFinite(stepRaw) && stepRaw > 0 ? stepRaw : 1;
+
+  const ticks: number[] = [];
+  for (let value = step; value < pageMetres - 1e-6; value += step) {
+    ticks.push(Math.round(value * 1000) / 1000);
+  }
+
   return (
-    <div className="log-report-composed__depth">
-      <span className="log-report-composed__depth-tick is-top">{stratum.fromDepth.toFixed(1)}</span>
-      <span className="log-report-composed__depth-tick is-bottom">
-        {stratum.toDepth.toFixed(1)}
-      </span>
-      <span className="log-report-composed__depth-rail" aria-hidden="true" />
-    </div>
+    <>
+      {ticks.map((tick) => (
+        <span
+          key={tick}
+          className="log-report-composed__depth-tick-major"
+          style={{ top: `${(tick / pageMetres) * 100}%` }}
+        >
+          {toDisplayUnit(tick).toFixed(1)}
+        </span>
+      ))}
+    </>
   );
 }
 
 function stratumCellContent(
   kind: ReturnType<typeof columnKind>,
+  column: LogTemplateColumn,
   stratum: PreviewStratum
 ) {
   switch (kind) {
     case "depth":
-      return <DepthScale stratum={stratum} />;
+      // Major-step gridline labels live on the strata grid backdrop, not per-stratum.
+      return null;
+    case "well_diagram":
+      // Real well-construction rendering (casings/backfills) isn't wired up yet;
+      // leave blank rather than reusing the soil-classification hatch.
+      return null;
     case "graphic":
-      return <GraphicHatch hatch={stratum.hatch} />;
+      return <GraphicHatch stratum={stratum} />;
     case "chart":
       // Full-height DCP lives on the strata grid backdrop.
       return null;
@@ -324,16 +518,66 @@ function stratumCellContent(
   }
 }
 
+function ContentFirstRow({
+  columns,
+  dcpColumn,
+}: {
+  columns: LogTemplateColumn[];
+  dcpColumn: LogTemplateColumn | null;
+}) {
+  const dcpAxis = dcpColumn ? buildDcpAxisTicks(dcpColumn) : null;
+
+  return (
+    <div
+      className="log-report-composed__content-first-row"
+      style={{ gridTemplateColumns: columnWidthPct(columns).map((pct) => `${pct}%`).join(" ") }}
+    >
+      {columns.map((column, index) => {
+        const kind = columnKind(column);
+        const borderClass = contentBandBorderClass(
+          column,
+          columns[index + 1] ?? null,
+          columns[index - 1] ?? null
+        );
+        const showDcpScale = dcpColumn != null && column.code === dcpColumn.code;
+
+        return (
+          <div
+            key={`content-first-${column.code}`}
+            className={[
+              "log-report-composed__content-first-cell",
+              `is-${kind}`,
+              borderClass,
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            {showDcpScale && dcpAxis ? (
+              <div className="log-report-composed__dcp-scale">
+                {dcpAxis.ticks.map((tick) => (
+                  <span key={tick}>{tick}</span>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function LogBody({
   columns,
   form,
   metresPerPage,
   subsurfaceLayers,
+  dcpPoints,
 }: {
   columns: LogTemplateColumn[];
   form: LogFormState;
   metresPerPage: string;
   subsurfaceLayers?: PreviewStratum[] | null;
+  dcpPoints?: DcpPoint[] | null;
 }) {
   const widthPcts = columnWidthPct(columns);
   const metres = Number(metresPerPage);
@@ -352,10 +596,6 @@ function LogBody({
   );
   // Full body height = metres-per-page scale; stretch if the hole is deeper.
   const pageMetres = Math.max(configuredMetres, deepest > 0 ? deepest : configuredMetres);
-  const refusalTopPct =
-    Number.isFinite(endDepth) && endDepth > 0
-      ? Math.min(100, (endDepth / pageMetres) * 100)
-      : Math.min(100, (deepest / pageMetres) * 100);
 
   if (columns.length === 0) {
     return (
@@ -366,22 +606,40 @@ function LogBody({
   }
 
   const gridCols = widthPcts.map((pct) => `${pct}%`).join(" ");
+  const dcpColumn = columns.find((column) => isDcpGraphColumn(column)) ?? null;
 
   return (
     <div className="log-report-composed__body">
       <div className="log-report-composed__col-head" style={{ gridTemplateColumns: gridCols }}>
-        {columns.map((column) => {
+        {columns.map((column, index) => {
           const vertical = Boolean(column.name_vertical || column.vertical_text);
+          const borderClass = contentBandBorderClass(
+            column,
+            columns[index + 1] ?? null,
+            columns[index - 1] ?? null
+          );
           return (
             <div
               key={column.code}
-              className={`log-report-composed__col-title${vertical ? " is-vertical" : ""}`}
+              className={[
+                "log-report-composed__col-title",
+                vertical ? "is-vertical" : "",
+                borderClass,
+              ]
+                .filter(Boolean)
+                .join(" ")}
             >
-              {column.text || column.code}
+              <span
+                className={`log-report-composed__col-title-text${vertical ? " is-vertical" : ""}`}
+              >
+                {column.text || column.code}
+              </span>
             </div>
           );
         })}
       </div>
+
+      <ContentFirstRow columns={columns} dcpColumn={dcpColumn} />
 
       <div className="log-report-composed__strata-wrap">
         {/* Full-height column rails so empty depth below the hole still shows the grid */}
@@ -390,16 +648,32 @@ function LogBody({
           style={{ gridTemplateColumns: gridCols }}
           aria-hidden="true"
         >
-          {columns.map((column) => {
+          {columns.map((column, index) => {
             const kind = columnKind(column);
+            const dividerClass = methodDcpDividerClasses(
+              column,
+              columns[index + 1] ?? null,
+              columns[index - 1] ?? null
+            );
             return (
               <div
                 key={`grid-${column.code}`}
-                className={`log-report-composed__strata-grid-cell is-${kind}`}
+                className={[
+                  "log-report-composed__strata-grid-cell",
+                  `is-${kind}`,
+                  dividerClass,
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
               >
-                {kind === "chart" ? <DcpChartStub /> : null}
+                {kind === "chart" ? (
+                  <DcpChart column={column} points={dcpPoints ?? []} pageMetres={pageMetres} />
+                ) : null}
                 {kind === "depth" ? (
-                  <span className="log-report-composed__depth-rail is-full" aria-hidden="true" />
+                  <>
+                    <span className="log-report-composed__depth-rail is-full" aria-hidden="true" />
+                    <DepthTicks column={column} pageMetres={pageMetres} />
+                  </>
                 ) : null}
               </div>
             );
@@ -422,30 +696,45 @@ function LogBody({
                 gridTemplateColumns: gridCols,
               }}
             >
-              {columns.map((column) => {
+              {columns.map((column, columnIndex) => {
                 const kind = columnKind(column);
+                const dividerClass = methodDcpDividerClasses(
+                  column,
+                  columns[columnIndex + 1] ?? null,
+                  columns[columnIndex - 1] ?? null
+                );
                 return (
                   <div
                     key={`${column.code}-${stratum.fromDepth}`}
-                    className={`log-report-composed__stratum-cell is-${kind}`}
+                    className={[
+                      "log-report-composed__stratum-cell",
+                      `is-${kind}`,
+                      dividerClass,
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
                   >
-                    {stratumCellContent(kind, stratum)}
+                    {stratumCellContent(kind, column, stratum)}
                   </div>
                 );
               })}
             </div>
           );
         })}
-
-        {refusal ? (
-          <div
-            className="log-report-composed__refusal"
-            style={{ top: `${refusalTopPct}%` }}
-          >
-            {refusal}
-          </div>
-        ) : null}
       </div>
+
+      {refusal ? (
+        <div className="log-report-composed__refusal-row" style={{ gridTemplateColumns: gridCols }}>
+          {columns.map((column) => {
+            const kind = columnKind(column);
+            return (
+              <div key={`refusal-${column.code}`} className="log-report-composed__refusal-cell">
+                {kind === "description" ? refusal : null}
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -468,6 +757,7 @@ export const LogReportComposedSheet = forwardRef<HTMLElement, LogReportComposedS
       equipmentLabel,
       supplierLabel,
       subsurfaceLayers,
+      dcpPoints,
       className,
       style,
     },
@@ -541,6 +831,7 @@ export const LogReportComposedSheet = forwardRef<HTMLElement, LogReportComposedS
           form={form}
           metresPerPage={selection.metresPerPage}
           subsurfaceLayers={subsurfaceLayers}
+          dcpPoints={dcpPoints}
         />
 
         {footerSection ? (
@@ -646,16 +937,53 @@ export const LOG_REPORT_COMPOSED_PRINT_STYLES = `
     line-height: 1.15;
   }
   .log-report-composed__col-title:last-child { border-right: none; }
+  .log-report-composed__col-title.has-content-band-divider,
+  .log-report-composed__content-first-cell.has-content-band-divider {
+    border-right: 1px solid #000;
+  }
+  .log-report-composed__col-title.has-method-dcp-divider,
+  .log-report-composed__content-first-cell.has-method-dcp-divider,
+  .log-report-composed__strata-grid-cell.has-method-dcp-divider,
+  .log-report-composed__stratum-cell.has-method-dcp-divider {
+    border-right: 1px solid #000 !important;
+  }
+  .log-report-composed__col-title.has-after-drilling-method,
+  .log-report-composed__content-first-cell.has-after-drilling-method,
+  .log-report-composed__strata-grid-cell.has-after-drilling-method,
+  .log-report-composed__stratum-cell.has-after-drilling-method {
+    border-left: 1px solid #000 !important;
+  }
   .log-report-composed__col-title.is-vertical {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-height: 64px;
     padding: 6px 2px;
+  }
+  .log-report-composed__col-title-text.is-vertical {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+  .log-report-composed__content-first-row {
+    display: grid;
+    flex-shrink: 0;
+    border-bottom: 1px solid #000;
+    background: #fff;
+  }
+  .log-report-composed__content-first-cell {
+    min-height: 14px;
+    box-sizing: border-box;
+    border-right: 1px solid #000;
+  }
+  .log-report-composed__content-first-cell:last-child { border-right: none; }
+  .log-report-composed__content-first-cell .log-report-composed__dcp-scale {
+    border-bottom: none;
   }
   .log-report-composed__strata-wrap {
     position: relative;
     flex: 1 1 auto;
     min-height: 0;
+    overflow: hidden;
   }
   .log-report-composed__strata-grid {
     position: absolute;
@@ -701,23 +1029,28 @@ export const LOG_REPORT_COMPOSED_PRINT_STYLES = `
   }
   .log-report-composed__stratum-cell:last-child { border-right: none; }
   .log-report-composed__stratum-cell.is-graphic,
+  .log-report-composed__stratum-cell.is-well_diagram,
   .log-report-composed__stratum-cell.is-chart,
   .log-report-composed__stratum-cell.is-depth { padding: 0; }
   .log-report-composed__stratum-cell.is-chart { background: transparent; }
   .log-report-composed__stratum-cell.is-description { font-size: 8px; }
-  .log-report-composed__depth {
-    position: relative; width: 100%; height: 100%; min-height: 100%;
-  }
   .log-report-composed__depth-rail {
     position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: #000;
   }
   .log-report-composed__depth-rail.is-full { z-index: 0; }
-  .log-report-composed__depth-tick {
+  .log-report-composed__depth-tick-major {
     position: absolute; left: 2px; font-size: 8px; line-height: 1;
+    transform: translateY(-50%);
+    z-index: 1;
   }
-  .log-report-composed__depth-tick.is-top { top: 1px; }
-  .log-report-composed__depth-tick.is-bottom { bottom: 1px; }
-  .log-report-composed__hatch { width: 100%; height: 100%; min-height: 100%; }
+  .log-report-composed__hatch { width: 100%; height: 100%; min-height: 100%; position: relative; }
+  .log-report-composed__hatch--image {
+    background-repeat: repeat;
+    background-size: 24px 24px;
+  }
+  .log-report-composed__hatch-overlay {
+    position: absolute; inset: 0; opacity: 0.35; pointer-events: none;
+  }
   .log-report-composed__hatch--concrete {
     background: repeating-linear-gradient(-45deg, #d1d5db 0 2px, #fff 2px 6px);
   }
@@ -741,21 +1074,37 @@ export const LOG_REPORT_COMPOSED_PRINT_STYLES = `
     font-size: 7px; border-bottom: 1px solid #000; flex-shrink: 0;
   }
   .log-report-composed__dcp-plot {
+    position: relative;
     flex: 1;
-    background:
-      linear-gradient(to right, transparent 19.9%, #d1d5db 20% 20.2%, transparent 20.3%),
-      linear-gradient(to right, transparent 39.9%, #d1d5db 40% 40.2%, transparent 40.3%),
-      linear-gradient(to right, transparent 59.9%, #d1d5db 60% 60.2%, transparent 60.3%),
-      linear-gradient(to right, transparent 79.9%, #d1d5db 80% 80.2%, transparent 80.3%);
   }
-  .log-report-composed__refusal {
-    position: absolute; left: 0; right: 0;
-    transform: translateY(-50%);
-    padding: 2px 6px; font-size: 8px; font-weight: 600;
-    background: rgba(255,255,255,0.92); border-top: 1px solid #000; border-bottom: 1px solid #000;
-    pointer-events: none;
-    z-index: 2;
+  .log-report-composed__dcp-gridline {
+    position: absolute; top: 0; bottom: 0; width: 0;
+    border-left: 1px dotted #9ca3af;
   }
+  .log-report-composed__dcp-dot {
+    position: absolute; width: 4px; height: 4px; border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+  .log-report-composed__dcp-single-stem {
+    position: absolute; width: 2px; height: 28px;
+    transform: translate(-50%, -50%);
+  }
+  .log-report-composed__refusal-row {
+    display: grid;
+    align-items: stretch;
+    flex-shrink: 0;
+    background: #fff; border-top: 1px solid #000; border-bottom: 1px solid #000;
+  }
+  .log-report-composed__refusal-cell {
+    height: 100%;
+    box-sizing: border-box;
+    border-right: 1px solid #000;
+    padding: 3px 6px; font-size: 8px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    min-width: 0;
+  }
+  .log-report-composed__refusal-cell:last-child { border-right: none; }
   @media print {
     body { margin: 0; background: #fff; }
     .log-report-composed { box-shadow: none; width: 100% !important; min-height: auto !important; }

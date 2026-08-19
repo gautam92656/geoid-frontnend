@@ -1,13 +1,11 @@
 "use client";
 
-import { useId, useState } from "react";
-import { FormField, Input, Select, Toggle, UiButton } from "@/shared/components/ui";
-import {
-  BORELOG_TEMPLATE_OPTIONS,
-  CORELOG_TEMPLATE_OPTIONS,
-  LOG_CONFIG_FOOTER_OPTIONS,
-  LOG_CONFIG_HEADER_OPTIONS,
-} from "../../data/logReportOptions";
+import { useEffect, useId, useState } from "react";
+import { FormField, Input, Select, Toggle, UiButton, type SelectOption } from "@/shared/components/ui";
+import { MAX_TABLE_PAGE_SIZE } from "@/shared/constants/pagination";
+import { showApiError } from "@/shared/utils/apiToast";
+import { listHeaderFooterTemplates } from "../../services/headerFooterTemplateApi";
+import { listLogTemplates } from "../../services/logTemplateApi";
 import {
   LOG_REPORT_WATERMARK_STATUSES,
   MODULE_DISPLAY_NAME_MAX_LENGTH,
@@ -16,6 +14,7 @@ import {
   type LogReportWatermarkStatusId,
   type StoredModuleSettings,
 } from "../../utils/configModules";
+import { toTemplateOptions } from "../../utils/logReportPreviewUtils";
 import { ManageLogReportTemplatesModal } from "../ManageLogReportTemplatesModal";
 
 const STATUS_OPTIONS = [
@@ -43,6 +42,43 @@ export function LogReportModuleSettingsPanel({
   const formId = useId();
   const report = getReportConfig(settings);
   const [templatesOpen, setTemplatesOpen] = useState(false);
+  const [headerOptions, setHeaderOptions] = useState<SelectOption[]>([]);
+  const [footerOptions, setFooterOptions] = useState<SelectOption[]>([]);
+  const [borelogTemplateOptions, setBorelogTemplateOptions] = useState<SelectOption[]>([]);
+  const [corelogTemplateOptions, setCorelogTemplateOptions] = useState<SelectOption[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    void Promise.all([
+      listHeaderFooterTemplates(1, MAX_TABLE_PAGE_SIZE, {
+        kind: "header",
+        sortBy: "name",
+        sortOrder: "asc",
+      }),
+      listHeaderFooterTemplates(1, MAX_TABLE_PAGE_SIZE, {
+        kind: "footer",
+        sortBy: "name",
+        sortOrder: "asc",
+      }),
+      listLogTemplates(),
+    ])
+      .then(([headers, footers, logTemplates]) => {
+        if (cancelled) return;
+        setHeaderOptions(toTemplateOptions(headers.data));
+        setFooterOptions(toTemplateOptions(footers.data));
+        setBorelogTemplateOptions(toTemplateOptions(logTemplates.borelog));
+        setCorelogTemplateOptions(toTemplateOptions(logTemplates.corelog));
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        showApiError(error, "Failed to load templates");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const updateReport = (patch: Partial<LogReportModuleConfig>) => {
     onChange({
@@ -138,7 +174,7 @@ export function LogReportModuleSettingsPanel({
                 id={`${formId}-borelog-template`}
                 value={report.borelogTemplate}
                 disabled={disabled}
-                options={BORELOG_TEMPLATE_OPTIONS}
+                options={borelogTemplateOptions}
                 onChange={(value) => updateReport({ borelogTemplate: value })}
               />
             </FormField>
@@ -148,7 +184,7 @@ export function LogReportModuleSettingsPanel({
                 id={`${formId}-corelog-template`}
                 value={report.corelogTemplate}
                 disabled={disabled}
-                options={CORELOG_TEMPLATE_OPTIONS}
+                options={corelogTemplateOptions}
                 onChange={(value) => updateReport({ corelogTemplate: value })}
               />
             </FormField>
@@ -185,7 +221,7 @@ export function LogReportModuleSettingsPanel({
             value={report.logHeader}
             disabled={disabled}
             placeholder="Select Log Header"
-            options={LOG_CONFIG_HEADER_OPTIONS}
+            options={headerOptions}
             onChange={(value) => updateReport({ logHeader: value })}
           />
         </FormField>
@@ -205,7 +241,7 @@ export function LogReportModuleSettingsPanel({
             value={report.logFooter}
             disabled={disabled}
             placeholder="Select Log Footer"
-            options={LOG_CONFIG_FOOTER_OPTIONS}
+            options={footerOptions}
             onChange={(value) => updateReport({ logFooter: value })}
           />
         </FormField>

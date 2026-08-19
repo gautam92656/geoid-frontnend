@@ -6,7 +6,7 @@ import { REPORT_PREVIEW_TYPES, REPORT_PREVIEW_ZOOM } from "../data/logReportOpti
 import type { Project } from "../types/project";
 import type { LogFormState } from "../types/log";
 import type { LogReportPreviewState } from "../hooks/useLogReportPreviewState";
-import type { PreviewStratum } from "../utils/logReportPreviewUtils";
+import type { DcpPoint, PreviewStratum } from "../utils/logReportPreviewUtils";
 import { LogReportComposedSheet } from "./LogReportComposedSheet";
 
 function InfoIcon() {
@@ -30,6 +30,7 @@ type LogReportPreviewProps = Readonly<{
   equipmentLabel?: string | null;
   supplierLabel?: string | null;
   subsurfaceLayers?: PreviewStratum[] | null;
+  dcpPoints?: DcpPoint[] | null;
 }>;
 
 export function LogReportPreview({
@@ -44,6 +45,7 @@ export function LogReportPreview({
   equipmentLabel,
   supplierLabel,
   subsurfaceLayers,
+  dcpPoints,
 }: LogReportPreviewProps) {
   const [zoom, setZoom] = useState<number>(REPORT_PREVIEW_ZOOM.default);
   const {
@@ -135,6 +137,7 @@ export function LogReportPreview({
             equipmentLabel={equipmentLabel}
             supplierLabel={supplierLabel}
             subsurfaceLayers={subsurfaceLayers}
+            dcpPoints={dcpPoints}
             style={{ transform: `scale(${zoom / 100})`, transformOrigin: "top center" }}
           />
         )}

@@ -11,6 +11,19 @@ import {
 } from "../data/logReportOptions";
 import type { PageOrientation, PageSize } from "../components/headerFooterBuilder/contentSchema";
 import { COMPANY_LOGO_PATH } from "../data/branding";
+import {
+  getClassificationGraphicUrl,
+  matchPreviewClassification,
+  type ClassificationCode,
+  type WorkflowPreviewValues,
+  type WorkflowStep,
+} from "./configModuleSettings";
+import {
+  buildSubsurfacePreviewDescription,
+  resolvePreviewClassificationDisplay,
+} from "./configModules/subsurfaceDescription";
+import { mmToMeters, parseRowsFromResultValues } from "./insituTestForm";
+import type { LogInsituTest } from "../types/logInsituTest";
 
 export type LogReportSelection = {
   templateId: string;
@@ -42,6 +55,17 @@ export type PreviewStratum = {
   moisture: string;
   remarks: string;
   hatch: "concrete" | "fill" | "clay" | "silt" | "sand" | "empty";
+  /** Real classification-code graphic (from the workflow's Classification Codes config), when resolved. */
+  graphicUrl?: string;
+  graphicColorOverlay?: string | null;
+  fillOverrideColor?: string | null;
+};
+
+/** Resolves a layer's classification-code graphic via the project's workflow config. */
+export type StrataClassificationContext = {
+  codes: readonly ClassificationCode[];
+  steps: readonly WorkflowStep[];
+  applyRules: boolean;
 };
 
 const SEEDED_HEADER_NAMES: Record<ReportPreviewTypeId, string[]> = {
@@ -276,7 +300,9 @@ export function buildStrataFromLayers(
     moisture?: string;
     remarks?: string;
     hatch?: PreviewStratum["hatch"];
-  }>
+    values?: WorkflowPreviewValues;
+  }>,
+  classificationContext?: StrataClassificationContext
 ): PreviewStratum[] {
   const sorted = [...layers].sort((a, b) => {
     const aDepth = Number(a.depth);
@@ -295,12 +321,42 @@ export function buildStrataFromLayers(
     previousDepth = Math.max(previousDepth, toDepth);
 
     const hatch = layer.hatch ?? "empty";
+    const savedDescription = typeof layer.description === "string" ? layer.description.trim() : "";
+    const matchedResult = classificationContext
+      ? matchPreviewClassification(
+          classificationContext.codes,
+          classificationContext.steps,
+          layer.values ?? {},
+          classificationContext.applyRules
+        )
+      : null;
+    const matched = matchedResult?.code ?? null;
+    const generatedDescription =
+      savedDescription ||
+      (classificationContext && layer.values
+        ? buildSubsurfacePreviewDescription(
+            classificationContext.steps,
+            layer.values,
+            undefined,
+            resolvePreviewClassificationDisplay(
+              classificationContext.steps,
+              layer.values,
+              undefined,
+              matchedResult ?? {
+                name: layer.classification.trim() || "",
+                abbreviation: layer.classification.trim() || "",
+                code: null,
+              }
+            )
+          )
+        : "");
+
     return {
       fromDepth: Number(fromDepth.toFixed(3)),
       toDepth: Number(toDepth.toFixed(3)),
       origin: layer.origin.trim(),
       classification: layer.classification.trim(),
-      description: layer.description.trim(),
+      description: generatedDescription,
       consistency: layer.consistency?.trim() ?? "",
       moisture: layer.moisture?.trim() ?? "",
       remarks: layer.remarks?.trim() ?? "",
@@ -313,8 +369,47 @@ export function buildStrataFromLayers(
         hatch === "empty"
           ? hatch
           : "empty",
+      graphicUrl: matched?.graphic ? getClassificationGraphicUrl(matched.graphic) : undefined,
+      graphicColorOverlay: matched?.graphicColorOverlay ?? null,
+      fillOverrideColor: matched?.fillOverrideColor ?? null,
     };
   });
+}
+
+export type DcpPoint = { depthM: number; blows: number };
+
+const DEFAULT_DCP_TEST_TYPE_IDS = ["dcp", "psp", "dpsh"];
+
+/**
+ * Flattens saved DCP-family insitu test readings (penetration-row intervals)
+ * into a depth-sorted point series for the report's DCP Graph column.
+ */
+export function buildDcpPointsFromInsituTests(
+  tests: readonly LogInsituTest[],
+  testTypeIds: readonly string[] = DEFAULT_DCP_TEST_TYPE_IDS
+): DcpPoint[] {
+  const allow = new Set(testTypeIds.map((id) => id.trim().toLowerCase()));
+  const points: DcpPoint[] = [];
+
+  for (const test of tests) {
+    if (!allow.has(test.testTypeId.trim().toLowerCase())) continue;
+    const rows = parseRowsFromResultValues(
+      test.resultValues,
+      test.depthFrom,
+      test.depthTo,
+      test.results
+    );
+    for (const row of rows) {
+      const blows = Number(row.value);
+      const fromM = Number(mmToMeters(row.depthFromMm));
+      const toM = Number(mmToMeters(row.depthToMm));
+      if (!Number.isFinite(blows) || !Number.isFinite(fromM)) continue;
+      const depthM = Number.isFinite(toM) ? (fromM + toM) / 2 : fromM;
+      points.push({ depthM, blows });
+    }
+  }
+
+  return points.sort((a, b) => a.depthM - b.depthM);
 }
 
 /**

@@ -9416,17 +9416,64 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   border-right: none;
 }
 
+.log-report-composed__col-title.has-content-band-divider,
+.log-report-composed__content-first-cell.has-content-band-divider {
+  border-right: 1px solid #000;
+}
+
+.log-report-composed__col-title.has-method-dcp-divider,
+.log-report-composed__content-first-cell.has-method-dcp-divider,
+.log-report-composed__strata-grid-cell.has-method-dcp-divider,
+.log-report-composed__stratum-cell.has-method-dcp-divider {
+  border-right: 1px solid #000 !important;
+}
+
+.log-report-composed__col-title.has-after-drilling-method,
+.log-report-composed__content-first-cell.has-after-drilling-method,
+.log-report-composed__strata-grid-cell.has-after-drilling-method,
+.log-report-composed__stratum-cell.has-after-drilling-method {
+  border-left: 1px solid #000 !important;
+}
+
+.log-report-composed__content-first-row {
+  display: grid;
+  flex-shrink: 0;
+  border-bottom: 1px solid #000;
+  background: #fff;
+}
+
+.log-report-composed__content-first-cell {
+  min-height: 14px;
+  box-sizing: border-box;
+  border-right: 1px solid #000;
+}
+
+.log-report-composed__content-first-cell:last-child {
+  border-right: none;
+}
+
+.log-report-composed__content-first-cell .log-report-composed__dcp-scale {
+  border-bottom: none;
+}
+
 .log-report-composed__col-title.is-vertical {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 64px;
   padding: 6px 2px;
+}
+
+.log-report-composed__col-title-text.is-vertical {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
 }
 
 .log-report-composed__strata-wrap {
   position: relative;
   flex: 1 1 auto;
   min-height: 0;
+  overflow: hidden;
 }
 
 .log-report-composed__strata-grid {
@@ -9484,6 +9531,7 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
 }
 
 .log-report-composed__stratum-cell.is-graphic,
+.log-report-composed__stratum-cell.is-well_diagram,
 .log-report-composed__stratum-cell.is-chart,
 .log-report-composed__stratum-cell.is-depth {
   padding: 0;
@@ -9495,13 +9543,6 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
 
 .log-report-composed__stratum-cell.is-description {
   font-size: 8px;
-}
-
-.log-report-composed__depth {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
 }
 
 .log-report-composed__depth-rail {
@@ -9517,25 +9558,32 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   z-index: 0;
 }
 
-.log-report-composed__depth-tick {
+.log-report-composed__depth-tick-major {
   position: absolute;
   left: 2px;
   font-size: 8px;
   line-height: 1;
-}
-
-.log-report-composed__depth-tick.is-top {
-  top: 1px;
-}
-
-.log-report-composed__depth-tick.is-bottom {
-  bottom: 1px;
+  transform: translateY(-50%);
+  z-index: 1;
 }
 
 .log-report-composed__hatch {
   width: 100%;
   height: 100%;
   min-height: 100%;
+  position: relative;
+}
+
+.log-report-composed__hatch--image {
+  background-repeat: repeat;
+  background-size: 24px 24px;
+}
+
+.log-report-composed__hatch-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 .log-report-composed__hatch--concrete {
@@ -9580,27 +9628,59 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
 }
 
 .log-report-composed__dcp-plot {
+  position: relative;
   flex: 1;
-  background:
-    linear-gradient(to right, transparent 19.9%, #d1d5db 20% 20.2%, transparent 20.3%),
-    linear-gradient(to right, transparent 39.9%, #d1d5db 40% 40.2%, transparent 40.3%),
-    linear-gradient(to right, transparent 59.9%, #d1d5db 60% 60.2%, transparent 60.3%),
-    linear-gradient(to right, transparent 79.9%, #d1d5db 80% 80.2%, transparent 80.3%);
 }
 
-.log-report-composed__refusal {
+.log-report-composed__dcp-gridline {
   position: absolute;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-  padding: 2px 6px;
-  font-size: 8px;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.92);
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px dotted #9ca3af;
+}
+
+.log-report-composed__dcp-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.log-report-composed__dcp-single-stem {
+  position: absolute;
+  width: 2px;
+  height: 28px;
+  transform: translate(-50%, -50%);
+}
+
+.log-report-composed__refusal-row {
+  display: grid;
+  align-items: stretch;
+  flex-shrink: 0;
+  background: #fff;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
-  pointer-events: none;
-  z-index: 2;
+}
+
+.log-report-composed__refusal-cell {
+  height: 100%;
+  box-sizing: border-box;
+  border-right: 1px solid #000;
+  padding: 3px 6px;
+  font-size: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-width: 0;
+}
+
+.log-report-composed__refusal-cell:last-child {
+  border-right: none;
 }
 
 .log-report-preview__loading {

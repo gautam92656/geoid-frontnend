@@ -74,7 +74,11 @@ export function reorderColumns(
   const targetIndex = selectColumnIndex(next.columnData, targetCode);
   if (sourceIndex < 0 || targetIndex < 0) return config;
   const [moved] = next.columnData.splice(sourceIndex, 1);
-  next.columnData.splice(targetIndex, 0, moved);
+  // Removing the source shifts every later index down by one, so a target
+  // that came after it must be adjusted to land the moved column in the
+  // target's original slot regardless of drag direction.
+  const insertIndex = targetIndex > sourceIndex ? targetIndex - 1 : targetIndex;
+  next.columnData.splice(insertIndex, 0, moved);
   return next;
 }
 

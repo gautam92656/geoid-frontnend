@@ -50,9 +50,12 @@ import { CoreLoggingSection } from "./CoreLoggingSection";
 import { LogLabTestsSection } from "./LogLabTestsSection";
 import { ProjectSidebar, type ProjectSidebarSectionId } from "./ProjectSidebar";
 import { useLogReportPreviewState } from "../hooks/useLogReportPreviewState";
+import { useSubsurfaceRuntime } from "../hooks/useSubsurfaceRuntime";
 import { listLogSubsurfaces } from "../services/subsurfaceApi";
+import { listLogInsituTests } from "../services/logInsituTestApi";
 import type { SubsurfaceLayer } from "../types/subsurfaceLayer";
-import { buildStrataFromLayers } from "../utils/logReportPreviewUtils";
+import type { LogInsituTest } from "../types/logInsituTest";
+import { buildDcpPointsFromInsituTests, buildStrataFromLayers } from "../utils/logReportPreviewUtils";
 
 function ReportIcon() {
   return (
@@ -88,18 +91,37 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
   const [loadingReferenceData, setLoadingReferenceData] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [subsurfaceLayers, setSubsurfaceLayers] = useState<SubsurfaceLayer[]>([]);
+  const [insituTests, setInsituTests] = useState<LogInsituTest[]>([]);
 
   const reportEnabled = activeSection === "report" || showReport;
   const report = useLogReportPreviewState({ enabled: reportEnabled });
+  const subsurfaceRuntime = useSubsurfaceRuntime({
+    logConfigurationId: form.logConfigId,
+    enabled: reportEnabled,
+  });
   const companyName = user?.companyName ?? null;
   const companyLogoUrl = user?.companyLogoUrl ?? null;
   const companyEmail = user?.email ?? null;
   const phoneCode = user?.phoneCode ?? null;
   const phoneNumber = user?.phoneNumber ?? null;
 
-  const reportStrata = useMemo(
-    () => buildStrataFromLayers(subsurfaceLayers),
-    [subsurfaceLayers]
+  const reportStrata = useMemo(() => {
+    const workflow = subsurfaceRuntime.context?.workflow;
+    return buildStrataFromLayers(
+      subsurfaceLayers,
+      workflow
+        ? {
+            codes: workflow.classificationCodes,
+            steps: workflow.steps,
+            applyRules: workflow.applyClassificationRules,
+          }
+        : undefined
+    );
+  }, [subsurfaceLayers, subsurfaceRuntime.context]);
+
+  const reportDcpPoints = useMemo(
+    () => buildDcpPointsFromInsituTests(insituTests),
+    [insituTests]
   );
 
   const handleActiveLayersChange = useCallback((layers: SubsurfaceLayer[]) => {
@@ -117,6 +139,24 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
         if (!cancelled) setSubsurfaceLayers(result.data);
       } catch {
         if (!cancelled) setSubsurfaceLayers([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [project.id, log.id]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const result = await listLogInsituTests(project.id, log.id, 1, MAX_TABLE_PAGE_SIZE, {
+          sortBy: "sortOrder",
+          sortOrder: "asc",
+        });
+        if (!cancelled) setInsituTests(result.data);
+      } catch {
+        if (!cancelled) setInsituTests([]);
       }
     })();
     return () => {
@@ -845,6 +885,7 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
                   equipmentLabel={selectedEquipmentLabel}
                   supplierLabel={selectedSupplierName}
                   subsurfaceLayers={reportStrata}
+                  dcpPoints={reportDcpPoints}
                 />
               ) : null}
             </div>
