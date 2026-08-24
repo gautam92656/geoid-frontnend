@@ -49,6 +49,11 @@ export const API_MESSAGES = {
   HEADER_FOOTER_TEMPLATE_DELETED: "Header & footer template deleted successfully.",
   HEADER_FOOTER_TEMPLATES_DELETED: "Header & footer templates deleted successfully.",
 
+  LOG_REPORT_TEMPLATE_ADDED: "Log report template added successfully.",
+  LOG_REPORT_TEMPLATE_UPDATED: "Log report template updated successfully.",
+  LOG_REPORT_TEMPLATE_DELETED: "Log report template deleted successfully.",
+  LOG_REPORT_TEMPLATES_DELETED: "Log report templates deleted successfully.",
+
   ITEM_ADDED: "Item added successfully.",
   ITEM_UPDATED: "Item updated successfully.",
   ITEM_DELETED: "Item deleted successfully.",
@@ -142,6 +147,10 @@ export const API_ERROR_MESSAGES = {
   SAVE_LOG_WELL_COVER: "Failed to save well cover.",
   DELETE_LOG_WELL_COVER: "Failed to delete well cover.",
   RESTORE_LOG_WELL_COVER: "Failed to restore well cover.",
+  LOAD_LOG_FINISH_LOGS: "Failed to load finish logs.",
+  SAVE_LOG_FINISH_LOG: "Failed to save finish log.",
+  DELETE_LOG_FINISH_LOG: "Failed to delete finish log.",
+  RESTORE_LOG_FINISH_LOG: "Failed to restore finish log.",
   LOAD_LOG_WELL_PROBES: "Failed to load well probes.",
   SAVE_LOG_WELL_PROBE: "Failed to save well probe.",
   DELETE_LOG_WELL_PROBE: "Failed to delete well probe.",
@@ -194,6 +203,11 @@ export const API_ERROR_MESSAGES = {
   ADD_HEADER_FOOTER_TEMPLATE: "Failed to add header & footer template.",
   UPDATE_HEADER_FOOTER_TEMPLATE: "Failed to update header & footer template.",
   DELETE_HEADER_FOOTER_TEMPLATES: "Failed to delete header & footer templates.",
+
+  LOAD_LOG_REPORT_TEMPLATES: "Failed to load log report templates.",
+  ADD_LOG_REPORT_TEMPLATE: "Failed to add log report template.",
+  UPDATE_LOG_REPORT_TEMPLATE: "Failed to update log report template.",
+  DELETE_LOG_REPORT_TEMPLATE: "Failed to delete log report template.",
 
   LOAD_ITEMS: "Failed to load items.",
   SAVE_ITEM: "Failed to save item.",

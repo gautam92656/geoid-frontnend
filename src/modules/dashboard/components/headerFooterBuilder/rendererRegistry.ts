@@ -53,6 +53,11 @@ export function resolveRendererTokens(
   context: Record<string, string> = {}
 ): string {
   let resolved = value;
+  // Apply explicit context first so aliases (e.g. elevation1) and log values win.
+  for (const [token, replacement] of Object.entries(context)) {
+    if (!token.includes("{{")) continue;
+    resolved = resolved.split(token).join(replacement);
+  }
   for (const placeholder of RENDERER_PLACEHOLDERS) {
     const replacement = context[placeholder.token] ?? placeholder.sample;
     resolved = resolved.split(placeholder.token).join(replacement);

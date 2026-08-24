@@ -1,21 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormField, Select } from "@/shared/components/ui";
 import { MAX_TABLE_PAGE_SIZE } from "@/shared/constants/pagination";
 import { API_ERROR_MESSAGES } from "@/shared/constants/apiMessages";
 import { showApiError } from "@/shared/utils/apiToast";
-import { LogConfigurationsSection } from "@/modules/dashboard/components";
-import { LogConfigurationOwnerProvider } from "@/modules/dashboard/context/LogConfigurationOwnerContext";
+import { HeaderFooterTemplatesSection } from "@/modules/dashboard/components/HeaderFooterTemplatesSection";
+import { OwnerUserIdProvider } from "@/modules/dashboard/context/LogConfigurationOwnerContext";
 import { getAdminUser, listAdminUsers } from "../services/adminUserApi";
 import type { AdminUser } from "../types/user";
-import {
-  SUPER_ADMIN_LOG_CONFIGURATIONS_PATH,
-  SUPER_ADMIN_USERS_PATH,
-  superAdminLogConfigurationsPath,
-} from "../utils/paths";
+import { SUPER_ADMIN_USERS_PATH } from "../utils/paths";
+
+const SETTINGS_HEADER_FOOTER_PATH = "/dashboard/settings/header-footer-templates";
 
 function userLabel(user: AdminUser): string {
   const name = `${user.firstName} ${user.lastName}`.trim();
@@ -36,15 +33,17 @@ function withUserId(basePath: string, ownerUserId: number): string {
   return `${basePath}${separator}userId=${ownerUserId}`;
 }
 
-type AdminLogConfigurationsSectionProps = Readonly<{
-  detailBasePath?: string;
+type AdminHeaderFooterTemplatesSectionProps = Readonly<{
+  listBasePath?: string;
+  builderBasePath?: string;
   usersListPath?: string;
 }>;
 
-export function AdminLogConfigurationsSection({
-  detailBasePath = SUPER_ADMIN_LOG_CONFIGURATIONS_PATH,
+export function AdminHeaderFooterTemplatesSection({
+  listBasePath = SETTINGS_HEADER_FOOTER_PATH,
+  builderBasePath = SETTINGS_HEADER_FOOTER_PATH,
   usersListPath = SUPER_ADMIN_USERS_PATH,
-}: AdminLogConfigurationsSectionProps = {}) {
+}: AdminHeaderFooterTemplatesSectionProps = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedUserId = parseUserId(searchParams.get("userId"));
@@ -54,12 +53,9 @@ export function AdminLogConfigurationsSection({
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [loadingSelectedUser, setLoadingSelectedUser] = useState(false);
 
-  const configsPathForUser = useCallback(
-    (userId: number) =>
-      detailBasePath === SUPER_ADMIN_LOG_CONFIGURATIONS_PATH
-        ? superAdminLogConfigurationsPath(userId)
-        : withUserId(detailBasePath, userId),
-    [detailBasePath]
+  const pathForUser = useCallback(
+    (userId: number) => withUserId(listBasePath, userId),
+    [listBasePath]
   );
 
   const loadUsers = useCallback(async () => {
@@ -131,18 +127,14 @@ export function AdminLogConfigurationsSection({
         <div className="settings-section__card admin-log-configurations__user-card">
           <div className="settings-section__card-header">
             <div className="settings-section__card-copy">
-              {/* <Link href={usersListPath} className="admin-log-configurations__back">
-                ← Back to users
-              </Link> */}
               <h2 className="settings-section__card-title">
                 {selectedUserName
-                  ? `Log configurations · ${selectedUserName}`
-                  : "Log configurations"}
+                  ? `Header & footer templates · ${selectedUserName}`
+                  : "Header & footer templates"}
               </h2>
-              {/* <p className="settings-section__card-description">
-                Each user has their own templates and modules. Choose a user, then manage their
-                configurations.
-              </p> */}
+              <p className="settings-section__card-description">
+                Choose a user, then manage that user&apos;s header and footer report templates.
+              </p>
             </div>
           </div>
 
@@ -152,9 +144,7 @@ export function AdminLogConfigurationsSection({
                 value={selectedUserId != null ? String(selectedUserId) : ""}
                 onChange={(value) => {
                   const nextId = parseUserId(value);
-                  router.replace(
-                    nextId != null ? configsPathForUser(nextId) : detailBasePath
-                  );
+                  router.replace(nextId != null ? pathForUser(nextId) : listBasePath);
                 }}
                 options={userOptions}
                 placeholder={loadingUsers ? "Loading users…" : "Select a user"}
@@ -171,13 +161,12 @@ export function AdminLogConfigurationsSection({
             ) : null}
             {!loadingUsers && users.length === 0 ? (
               <p className="admin-log-configurations__empty">
-                No users found. Create a user first, then open View on that user to manage their
-                configurations.
+                No users found. Create a user first, then manage their templates.
               </p>
             ) : null}
             {!selectedUserId ? (
               <p className="admin-log-configurations__empty">
-                Select a user above, or open <strong>View</strong> from User Management actions.
+                Select a user above to view and edit their header &amp; footer templates.
               </p>
             ) : null}
           </div>
@@ -185,11 +174,11 @@ export function AdminLogConfigurationsSection({
       </div>
 
       {selectedUserId != null && selectedUser ? (
-        <LogConfigurationOwnerProvider value={selectedUserId}>
-          <LogConfigurationsSection detailBasePath={detailBasePath} />
-        </LogConfigurationOwnerProvider>
+        <OwnerUserIdProvider value={selectedUserId}>
+          <HeaderFooterTemplatesSection builderBasePath={builderBasePath} />
+        </OwnerUserIdProvider>
       ) : selectedUserId != null && loadingSelectedUser ? (
-        <p className="admin-log-configurations__empty">Loading user configurations…</p>
+        <p className="admin-log-configurations__empty">Loading user templates…</p>
       ) : null}
     </div>
   );

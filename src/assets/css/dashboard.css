@@ -7790,17 +7790,49 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: 10px;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .update-log-page__status-field {
-  min-width: 148px;
+  min-width: 200px;
   margin: 0;
 }
 
 .update-log-page__status-field .ui-field__label {
   margin-bottom: 4px;
   font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.01em;
+}
+
+.update-log-page__status-field .ui-select__trigger {
+  min-height: 40px;
+}
+
+.update-log-page__header-btns {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.update-log-page__header-btns .ui-btn {
+  min-height: 40px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.update-log-page__header-btns .ui-btn svg {
+  flex-shrink: 0;
+}
+
+.update-log-page__header-btns .ui-btn.is-active {
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
 }
 
 .update-log-page__workspace {
@@ -9293,16 +9325,37 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   font-size: 13px;
 }
 
+.log-report-composed__pages {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .log-report-composed {
   margin: 0 auto;
   background: #fff;
-  border: 1.5px solid #000;
+  border: none;
   box-shadow: none;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   font-family: Arial, Helvetica, sans-serif;
   color: #000;
+  box-sizing: border-box;
+  /* Page margin around the framed report (matches Tablogs samples). */
+  padding: 20px;
+}
+
+.log-report-composed__frame {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  border: 1.5px solid #000;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .log-report-composed__hf-grid {
@@ -9317,6 +9370,7 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
 
 .log-report-composed__hf-grid--header {
   background: #000;
+  /* One horizontal rule between brand row and meta row; no vertical column dividers. */
   row-gap: 1px;
   column-gap: 0;
   border-bottom: 1px solid #000;
@@ -9342,13 +9396,112 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
 
 .log-report-composed__hf-image {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  flex: 1 1 auto;
+  object-position: center;
+  flex: 0 1 auto;
   min-height: 0;
+}
+
+.log-report-composed__hf-meta {
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 3px;
+  line-height: 1.35;
+}
+
+.log-report-composed__hf-meta-row {
+  display: table-row;
+}
+
+.log-report-composed__hf-meta-label,
+.log-report-composed__hf-meta-sep,
+.log-report-composed__hf-meta-value {
+  display: table-cell;
+  vertical-align: baseline;
+}
+
+.log-report-composed__hf-meta-label,
+.log-report-composed__hf-meta-sep {
+  white-space: nowrap;
+}
+
+.log-report-composed__hf-meta-label {
+  padding-right: 4px;
+}
+
+.log-report-composed__hf-meta-sep {
+  padding-right: 4px;
+}
+
+.log-report-composed__hf-meta-value {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.log-report-composed__hf-legend-col {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  line-height: 1.15;
+  padding-top: 0.6em;
+}
+
+.log-report-composed__hf-legend-col-title.is-column {
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 0.85em;
+  white-space: nowrap;
+}
+
+.log-report-composed__hf-legend-col-title.is-section {
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0.45em 0 0.85em;
+  white-space: nowrap;
+}
+
+.log-report-composed__hf-legend-col-entry-row {
+  display: grid;
+  grid-template-columns: var(--hf-legend-label-width, 3ch) min-content minmax(0, 1fr);
+  column-gap: 4px;
+  line-height: 1.15;
+  align-items: start;
+  margin-bottom: 0.55em;
+}
+
+.log-report-composed__hf-legend-col-entry-row:last-child {
+  margin-bottom: 0;
+}
+
+.log-report-composed__hf-legend-col-label,
+.log-report-composed__hf-legend-col-sep {
+  white-space: nowrap;
+  line-height: 1.15;
+}
+
+.log-report-composed__hf-legend-col-value {
+  min-width: 0;
+  line-height: 1.15;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.log-report-composed__hf-grid--footer .log-report-composed__hf-text {
+  display: block;
+  padding-top: 0.6em;
+  font-size: 5.5pt;
+}
+
+.log-report-composed__hf-grid--footer .log-report-composed__hf-legend-col {
+  font-size: 5.5pt;
 }
 
 .log-report-composed__logo-fallback {
@@ -9373,6 +9526,58 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   color: #374151;
 }
 
+.log-report-composed__hf-legend-block {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.log-report-composed__hf-legend-block-title {
+  font-weight: 700;
+  line-height: 1.15;
+  font-size: inherit;
+}
+
+.log-report-composed__hf-legend-block-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.log-report-composed__hf-legend-block-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.log-report-composed__hf-legend-block-img {
+  display: block;
+  width: 14px;
+  height: 16px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.log-report-composed__hf-legend-block-label {
+  min-width: 0;
+  line-height: 1.15;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.log-report-composed__hf-grid--footer .log-report-composed__hf-legend-block {
+  font-size: 5.5pt;
+}
+
 .log-report-composed__placeholder {
   padding: 8px 10px;
   font-size: 11px;
@@ -9386,6 +9591,10 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid #000;
+}
+
+.log-report-composed__body.has-refusal {
+  border-bottom: none;
 }
 
 .log-report-composed__body-empty {
@@ -9403,30 +9612,240 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
 }
 
 .log-report-composed__col-title {
-  padding: 4px 2px;
+  padding: 6px 5px;
   font-size: 8px;
   font-weight: 700;
   text-align: center;
   border-right: 1px solid #000;
   word-break: break-word;
   line-height: 1.15;
+  box-sizing: border-box;
 }
 
 .log-report-composed__col-title:last-child {
   border-right: none;
 }
 
-.log-report-composed__col-title.is-vertical {
+.log-report-composed__col-title.has-content-band-divider {
+  border-right: 1px solid #000;
+}
+
+.log-report-composed__col-title.has-method-dcp-divider,
+.log-report-composed__strata-grid-cell.has-method-dcp-divider,
+.log-report-composed__stratum-cell.has-method-dcp-divider {
+  border-right: 1px solid #000 !important;
+}
+
+/* Shared Method|DCP edge is drawn only on the method cell (border-right). */
+
+.log-report-composed__col-title.is-dcp,
+.log-report-composed__col-title.is-axis-scale,
+.log-report-composed__col-title.is-testing-ucs,
+.log-report-composed__col-title.is-remarks-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 120px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.log-report-composed__col-title.is-dcp {
+  padding: 6px 0 2px;
+  word-break: normal;
+  overflow: visible;
+  justify-content: space-between;
+}
+
+.log-report-composed__col-title.is-axis-scale {
+  padding: 2px 0 0;
+}
+
+.log-report-composed__col-title.is-testing-ucs {
+  padding: 0;
+}
+
+.log-report-composed__col-title.is-remarks-header {
+  padding: 6px 5px 2px;
+  justify-content: space-between;
+}
+
+.log-report-composed__col-title.is-dcp .log-report-composed__col-title-text,
+.log-report-composed__col-title.is-axis-scale .log-report-composed__col-title-text,
+.log-report-composed__col-title.is-testing-ucs .log-report-composed__col-title-text {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.log-report-composed__testing-band {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-shrink: 0;
+  border-bottom: 1px solid #000;
+  font-size: 7px;
+  font-weight: 700;
+  line-height: 1.1;
+  padding: 2px 2px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Child values: short bottom strip, vertical labels, no borders. */
+.log-report-composed__axis-scale {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 28px;
+  min-height: 28px;
+  max-height: 28px;
+  border-top: 1px solid #000;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: #fff;
+  padding: 0 0 1px;
+  position: relative;
+  margin-top: auto;
+}
+
+.log-report-composed__axis-scale--strength {
+  height: 32px;
+  min-height: 32px;
+  max-height: 32px;
+}
+
+.log-report-composed__axis-scale--spacing,
+.log-report-composed__axis-scale--rqd {
+  height: 26px;
+  min-height: 26px;
+  max-height: 26px;
+}
+
+.log-report-composed__axis-scale-cell {
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0;
+  height: 100%;
+}
+
+.log-report-composed__axis-scale-text {
+  display: block;
+  font-size: 4.5px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  min-height: 64px;
-  padding: 6px 2px;
+  white-space: nowrap;
+  letter-spacing: -0.05em;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.log-report-composed__axis-scale--strength .log-report-composed__axis-scale-text {
+  font-size: 3.25px;
+  letter-spacing: -0.07em;
+}
+
+.log-report-composed__axis-scale--spacing .log-report-composed__axis-scale-text,
+.log-report-composed__axis-scale--rqd .log-report-composed__axis-scale-text {
+  font-size: 5px;
+  letter-spacing: 0;
+}
+
+.log-report-composed__axis-body-guides,
+.log-report-composed__axis-body-guide {
+  display: none;
+}
+
+.log-report-composed__strata-grid-cell.is-axis-scale {
+  position: relative;
+}
+
+.log-report-composed__remarks-band {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 7px;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 1px 2px;
+  box-sizing: border-box;
+}
+
+.log-report-composed__col-title.is-vertical {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 84px;
+  padding: 10px 6px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.log-report-composed__col-title.is-vertical.is-axis-scale,
+.log-report-composed__col-title.is-vertical.is-testing-ucs {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 2px 0 0;
+  min-height: 120px;
+  overflow: hidden;
+}
+
+.log-report-composed__col-title.is-vertical.is-testing-ucs {
+  padding: 0;
+}
+
+/*
+ * html2canvas mangles `writing-mode` + rotate into upside-down glyphs.
+ * Use a plain -90deg rotate so PDF export matches the on-screen Tablogs style
+ * (bottom-to-top vertical headers).
+ * Horizontal padding on the span becomes visual top/bottom clearance after rotate.
+ */
+.log-report-composed__col-title-text.is-vertical {
+  display: inline-block;
+  writing-mode: horizontal-tb;
+  transform: rotate(-90deg);
+  transform-origin: center center;
+  white-space: nowrap;
+  line-height: 1.1;
+  max-width: none;
+  padding: 3px 12px;
+  box-sizing: border-box;
+}
+
+.log-report-composed__col-title-text.is-vertical.is-axis-parent {
+  font-size: 6.5px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  padding: 1px 4px;
 }
 
 .log-report-composed__strata-wrap {
   position: relative;
   flex: 1 1 auto;
   min-height: 0;
+  overflow: hidden;
 }
 
 .log-report-composed__strata-grid {
@@ -9456,6 +9875,355 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   flex-direction: column;
 }
 
+/* Depth-aligned drilling method graphics (Washbore, Auger, …). */
+.log-report-composed__drill-methods {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.log-report-composed__water-col {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.log-report-composed__water-mark-group {
+  position: absolute;
+  left: 1px;
+  right: 1px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3px;
+  transform: translateY(-4px);
+  box-sizing: border-box;
+}
+
+.log-report-composed__water-mark {
+  position: relative;
+  left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transform: none;
+  gap: 1px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.log-report-composed__water-mark-group.is-multi .log-report-composed__water-mark {
+  max-width: 100%;
+  flex: 0 0 auto;
+}
+
+.log-report-composed__water-mark-group.is-multi .log-report-composed__water-symbol-img {
+  width: 12px;
+  max-height: 36px;
+}
+
+.log-report-composed__water-mark-group.is-multi .log-report-composed__water-label {
+  font-size: 6px;
+}
+
+.log-report-composed__water-symbol-img {
+  display: block;
+  width: 14px;
+  height: auto;
+  max-height: 48px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.log-report-composed__water-symbol {
+  color: #000;
+  font-size: 10px;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+.log-report-composed__water-label {
+  font-size: 7px;
+  line-height: 1.1;
+  color: #000;
+  text-align: center;
+  max-width: 100%;
+  padding: 0 1px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  writing-mode: horizontal-tb;
+  transform: none;
+  min-width: 0;
+}
+
+.log-report-composed__psp-col {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.log-report-composed__psp-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid #000;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 12px;
+}
+
+.log-report-composed__psp-band-text {
+  font-size: 7px;
+  line-height: 1.1;
+  color: #000;
+  text-align: center;
+  padding: 1px 2px;
+  white-space: nowrap;
+}
+
+.log-report-composed__well-diagram {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.log-report-composed__well-interval {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.log-report-composed__well-body {
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  background: #fff;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+/* Shared edge with the segment above — avoid double horizontal borders. */
+.log-report-composed__well-body.is-abutting {
+  border-top: none;
+}
+
+.log-report-composed__well-body.is-casing {
+  z-index: 2;
+  border-width: 1px;
+  background: transparent;
+  border-color: transparent;
+}
+
+.log-report-composed__well-empty {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+}
+
+.log-report-composed__well-hatch {
+  position: absolute;
+  inset: 0;
+  /* Dense horizontal slots — matches corrected Solid/Slotted reference. */
+  background: repeating-linear-gradient(
+    to bottom,
+    #000 0,
+    #000 1px,
+    #fff 1px,
+    #fff 2.5px
+  );
+}
+
+/* Backfill type graphics are square tiles — fill width and repeat down the shaft. */
+.log-report-composed__well-fill {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat-y;
+  background-size: 100% auto;
+  background-position: top center;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+}
+
+.log-report-composed__well-fill-probe {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.log-report-composed__well-fill-img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center top;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+}
+
+.log-report-composed__well-fill-img.is-casing {
+  object-fit: fill;
+}
+
+.log-report-composed__well-casing-fill {
+  position: absolute;
+  inset: 0;
+  background: #d1d5db;
+}
+
+.log-report-composed__well-leader {
+  position: absolute;
+  right: 0;
+  height: 0;
+  border-top: 1px dotted #000;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.log-report-composed__well-leader.is-top {
+  top: 0;
+}
+
+.log-report-composed__well-leader.is-bottom {
+  bottom: 0;
+}
+
+.log-report-composed__strata-grid-cell.is-water,
+.log-report-composed__strata-grid-cell.is-psp,
+.log-report-composed__strata-grid-cell.is-well_diagram {
+  position: relative;
+  overflow: visible;
+}
+
+.log-report-composed__stratum-cell.is-well_diagram {
+  pointer-events: none;
+  background: transparent;
+  border-bottom: none;
+}
+
+.log-report-composed__stratum-cell.is-psp,
+.log-report-composed__stratum-cell.is-water,
+.log-report-composed__stratum-cell.is-remarks,
+.log-report-composed__stratum-cell.is-depth {
+  pointer-events: none;
+}
+
+.log-report-composed__drill-interval {
+  position: absolute;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  overflow: hidden;
+  background: #fff;
+}
+
+.log-report-composed__drill-interval-graphic-wrap {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.log-report-composed__drill-interval-graphic {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center bottom;
+  pointer-events: none;
+}
+
+.log-report-composed__drill-interval-fallback {
+  position: absolute;
+  inset: 0;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.log-report-composed__drill-interval-fallback::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 72%;
+  height: 14%;
+  transform: translateX(-50%);
+  border: 1px solid #000;
+  border-bottom: none;
+  box-sizing: border-box;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #000 0 1px,
+      transparent 1px 3px
+    );
+}
+
+.log-report-composed__drill-interval-label {
+  position: absolute;
+  left: 50%;
+  top: 36%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.log-report-composed__drill-interval-name {
+  display: block;
+  padding: 1px 2px;
+  font-size: 6px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  word-break: keep-all;
+  color: #111;
+  background: #fff;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.log-report-composed__drill-interval-arrow {
+  display: block;
+  padding: 0 2px;
+  font-size: 6px;
+  font-weight: 700;
+  line-height: 1;
+  color: #111;
+  background: #fff;
+}
+
 .log-report-composed__stratum {
   position: absolute;
   left: 0;
@@ -9463,19 +10231,23 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   display: grid;
   width: 100%;
   box-sizing: border-box;
-  border-bottom: 1px solid #000;
+  /* Per-cell borders control which columns get horizontal stratum lines. */
+  border-bottom: none;
   z-index: 1;
   background: transparent;
 }
 
 .log-report-composed__stratum-cell {
+  position: relative;
   border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
   overflow: hidden;
   font-size: 8.5px;
   line-height: 1.2;
-  padding: 2px 3px;
+  padding: 5px 7px;
   box-sizing: border-box;
   min-height: 0;
+  min-width: 0;
   background: #fff;
 }
 
@@ -9483,9 +10255,31 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   border-right: none;
 }
 
-.log-report-composed__stratum-cell.is-graphic,
+/* DCP + Drilling Method + PSP/Water/Remarks/Depth stay continuous — no stratum cut lines. */
+.log-report-composed__stratum-cell.is-method,
 .log-report-composed__stratum-cell.is-chart,
+.log-report-composed__stratum-cell.is-psp,
+.log-report-composed__stratum-cell.is-water,
+.log-report-composed__stratum-cell.is-remarks,
+.log-report-composed__stratum-cell.is-depth,
+.log-report-composed__stratum-cell.no-stratum-line {
+  border-bottom: none;
+  background: transparent;
+}
+
+/*
+ * Depth column: no horizontal stratum line at all so depth labels (0.4, 1.0, …)
+ * are never crossed by a cut line.
+ */
 .log-report-composed__stratum-cell.is-depth {
+  padding: 0;
+}
+
+.log-report-composed__stratum-cell.is-graphic,
+.log-report-composed__stratum-cell.is-well_diagram,
+.log-report-composed__stratum-cell.is-chart,
+.log-report-composed__stratum-cell.is-depth,
+.log-report-composed__stratum-cell.is-method {
   padding: 0;
 }
 
@@ -9493,49 +10287,196 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   background: transparent;
 }
 
-.log-report-composed__stratum-cell.is-description {
-  font-size: 8px;
-}
-
-.log-report-composed__depth {
-  position: relative;
+.log-report-composed__cell-text {
+  display: block;
   width: 100%;
-  height: 100%;
-  min-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  line-height: 1.2;
+  white-space: normal;
+  box-sizing: border-box;
+  padding: 0 1px;
 }
 
-.log-report-composed__depth-rail {
+.log-report-composed__stratum-cell.is-origin,
+.log-report-composed__stratum-cell.is-consistency,
+.log-report-composed__stratum-cell.is-moisture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 7px;
+  font-weight: 400;
+  padding: 5px 7px;
+}
+
+.log-report-composed__stratum-cell.is-classification {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 8px;
+  font-weight: 600;
+  padding: 5px 7px;
+}
+
+.log-report-composed__stratum-cell.is-description,
+.log-report-composed__stratum-cell.is-remarks {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  font-size: 8px;
+  padding: 5px 7px;
+}
+
+.log-report-composed__stratum-cell.is-origin .log-report-composed__cell-text,
+.log-report-composed__stratum-cell.is-consistency .log-report-composed__cell-text,
+.log-report-composed__stratum-cell.is-moisture .log-report-composed__cell-text {
+  text-align: center;
+  font-size: 7px;
+  font-weight: 400;
+}
+
+.log-report-composed__stratum-cell.is-classification .log-report-composed__cell-text {
+  text-align: center;
+}
+
+.log-report-composed__depth-scale {
   position: absolute;
-  left: 50%;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Track marks on Depth(m) left vertical line (shared column border). */
+.log-report-composed__depth-track {
+  position: absolute;
   top: 0;
+  left: 0;
   bottom: 0;
-  width: 1px;
-  background: #000;
+  width: 8px;
+  z-index: 1;
+  pointer-events: none;
 }
 
-.log-report-composed__depth-rail.is-full {
-  z-index: 0;
-}
-
-.log-report-composed__depth-tick {
+.log-report-composed__depth-track-tick {
   position: absolute;
-  left: 2px;
+  left: 0;
+  height: 1px;
+  background: #000;
+  transform: translateY(-50%);
+}
+
+.log-report-composed__depth-track-tick.is-minor {
+  width: 4px;
+}
+
+.log-report-composed__depth-track-tick.is-major {
+  width: 7px;
+}
+
+.log-report-composed__depth-labels {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.log-report-composed__depth-tick-label {
+  position: absolute;
+  left: 9px;
+  max-width: calc(100% - 11px);
+  transform: translateY(-50%);
   font-size: 8px;
   line-height: 1;
+  white-space: nowrap;
+  text-align: left;
+  background: #fff;
+  padding: 0 1px;
 }
 
-.log-report-composed__depth-tick.is-top {
-  top: 1px;
+.log-report-composed__depth-tick-label.is-elev-depth {
+  left: 50%;
+  right: auto;
+  max-width: calc(100% - 4px);
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0;
+  background: #fff;
 }
 
-.log-report-composed__depth-tick.is-bottom {
-  bottom: 1px;
+.log-report-composed__depth-tick-label.is-page-start {
+  transform: translateY(1px);
+}
+
+.log-report-composed__depth-tick-label.is-elev-depth.is-page-start {
+  transform: translate(-50%, 1px);
+}
+
+.log-report-composed__depth-tick-elev,
+.log-report-composed__depth-tick-depth {
+  display: block;
+  line-height: 1.05;
+  padding: 0 2px;
+}
+
+.log-report-composed__depth-tick-elev {
+  padding-bottom: 1px;
+}
+
+.log-report-composed__depth-tick-depth {
+  padding-top: 1px;
+}
+
+.log-report-composed__depth-tick-rule {
+  display: block;
+  width: 100%;
+  min-width: 1.8em;
+  height: 0;
+  border-top: 1px solid #000;
 }
 
 .log-report-composed__hatch {
   width: 100%;
   height: 100%;
   min-height: 100%;
+  position: relative;
+}
+
+.log-report-composed__hatch--image {
+  background-repeat: repeat;
+  background-size: 24px 24px;
+  overflow: hidden;
+}
+
+.log-report-composed__hatch-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Tall 500x960 pattern strips — zoom like classification preview / desired PDF */
+  width: 700%;
+  height: auto;
+  min-height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: top left;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+}
+
+.log-report-composed__hatch-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 .log-report-composed__hatch--concrete {
@@ -9571,36 +10512,135 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
 }
 
 .log-report-composed__dcp-scale {
-  display: flex;
-  justify-content: space-between;
-  padding: 1px 2px;
+  position: relative;
+  width: 100%;
+  height: 12px;
   font-size: 7px;
-  border-bottom: 1px solid #000;
+  font-weight: 400;
   flex-shrink: 0;
+  overflow: visible;
+}
+
+.log-report-composed__dcp-scale-inner {
+  position: relative;
+  height: 100%;
+  overflow: visible;
+}
+
+.log-report-composed__dcp-scale-tick {
+  position: absolute;
+  top: 0;
+  line-height: 1;
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow: visible;
 }
 
 .log-report-composed__dcp-plot {
+  position: relative;
   flex: 1;
-  background:
-    linear-gradient(to right, transparent 19.9%, #d1d5db 20% 20.2%, transparent 20.3%),
-    linear-gradient(to right, transparent 39.9%, #d1d5db 40% 40.2%, transparent 40.3%),
-    linear-gradient(to right, transparent 59.9%, #d1d5db 60% 60.2%, transparent 60.3%),
-    linear-gradient(to right, transparent 79.9%, #d1d5db 80% 80.2%, transparent 80.3%);
 }
 
-.log-report-composed__refusal {
+.log-report-composed__dcp-plot-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Vertical scale line at 25 — aligned with the shared DCP|Depth column border. */
+.log-report-composed__dcp-gridline.is-column-border {
+  left: auto;
+  right: 0;
+  border-left: none;
+  border-right: 1px dotted #9ca3af;
+  transform: translateX(0.5px);
+  pointer-events: none;
+}
+
+/* SVG overlay that draws the grid, connecting polyline and circles. */
+.log-report-composed__dcp-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.log-report-composed__dcp-gridline {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px dotted #9ca3af;
+  transform: translateX(-0.5px);
+}
+
+.log-report-composed__dcp-depth-guide {
   position: absolute;
   left: 0;
   right: 0;
-  transform: translateY(-50%);
-  padding: 2px 6px;
-  font-size: 8px;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.92);
+  height: 0;
+  border-top: 1px solid #d1d5db;
+  transform: translateY(-0.5px);
+  pointer-events: none;
+}
+
+.log-report-composed__dcp-dot {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  background: #000;
+  border: 1px solid #000;
+  box-sizing: border-box;
+}
+
+.log-report-composed__dcp-single-stem {
+  position: absolute;
+  width: 2px;
+  height: 28px;
+  transform: translate(-50%, -50%);
+}
+
+/* Numeric tick labels rendered at the bottom of the DCP plot */
+.log-report-composed__dcp-ticks {
+  display: none;
+}
+
+.log-report-composed__dcp-tick-label {
+  display: none;
+}
+
+.log-report-composed__refusal-row {
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  background: #fff;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
-  pointer-events: none;
-  z-index: 2;
+}
+
+.log-report-composed__refusal-banner {
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  padding: 4px 8px;
+  font-size: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Drop the last stratum cut line so it doesn't double with the refusal top rule. */
+.log-report-composed__stratum.is-last-before-refusal .log-report-composed__stratum-cell {
+  border-bottom: none;
 }
 
 .log-report-preview__loading {
@@ -9816,6 +10856,14 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   .update-log-page__status-field {
     flex: 1;
     min-width: 0;
+  }
+
+  .update-log-page__header-btns {
+    width: 100%;
+  }
+
+  .update-log-page__header-btns .ui-btn {
+    flex: 1 1 auto;
   }
 }
 
@@ -13012,7 +14060,8 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   border: 1px solid #f3f4f6;
 }
 
-.create-lab-test-request-modal__check {
+.create-lab-test-request-modal__check,
+.finish-log-modal__scale-row {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -13020,6 +14069,10 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   font-weight: 500;
   color: #1e293b;
   cursor: pointer;
+}
+
+.finish-log-modal__scale-row {
+  margin-top: 4px;
 }
 
 .create-lab-test-request-modal__hint {

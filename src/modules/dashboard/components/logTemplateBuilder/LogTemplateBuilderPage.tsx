@@ -9,7 +9,7 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PageLoader } from "@/shared/components/ui";
 import { showApiError, showApiSuccess } from "@/shared/utils/apiToast";
 import {
@@ -56,11 +56,20 @@ import { LtColumnList } from "./LtColumnList";
 import { LtJsonEditor } from "./LtJsonEditor";
 import { LtReportSettings } from "./LtReportSettings";
 import { dedupeSelectionGroups, type BoundSelectDataKind } from "./selectDataBinding";
+import {
+  SUPER_ADMIN_LOG_TEMPLATES_PATH,
+} from "@/modules/super-admin/utils/paths";
 
-const TEMPLATES_RETURN_PATH = "/dashboard/settings/log-configurations";
-const BUILDER_BASE_PATH = "/dashboard/settings/log-report-templates";
+const DASHBOARD_RETURN_PATH = "/dashboard/settings/log-configurations";
+const DASHBOARD_BUILDER_BASE = "/dashboard/settings/log-report-templates";
 const LIST_MIN_WIDTH = 240;
 const LIST_MAX_WIDTH = 560;
+
+function parseOwnerUserId(value: string | null): number | undefined {
+  if (!value) return undefined;
+  const id = Number.parseInt(value, 10);
+  return Number.isFinite(id) && id > 0 ? id : undefined;
+}
 
 type LogTemplateBuilderPageProps = Readonly<{
   templateId: string;
@@ -76,6 +85,12 @@ export function LogTemplateBuilderPage(props: LogTemplateBuilderPageProps) {
 
 function LogTemplateBuilder({ templateId }: LogTemplateBuilderPageProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const ownerUserId = parseOwnerUserId(searchParams.get("userId"));
+  const returnPath =
+    ownerUserId != null
+      ? `${SUPER_ADMIN_LOG_TEMPLATES_PATH}?userId=${ownerUserId}`
+      : DASHBOARD_RETURN_PATH;
   const contentRef = useRef<HTMLDivElement | null>(null);
   const resizingRef = useRef(false);
 
@@ -103,8 +118,7 @@ function LogTemplateBuilder({ templateId }: LogTemplateBuilderPageProps) {
     async function load() {
       setLoading(true);
       try {
-        // Tablogs open-builder: list + builder-configuration + edit/:id (parallel).
-        const bootstrap = await loadBuilderBootstrap(templateId);
+        const bootstrap = await loadBuilderBootstrap(templateId, ownerUserId);
         if (cancelled) return;
         const { template: data, builderConfiguration: catalog } = bootstrap;
         const config = normalizeLogTemplateConfig(data.config);
@@ -123,7 +137,6 @@ function LogTemplateBuilder({ templateId }: LogTemplateBuilderPageProps) {
         });
         setDirty(false);
 
-        // Remark types from Remarks module (company catalog / user-added defaults).
         void getRemarkTypeTemplates(LOG_REMARKS_MODULE_ID)
           .then(({ data: remarkData }) => {
             if (cancelled) return;
@@ -154,7 +167,7 @@ function LogTemplateBuilder({ templateId }: LogTemplateBuilderPageProps) {
           });
       } catch (error) {
         showApiError(error, "Failed to load template");
-        router.push(TEMPLATES_RETURN_PATH);
+        router.push(returnPath);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -164,7 +177,7 @@ function LogTemplateBuilder({ templateId }: LogTemplateBuilderPageProps) {
     return () => {
       cancelled = true;
     };
-  }, [router, templateId]);
+  }, [ownerUserId, returnPath, router, templateId]);
 
   const config = history?.present ?? null;
 
@@ -224,11 +237,15 @@ function LogTemplateBuilder({ templateId }: LogTemplateBuilderPageProps) {
     if (!template || !config) return;
     setSaving(true);
     try {
-      const { data, message } = await updateLogTemplate(template.id, {
-        name: name.trim() || template.name,
-        logType,
-        config: cloneConfig(config),
-      });
+      const { data, message } = await updateLogTemplate(
+        template.id,
+        {
+          name: name.trim() || template.name,
+          logType,
+          config: cloneConfig(config),
+        },
+        ownerUserId
+      );
       setTemplate(data);
       setName(data.name);
       setLogType(data.logType);
@@ -249,14 +266,22 @@ function LogTemplateBuilder({ templateId }: LogTemplateBuilderPageProps) {
   }) => {
     setSaving(true);
     try {
-      const { data, message } = await createLogTemplate({
-        name: payload.name,
-        logType: payload.logType,
-        config: cloneConfig(payload.config),
-      });
+      const { data, message } = await createLogTemplate(
+        {
+          name: payload.name,
+          logType: payload.logType,
+          config: cloneConfig(payload.config),
+        },
+        ownerUserId
+      );
       showApiSuccess(message, "Log template created");
       setDirty(false);
-      router.replace(`${BUILDER_BASE_PATH}/${data.id}/builder`);
+      const builderBase =
+        ownerUserId != null
+          ? `${SUPER_ADMIN_LOG_TEMPLATES_PATH}/log-report-templates`
+          : DASHBOARD_BUILDER_BASE;
+      const query = ownerUserId != null ? `?userId=${ownerUserId}` : "";
+      router.replace(`${builderBase}/${data.id}/builder${query}`);
     } catch (error) {
       showApiError(error, "Failed to create template");
     } finally {

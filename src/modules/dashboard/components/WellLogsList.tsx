@@ -45,6 +45,8 @@ type WellLogsListProps = Readonly<{
   projectId: number;
   logId: number;
   logConfigurationId: string;
+  /** Notify parent when active well-log rows change (keeps report preview in sync). */
+  onActiveWellLogsChange?: (wellLogs: LogWellLog[]) => void;
 }>;
 
 type ListScope = "active" | "deleted";
@@ -117,6 +119,7 @@ export function WellLogsList({
   projectId,
   logId,
   logConfigurationId,
+  onActiveWellLogsChange,
 }: WellLogsListProps) {
   const [wellLogs, setWellLogs] = useState<LogWellLog[]>([]);
   const [wellTypes, setWellTypes] = useState<WellTypeOption[]>([]);
@@ -139,19 +142,23 @@ export function WellLogsList({
       const result = await listLogWellLogs(projectId, logId, page, pageSize, {
         search: debouncedSearch || undefined,
         onlyDeleted: onlyDeleted || undefined,
-        sortBy: "id",
-        sortOrder: "desc",
+        sortBy: "sortOrder",
+        sortOrder: "asc",
       });
       setWellLogs(result.data);
       setTotal(result.total);
+      if (!onlyDeleted) {
+        onActiveWellLogsChange?.(result.data.filter((entry) => entry.deletedAt == null));
+      }
     } catch (err) {
       showApiError(err, API_ERROR_MESSAGES.LOAD_LOG_WELL_LOGS);
       setWellLogs([]);
       setTotal(0);
+      if (listScope !== "deleted") onActiveWellLogsChange?.([]);
     } finally {
       setLoading(false);
     }
-  }, [projectId, logId, page, pageSize, debouncedSearch, listScope]);
+  }, [projectId, logId, page, pageSize, debouncedSearch, listScope, onActiveWellLogsChange]);
 
   const loadCatalogs = useCallback(async () => {
     if (!logConfigurationId.trim()) {

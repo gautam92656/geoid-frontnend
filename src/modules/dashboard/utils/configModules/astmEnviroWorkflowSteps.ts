@@ -784,31 +784,36 @@ export const ASTM_ENVIRO_WORKFLOW_STEPS: WorkflowStep[] = [
         "id": "workflow-option-1",
         "name": "Very Loose",
         "value": "Very Loose",
-        "visible": true
+        "visible": true,
+        "abbreviation": "VL"
       },
       {
         "id": "workflow-option-2",
         "name": "Loose",
         "value": "Loose",
-        "visible": true
+        "visible": true,
+        "abbreviation": "L"
       },
       {
         "id": "workflow-option-3",
         "name": "Medium Dense",
         "value": "Medium Dense",
-        "visible": true
+        "visible": true,
+        "abbreviation": "MD"
       },
       {
         "id": "workflow-option-4",
         "name": "Dense",
         "value": "Dense",
-        "visible": true
+        "visible": true,
+        "abbreviation": "D"
       },
       {
         "id": "workflow-option-5",
         "name": "Very Dense",
         "value": "Very Dense",
-        "visible": true
+        "visible": true,
+        "abbreviation": "VD"
       }
     ],
     "conditions": [
@@ -1566,6 +1571,7 @@ export const ASTM_ENVIRO_WORKFLOW_STEPS: WorkflowStep[] = [
         "name": "Wet",
         "value": "Wet",
         "visible": false,
+        "abbreviation": "W",
         "conditions": [
           {
             "type": "show",
@@ -1586,6 +1592,7 @@ export const ASTM_ENVIRO_WORKFLOW_STEPS: WorkflowStep[] = [
         "name": "Moist",
         "value": "Moist",
         "visible": false,
+        "abbreviation": "M",
         "conditions": [
           {
             "type": "show",
@@ -1606,6 +1613,7 @@ export const ASTM_ENVIRO_WORKFLOW_STEPS: WorkflowStep[] = [
         "name": "Dry",
         "value": "Dry",
         "visible": false,
+        "abbreviation": "D",
         "conditions": [
           {
             "type": "show",
@@ -1686,6 +1694,7 @@ export const ASTM_ENVIRO_WORKFLOW_STEPS: WorkflowStep[] = [
         "name": "w = LL",
         "value": "w = LL",
         "visible": true,
+        "abbreviation": "w ≈ LL",
         "conditions": [
           {
             "type": "show",
@@ -2082,20 +2091,23 @@ export const ASTM_ENVIRO_WORKFLOW_STEPS: WorkflowStep[] = [
         "id": "workflow-option-1",
         "name": "Wet",
         "value": "Wet",
-        "visible": true
+        "visible": true,
+        "abbreviation": "W"
       },
       {
         "id": "workflow-option-2",
         "name": "Moist",
         "value": "Moist",
         "visible": true,
+        "abbreviation": "M",
         "isDefault": true
       },
       {
         "id": "workflow-option-3",
         "name": "Dry",
         "value": "Dry",
-        "visible": true
+        "visible": true,
+        "abbreviation": "D"
       }
     ],
     "conditions": [

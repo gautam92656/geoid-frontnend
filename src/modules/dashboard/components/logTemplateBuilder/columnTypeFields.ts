@@ -723,19 +723,50 @@ export const SCALE_DECIMAL_OPTIONS = [
   { value: "two", label: "2 decimal places" },
 ] as const;
 
+const ELEVATION_ONLY_VALUES = new Set([
+  "elevation",
+  "elevation_m",
+  "elevation_ft",
+  "elevation_in",
+]);
+
 const ELEVATION_DEPTH_VALUES = new Set([
   "elevation_depth_ft",
   "elevation_depth_m",
   "elevation_depth_in",
+  "elevation/depth",
+  "elevation_depth",
 ]);
 
-export function isElevationDepthScale(column: LogTemplateColumn): boolean {
-  if (String(column.code ?? "").toLowerCase() === "elevation/depth") return true;
-  return ELEVATION_DEPTH_VALUES.has(
+function scaleSourceValue(column: LogTemplateColumn): string {
+  return (
     typeof column.column_data_source === "string"
       ? column.column_data_source
       : String(column.column_data_source?.value ?? "")
+  ).toLowerCase();
+}
+
+export function isElevationDepthScale(column: LogTemplateColumn): boolean {
+  if (String(column.code ?? "").toLowerCase() === "elevation/depth") return true;
+  const source = scaleSourceValue(column);
+  const text = String(column.text ?? "").toLowerCase();
+  return (
+    ELEVATION_DEPTH_VALUES.has(source) ||
+    source.includes("elevation_depth") ||
+    source.includes("elevation/depth") ||
+    /elevation\s*\/\s*depth/.test(text)
   );
+}
+
+/** Elevation(m/ft) scale — labels are reduced level (ground elevation minus depth). */
+export function isElevationScale(column: LogTemplateColumn): boolean {
+  if (isElevationDepthScale(column)) return false;
+  const code = String(column.code ?? "").toLowerCase();
+  if (code === "elevation") return true;
+  const source = scaleSourceValue(column);
+  if (ELEVATION_ONLY_VALUES.has(source) || source.includes("elevation")) return true;
+  const text = String(column.text ?? "").toLowerCase();
+  return text.includes("elevation") && !text.includes("depth");
 }
 
 export function getSelectedDepthOptions(column: LogTemplateColumn): DepthMarkerOption[] {

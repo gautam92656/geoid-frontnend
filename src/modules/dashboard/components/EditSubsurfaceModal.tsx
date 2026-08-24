@@ -29,6 +29,7 @@ import { WorkflowPreviewForm } from "./configModules/WorkflowPreviewForm";
 import { ManageOriginTypesModal } from "./configModules/ManageOriginTypesModal";
 import { ManageRockTypesModal } from "./configModules/ManageRockTypesModal";
 import { ManageNonSoilTypesModal } from "./configModules/ManageNonSoilTypesModal";
+import { resolveLogReportFieldCode, groupForWorkflowStep } from "../utils/logReportFieldCodes";
 
 export type SubsurfaceFormSubmitPayload = {
   values: WorkflowPreviewValues;
@@ -81,6 +82,20 @@ function findStepByLabels(
     const key = (step.fieldName?.trim() || step.name.trim()).toLowerCase();
     return normalized.has(key);
   });
+}
+
+function readFirstStepValue(
+  values: WorkflowPreviewValues,
+  steps: readonly WorkflowStep[],
+  labels: readonly string[]
+): string {
+  for (const label of labels) {
+    const step = findStepByLabels(steps, [label]);
+    const raw = readStepValue(values, step);
+    if (!raw) continue;
+    return resolveLogReportFieldCode(raw, groupForWorkflowStep(step ?? {}));
+  }
+  return "";
 }
 
 function isOriginWorkflowStep(step: WorkflowStep): boolean {
@@ -262,8 +277,6 @@ export function EditSubsurfaceModal({
 
     const depthStep = findStepByLabels(steps, ["depth", "to depth", "from depth"]);
     const originStep = steps.find(isOriginWorkflowStep);
-    const consistencyStep = findStepByLabels(steps, ["consistency", "density"]);
-    const moistureStep = findStepByLabels(steps, ["moisture", "rock moisture"]);
     const originValue = readStepValue(previewValues, originStep);
 
     setSubmitting(true);
@@ -274,8 +287,12 @@ export function EditSubsurfaceModal({
         classification: classificationCode || classification.name,
         origin: originValue,
         description: previewDescription,
-        consistency: readStepValue(previewValues, consistencyStep),
-        moisture: readStepValue(previewValues, moistureStep),
+        consistency: readFirstStepValue(previewValues, steps, [
+          "consistency",
+          "stiffness",
+          "density",
+        ]),
+        moisture: readFirstStepValue(previewValues, steps, ["moisture", "rock moisture"]),
         remarks: "",
         hatch: resolveHatchFromOrigin(originValue),
       });

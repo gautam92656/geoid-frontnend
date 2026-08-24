@@ -3,14 +3,19 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DatePicker, FormField, Input, Select, TimePicker, UiButton } from "@/shared/components/ui";
 import { MAX_TABLE_PAGE_SIZE } from "@/shared/constants/pagination";
 import { API_ERROR_MESSAGES, API_MESSAGES } from "@/shared/constants/apiMessages";
 import { getApiErrorMessage, showApiError, showApiSuccess } from "@/shared/utils/apiToast";
 import { COORDINATE_SYSTEMS } from "../data/coordinateSystems";
-import { FINISHING_REASONS, LOG_TYPES, LOG_WORKFLOW_STATUSES } from "../data/logOptions";
-import { LOG_SECTIONS, type LogSectionId } from "../data/logSections";
+import { LOG_TYPES, LOG_WORKFLOW_STATUSES } from "../data/logOptions";
+import {
+  getVisibleLogSections,
+  isLogSectionVisible,
+  LOG_SECTIONS,
+  type LogSectionId,
+} from "../data/logSections";
 import { listEquipment } from "../services/equipmentApi";
 import { formToLogPayload, listProjectLogs, updateLog } from "../services/logApi";
 import { listLogConfigurations } from "../services/logConfigurationApi";
@@ -37,6 +42,7 @@ import {
   resolveLogConfigRuntimeSettings,
 } from "../utils/projectLogConfigUtils";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useUserFinishingReasons } from "../hooks/useUserFinishingReasons";
 import { LogReportPreview } from "./LogReportPreview";
 import { LogReportSection } from "./LogReportSection";
 import { SubsurfaceSection } from "./SubsurfaceSection";
@@ -48,11 +54,57 @@ import { WellLogsSection } from "./WellLogsSection";
 import { WaterObservationsSection } from "./WaterObservationsSection";
 import { CoreLoggingSection } from "./CoreLoggingSection";
 import { LogLabTestsSection } from "./LogLabTestsSection";
+import { FinishLogModal } from "./FinishLogModal";
 import { ProjectSidebar, type ProjectSidebarSectionId } from "./ProjectSidebar";
 import { useLogReportPreviewState } from "../hooks/useLogReportPreviewState";
+import { useSubsurfaceRuntime } from "../hooks/useSubsurfaceRuntime";
 import { listLogSubsurfaces } from "../services/subsurfaceApi";
+import { listLogInsituTests } from "../services/logInsituTestApi";
+import { listLogDrillingMethods } from "../services/logDrillingMethodApi";
+import { getUserDrillingTypes, getUserWaterObservationTypes } from "../services/configModulesApi";
+import { createLogFinishLog } from "../services/logFinishLogApi";
 import type { SubsurfaceLayer } from "../types/subsurfaceLayer";
-import { buildStrataFromLayers } from "../utils/logReportPreviewUtils";
+import type { LogInsituTest } from "../types/logInsituTest";
+import type { LogDrillingMethod } from "../types/logDrillingMethod";
+import type { LogFinishLogFormPayload } from "../types/logFinishLog";
+import { listLogWaterObservations } from "../services/logWaterObservationApi";
+import { listLogWellBackfills } from "../services/logWellBackfillApi";
+import { listLogWellCasings } from "../services/logWellCasingApi";
+import { listLogWellLogs } from "../services/logWellLogApi";
+import {
+  getUserWellBackfillTypes,
+  getUserWellCasingTypes,
+  getUserWellTypes,
+} from "../services/configModulesApi";
+import {
+  buildDcpPointsFromInsituTests,
+  buildDrillingIntervalsFromMethods,
+  buildPspBandsFromInsituTests,
+  buildStrataFromLayers,
+  buildWaterObservationsForPreview,
+  buildWellDiagramIntervals,
+  getDcpTestTypeCodesFromLogTemplate,
+  parseFinishEndDepthMetres,
+} from "../utils/logReportPreviewUtils";
+import { getWaterObservationGraphicUrl } from "../utils/configModules/waterObservationType";
+import {
+  DEFAULT_WELL_BACKFILL_TYPE_OPTIONS,
+  DEFAULT_WELL_CASING_TYPE_OPTIONS,
+  DEFAULT_WELL_TYPE_OPTIONS,
+  DRILLING_OBSERVATIONS_MODULE_ID,
+  LOG_REPORT_MODULE_ID,
+  parseDrillingTypeOptions,
+  parseWaterObservationTypeOptions,
+  parseWellBackfillTypeOptions,
+  parseWellCasingTypeOptions,
+  parseWellTypeOptions,
+  WATER_OBSERVATIONS_MODULE_ID,
+  WELL_LOGS_MODULE_ID,
+  type DrillingTypeOption,
+  type WellBackfillTypeOption,
+  type WellCasingTypeOption,
+  type WellTypeOption,
+} from "../utils/configModules";
 
 function ReportIcon() {
   return (
@@ -87,23 +139,194 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
   const [existingLogNumbers, setExistingLogNumbers] = useState<string[]>([]);
   const [loadingReferenceData, setLoadingReferenceData] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [finishLogOpen, setFinishLogOpen] = useState(false);
   const [subsurfaceLayers, setSubsurfaceLayers] = useState<SubsurfaceLayer[]>([]);
+  const [insituTests, setInsituTests] = useState<LogInsituTest[]>([]);
+  const [drillingMethods, setDrillingMethods] = useState<LogDrillingMethod[]>([]);
+  const [waterObservationRows, setWaterObservationRows] = useState<
+    Array<{
+      depth: string;
+      observationTypeName: string;
+      observationTypeId: string;
+      comments?: string;
+    }>
+  >([]);
+  const [waterObservationTypes, setWaterObservationTypes] = useState<
+    ReturnType<typeof parseWaterObservationTypeOptions>
+  >([]);
+  const [drillingTypes, setDrillingTypes] = useState<DrillingTypeOption[]>([]);
+  const [wellLogRows, setWellLogRows] = useState<
+    Array<{
+      depthFrom: string;
+      depthTo: string;
+      wellTypeName: string;
+      wellTypeId: string;
+    }>
+  >([]);
+  const [wellTypes, setWellTypes] = useState<WellTypeOption[]>([]);
+  const [wellBackfillRows, setWellBackfillRows] = useState<
+    Array<{
+      depthFrom: string;
+      depthTo: string;
+      backfillTypeName: string;
+      backfillTypeId: string;
+    }>
+  >([]);
+  const [wellCasingRows, setWellCasingRows] = useState<
+    Array<{
+      depthFrom: string;
+      depthTo: string;
+      casingTypeName: string;
+      casingTypeId: string;
+    }>
+  >([]);
+  const [wellBackfillTypes, setWellBackfillTypes] = useState<WellBackfillTypeOption[]>([]);
+  const [wellCasingTypes, setWellCasingTypes] = useState<WellCasingTypeOption[]>([]);
+  // Shared with LogReportSection so its "Open in new tab"/"Save as PDF" buttons can act on
+  // the actual rendered sheet, which lives in the sibling LogReportPreview panel.
+  const reportSheetRef = useRef<HTMLElement>(null);
 
-  const reportEnabled = activeSection === "report" || showReport;
-  const report = useLogReportPreviewState({ enabled: reportEnabled });
+  const selectedLogConfig = useMemo(
+    () => logConfigurations.find((config) => config.id === form.logConfigId) ?? null,
+    [form.logConfigId, logConfigurations]
+  );
+
+  const selectedLogConfigEnabledModules = selectedLogConfig?.enabledModules ?? [];
+
+  const visibleLogSections = useMemo(() => {
+    // Until the selected config is loaded, keep the full tab list to avoid a flash.
+    if (!selectedLogConfig && loadingReferenceData) return [...LOG_SECTIONS];
+    return getVisibleLogSections(selectedLogConfigEnabledModules);
+  }, [loadingReferenceData, selectedLogConfig, selectedLogConfigEnabledModules]);
+
+  const reportModuleEnabled = useMemo(() => {
+    if (!selectedLogConfig && loadingReferenceData) return true;
+    return isLogSectionVisible("report", selectedLogConfigEnabledModules);
+  }, [loadingReferenceData, selectedLogConfig, selectedLogConfigEnabledModules]);
+
+  const reportEnabled = reportModuleEnabled && (activeSection === "report" || showReport);
+  const logReportModuleConfig = selectedLogConfig?.moduleSettings.modules[LOG_REPORT_MODULE_ID]
+    ?.report;
+  const report = useLogReportPreviewState({
+    enabled: reportEnabled,
+    preferredBorelogTemplateId: logReportModuleConfig?.borelogTemplate,
+    preferredCorelogTemplateId: logReportModuleConfig?.corelogTemplate,
+    preferredHeaderId: logReportModuleConfig?.logHeader,
+    preferredFooterId: logReportModuleConfig?.logFooter,
+  });
+  const subsurfaceRuntime = useSubsurfaceRuntime({
+    logConfigurationId: form.logConfigId,
+    enabled: reportEnabled,
+  });
   const companyName = user?.companyName ?? null;
   const companyLogoUrl = user?.companyLogoUrl ?? null;
   const companyEmail = user?.email ?? null;
   const phoneCode = user?.phoneCode ?? null;
   const phoneNumber = user?.phoneNumber ?? null;
 
-  const reportStrata = useMemo(
-    () => buildStrataFromLayers(subsurfaceLayers),
-    [subsurfaceLayers]
+  const reportStrata = useMemo(() => {
+    const workflow = subsurfaceRuntime.context?.workflow;
+    const subsurfaceSettings = subsurfaceRuntime.context?.subsurfaceSettings;
+    return buildStrataFromLayers(
+      subsurfaceLayers,
+      workflow
+        ? {
+            codes: workflow.classificationCodes,
+            steps: workflow.steps,
+            applyRules: workflow.applyClassificationRules,
+            subsurfaceSettings,
+          }
+        : undefined,
+      parseFinishEndDepthMetres(form.endDepth)
+    );
+  }, [subsurfaceLayers, subsurfaceRuntime.context, form.endDepth]);
+
+  const reportDcpPoints = useMemo(
+    () =>
+      buildDcpPointsFromInsituTests(
+        insituTests,
+        getDcpTestTypeCodesFromLogTemplate(report.selectedLogTemplate)
+      ),
+    [insituTests, report.selectedLogTemplate]
+  );
+
+  const reportDrillingIntervals = useMemo(
+    () => buildDrillingIntervalsFromMethods(drillingMethods, drillingTypes),
+    [drillingMethods, drillingTypes]
+  );
+
+  const reportPspBands = useMemo(
+    () => buildPspBandsFromInsituTests(insituTests),
+    [insituTests]
+  );
+
+  const reportWaterObservations = useMemo(() => {
+    const typeById = new Map(
+      waterObservationTypes.map((entry) => [entry.id.trim().toLowerCase(), entry])
+    );
+    const typeByName = new Map(
+      waterObservationTypes.map((entry) => [entry.name.trim().toLowerCase(), entry])
+    );
+    return buildWaterObservationsForPreview(
+      waterObservationRows.map((row) => {
+        const idKey = row.observationTypeId.trim().toLowerCase();
+        const nameKey = row.observationTypeName.trim().toLowerCase();
+        const type = typeById.get(idKey) ?? typeByName.get(nameKey);
+        const graphicUrl = type?.graphic
+          ? getWaterObservationGraphicUrl(type.graphic)
+          : undefined;
+        return { ...row, graphicUrl };
+      })
+    );
+  }, [waterObservationRows, waterObservationTypes]);
+
+  const reportWellIntervals = useMemo(
+    () =>
+      buildWellDiagramIntervals({
+        wellLogs: wellLogRows,
+        wellTypes,
+        backfills: wellBackfillRows,
+        casings: wellCasingRows,
+        backfillTypes: wellBackfillTypes,
+        casingTypes: wellCasingTypes,
+      }),
+    [
+      wellLogRows,
+      wellTypes,
+      wellBackfillRows,
+      wellCasingRows,
+      wellBackfillTypes,
+      wellCasingTypes,
+    ]
+  );
+
+  const handleActiveWellLogsChange = useCallback(
+    (
+      rows: Array<{
+        depthFrom: string;
+        depthTo: string;
+        wellTypeId: string;
+        wellTypeName: string;
+      }>
+    ) => {
+      setWellLogRows(
+        rows.map((entry) => ({
+          depthFrom: entry.depthFrom,
+          depthTo: entry.depthTo,
+          wellTypeId: entry.wellTypeId,
+          wellTypeName: entry.wellTypeName,
+        }))
+      );
+    },
+    []
   );
 
   const handleActiveLayersChange = useCallback((layers: SubsurfaceLayer[]) => {
     setSubsurfaceLayers(layers);
+  }, []);
+
+  const handleActiveInsituTestsChange = useCallback((tests: LogInsituTest[]) => {
+    setInsituTests(tests);
   }, []);
 
   useEffect(() => {
@@ -123,6 +346,201 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
       cancelled = true;
     };
   }, [project.id, log.id]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const result = await listLogInsituTests(project.id, log.id, 1, MAX_TABLE_PAGE_SIZE, {
+          sortBy: "sortOrder",
+          sortOrder: "asc",
+        });
+        if (!cancelled) setInsituTests(result.data);
+      } catch {
+        if (!cancelled) setInsituTests([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [project.id, log.id]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const result = await listLogWaterObservations(project.id, log.id, 1, MAX_TABLE_PAGE_SIZE, {
+          sortBy: "sortOrder",
+          sortOrder: "asc",
+        });
+        if (!cancelled) {
+          setWaterObservationRows(
+            result.data.map((entry) => ({
+              depth: entry.depth,
+              observationTypeName: entry.observationTypeName,
+              observationTypeId: entry.observationTypeId,
+              comments: entry.comments,
+            }))
+          );
+        }
+      } catch {
+        if (!cancelled) setWaterObservationRows([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [project.id, log.id]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      if (!form.logConfigId.trim()) {
+        setWaterObservationTypes([]);
+        return;
+      }
+      try {
+        const { data } = await getUserWaterObservationTypes(
+          WATER_OBSERVATIONS_MODULE_ID,
+          form.logConfigId
+        );
+        if (!cancelled) {
+          setWaterObservationTypes(parseWaterObservationTypeOptions(data, []));
+        }
+      } catch {
+        if (!cancelled) setWaterObservationTypes([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [form.logConfigId]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      if (!form.logConfigId.trim()) {
+        setWellLogRows([]);
+        setWellTypes([]);
+        setWellBackfillRows([]);
+        setWellCasingRows([]);
+        setWellBackfillTypes([]);
+        setWellCasingTypes([]);
+        return;
+      }
+      try {
+        const [
+          wellLogsResult,
+          backfillsResult,
+          casingsResult,
+          wellTypesRes,
+          backfillTypesRes,
+          casingTypesRes,
+        ] = await Promise.all([
+          listLogWellLogs(project.id, log.id, 1, MAX_TABLE_PAGE_SIZE, {
+            sortBy: "sortOrder",
+            sortOrder: "asc",
+          }),
+          listLogWellBackfills(project.id, log.id, 1, MAX_TABLE_PAGE_SIZE, {
+            sortBy: "sortOrder",
+            sortOrder: "asc",
+          }),
+          listLogWellCasings(project.id, log.id, 1, MAX_TABLE_PAGE_SIZE, {
+            sortBy: "sortOrder",
+            sortOrder: "asc",
+          }),
+          getUserWellTypes(WELL_LOGS_MODULE_ID, form.logConfigId),
+          getUserWellBackfillTypes(WELL_LOGS_MODULE_ID, form.logConfigId),
+          getUserWellCasingTypes(WELL_LOGS_MODULE_ID, form.logConfigId),
+        ]);
+        if (cancelled) return;
+
+        setWellTypes(parseWellTypeOptions(wellTypesRes.data, DEFAULT_WELL_TYPE_OPTIONS));
+        setWellBackfillTypes(
+          parseWellBackfillTypeOptions(backfillTypesRes.data, DEFAULT_WELL_BACKFILL_TYPE_OPTIONS)
+        );
+        setWellCasingTypes(
+          parseWellCasingTypeOptions(casingTypesRes.data, DEFAULT_WELL_CASING_TYPE_OPTIONS)
+        );
+        setWellLogRows(
+          wellLogsResult.data.map((entry) => ({
+            depthFrom: entry.depthFrom,
+            depthTo: entry.depthTo,
+            wellTypeId: entry.wellTypeId,
+            wellTypeName: entry.wellTypeName,
+          }))
+        );
+        setWellBackfillRows(
+          backfillsResult.data.map((entry) => ({
+            depthFrom: entry.depthFrom,
+            depthTo: entry.depthTo,
+            backfillTypeId: entry.backfillTypeId,
+            backfillTypeName: entry.backfillTypeName,
+          }))
+        );
+        setWellCasingRows(
+          casingsResult.data.map((entry) => ({
+            depthFrom: entry.depthFrom,
+            depthTo: entry.depthTo,
+            casingTypeId: entry.casingTypeId,
+            casingTypeName: entry.casingTypeName,
+          }))
+        );
+      } catch {
+        if (!cancelled) {
+          setWellLogRows([]);
+          setWellTypes([]);
+          setWellBackfillRows([]);
+          setWellCasingRows([]);
+          setWellBackfillTypes([]);
+          setWellCasingTypes([]);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [project.id, log.id, form.logConfigId, activeSection]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const result = await listLogDrillingMethods(project.id, log.id, 1, MAX_TABLE_PAGE_SIZE, {
+          sortBy: "sortOrder",
+          sortOrder: "asc",
+        });
+        if (!cancelled) setDrillingMethods(result.data);
+      } catch {
+        if (!cancelled) setDrillingMethods([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [project.id, log.id, activeSection]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      if (!form.logConfigId.trim()) {
+        setDrillingTypes([]);
+        return;
+      }
+      try {
+        const { data } = await getUserDrillingTypes(
+          DRILLING_OBSERVATIONS_MODULE_ID,
+          form.logConfigId
+        );
+        if (!cancelled) setDrillingTypes(parseDrillingTypeOptions(data, []));
+      } catch {
+        if (!cancelled) setDrillingTypes([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [form.logConfigId]);
 
   useEffect(() => {
     setForm(logToFormState(log));
@@ -176,6 +594,18 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
         })),
     [form.logConfigId, logConfigurations]
   );
+
+  useEffect(() => {
+    if (!visibleLogSections.some((section) => section.id === activeSection)) {
+      setActiveSection("details");
+    }
+  }, [activeSection, visibleLogSections]);
+
+  useEffect(() => {
+    if (!reportModuleEnabled && showReport) {
+      setShowReport(false);
+    }
+  }, [reportModuleEnabled, showReport]);
 
   const logTypeOptions = useMemo(
     () => LOG_TYPES.map((type) => ({ value: type.id, label: type.name })),
@@ -232,6 +662,20 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
     () => resolveLogConfigRuntimeSettings(form.logConfigId, logConfigurations),
     [form.logConfigId, logConfigurations]
   );
+
+  const finishingReasonsApi = useUserFinishingReasons({
+    enabled: Boolean(form.logConfigId.trim()),
+    logConfigurationId: form.logConfigId,
+  });
+
+  const finishingReasonOptions = useMemo(() => {
+    const options = [...finishingReasonsApi.selectOptions];
+    const current = form.finishingReason.trim();
+    if (current && !options.some((option) => option.value === current)) {
+      options.unshift({ value: current, label: current });
+    }
+    return options;
+  }, [finishingReasonsApi.selectOptions, form.finishingReason]);
 
   const coordinatesRequired = areCoordinatesRequired(selectedLogConfigSettings);
   const coordinateUnit = coordinateUnitLabel(selectedLogConfigSettings.coordinateSystemUnit);
@@ -294,6 +738,17 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
 
   const handleCancel = () => {
     router.push(projectHref);
+  };
+
+  const handleFinishLogSubmit = async (payload: LogFinishLogFormPayload) => {
+    await createLogFinishLog(project.id, log.id, payload);
+    setForm((current) => ({
+      ...current,
+      finishingReason: payload.finishTypeName,
+      finishLogDate: payload.completedDate,
+      endDepth: payload.endDepth,
+      finishingComment: payload.comments,
+    }));
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -376,27 +831,35 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
                   />
                 </FormField>
 
-                <UiButton type="button" variant="primary" size="sm" disabled={isBusy}>
-                  Finish Log
-                </UiButton>
+                <div className="update-log-page__header-btns">
+                  <UiButton
+                    type="button"
+                    variant="primary"
+                    disabled={isBusy}
+                    onClick={() => setFinishLogOpen(true)}
+                  >
+                    Finish Log
+                  </UiButton>
 
-                <UiButton
-                  type="button"
-                  variant={showReport ? "secondary" : "outline"}
-                  size="sm"
-                  aria-pressed={showReport}
-                  onClick={handleShowReportChange}
-                >
-                  <ReportIcon />
-                  {showReport ? "Hide Log Report" : "Show Log Report"}
-                </UiButton>
+                  <UiButton
+                    type="button"
+                    variant={showReport ? "secondary" : "outline"}
+                    className={showReport ? "is-active" : undefined}
+                    aria-pressed={showReport}
+                    onClick={handleShowReportChange}
+                    disabled={!reportModuleEnabled}
+                  >
+                    <ReportIcon />
+                    {showReport ? "Hide Log Report" : "Show Log Report"}
+                  </UiButton>
+                </div>
               </div>
             </div>
           </header>
 
           <div className="project-dashboard__container update-log-page__container">
             <div className="update-log-page__tabs ui-scrollbar" role="tablist" aria-label="Log sections">
-              {LOG_SECTIONS.map((section) => (
+              {visibleLogSections.map((section) => (
                 <button
                   key={section.id}
                   type="button"
@@ -523,9 +986,11 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
                             <Select
                               value={form.finishingReason}
                               onChange={(value) => update("finishingReason", value)}
-                              options={FINISHING_REASONS}
+                              options={finishingReasonOptions}
                               placeholder="Select finishing reason"
-                              disabled={isBusy}
+                              search
+                              searchPlaceholder="Search finishing reasons…"
+                              disabled={isBusy || finishingReasonsApi.loading}
                             />
                           </FormField>
 
@@ -768,6 +1233,7 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
                     phoneNumber={phoneNumber}
                     equipmentLabel={selectedEquipmentLabel}
                     supplierLabel={selectedSupplierName}
+                    sheetRef={reportSheetRef}
                   />
                 ) : activeSection === "subsurface" ? (
                   <SubsurfaceSection
@@ -781,6 +1247,7 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
                     projectId={project.id}
                     logId={log.id}
                     logConfigurationId={form.logConfigId}
+                    onActiveTestsChange={handleActiveInsituTestsChange}
                   />
                 ) : activeSection === "remarks" ? (
                   <RemarksSection
@@ -805,6 +1272,7 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
                     projectId={project.id}
                     logId={log.id}
                     logConfigurationId={form.logConfigId}
+                    onActiveWellLogsChange={handleActiveWellLogsChange}
                   />
                 ) : activeSection === "water-observations" ? (
                   <WaterObservationsSection
@@ -832,7 +1300,7 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
                 )}
               </div>
 
-              {showReport ? (
+              {showReport && reportModuleEnabled ? (
                 <LogReportPreview
                   project={project}
                   form={form}
@@ -845,12 +1313,33 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
                   equipmentLabel={selectedEquipmentLabel}
                   supplierLabel={selectedSupplierName}
                   subsurfaceLayers={reportStrata}
+                  dcpPoints={reportDcpPoints}
+                  drillingIntervals={reportDrillingIntervals}
+                  pspBands={reportPspBands}
+                  waterObservations={reportWaterObservations}
+                  wellIntervals={reportWellIntervals}
+                  sheetRef={reportSheetRef}
                 />
               ) : null}
             </div>
           </div>
         </div>
       </div>
+
+      <FinishLogModal
+        open={finishLogOpen}
+        onClose={() => setFinishLogOpen(false)}
+        logConfigurationId={form.logConfigId}
+        dateFormat={selectedLogConfigSettings.dateFormat}
+        minDate={form.drillingDate || undefined}
+        initialValues={{
+          finishTypeName: form.finishingReason,
+          completedDate: form.finishLogDate,
+          endDepth: form.endDepth,
+          comments: form.finishingComment,
+        }}
+        onSubmit={handleFinishLogSubmit}
+      />
     </div>
   );
 }

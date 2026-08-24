@@ -18,12 +18,39 @@ import type {
 
 const BASE = "/log-report-templates";
 
+function logReportTemplatesBasePath(ownerUserId?: number): string {
+  return ownerUserId != null
+    ? `/admin/users/${ownerUserId}/log-report-templates`
+    : BASE;
+}
+
 export type LogTemplateBuilderConfiguration = {
   columns: Array<Record<string, unknown>>;
   corelogColumns: Array<Record<string, unknown>>;
   defaultCopyColumns: Array<Record<string, unknown>>;
   defaultCopyCorelogColumns: Array<Record<string, unknown>>;
   [key: string]: unknown;
+};
+
+export type LogReportFieldCodeRow = {
+  group: "density" | "consistency" | "moisture";
+  code: string;
+  name: string;
+  aliases: string[];
+};
+
+export type LogReportChartDefaultRow = {
+  chartKey: string;
+  columnCode: string;
+  columnText: string;
+  dataSourceGroup: string;
+  dataSourceValue: string;
+  config: Record<string, unknown>;
+};
+
+export type LogReportCatalog = {
+  fieldCodes: LogReportFieldCodeRow[];
+  chartDefaults: LogReportChartDefaultRow[];
 };
 
 export type LogTemplateBuilderBootstrap = {
@@ -52,6 +79,7 @@ function toRecord(raw: ApiTemplate): LogTemplateRecord {
     logType: raw.logType === "corelog" ? "corelog" : "borelog",
     isDefault: Boolean(raw.isDefault),
     createdAt: String(raw.createdAt ?? "").slice(0, 10),
+    updatedAt: raw.updatedAt ? String(raw.updatedAt) : undefined,
     logConfigurationIds: Array.isArray(raw.logConfigurationIds)
       ? raw.logConfigurationIds.map(String)
       : [],
@@ -71,17 +99,24 @@ function toGroupedList(payload: unknown): LogTemplateListPayload {
 }
 
 /** Tablogs: GET /log-template/list — user-scoped templates. */
-export async function listLogTemplates(): Promise<LogTemplateListPayload> {
+export async function listLogTemplates(
+  ownerUserId?: number
+): Promise<LogTemplateListPayload> {
   const res = await apiClient.get<ApiEnvelope<LogTemplateListPayload | { data?: unknown }>>(
-    BASE,
+    logReportTemplatesBasePath(ownerUserId),
     { params: { grouped: "true" } }
   );
   return toGroupedList(res.data.data);
 }
 
 /** Tablogs: GET /log-template/edit/:id */
-export async function getLogTemplate(id: string): Promise<LogTemplateRecord> {
-  const res = await apiClient.get<ApiEnvelope<ApiTemplate>>(`${BASE}/${encodeURIComponent(id)}`);
+export async function getLogTemplate(
+  id: string,
+  ownerUserId?: number
+): Promise<LogTemplateRecord> {
+  const res = await apiClient.get<ApiEnvelope<ApiTemplate>>(
+    `${logReportTemplatesBasePath(ownerUserId)}/${encodeURIComponent(id)}`
+  );
   return toRecord(res.data.data);
 }
 
@@ -97,16 +132,27 @@ export async function getBuilderConfiguration(): Promise<LogTemplateBuilderConfi
   return payload as LogTemplateBuilderConfiguration;
 }
 
+/** Seeded consistency / moisture codes and DCP graph defaults. */
+export async function getLogReportCatalog(): Promise<LogReportCatalog> {
+  const res = await apiClient.get<ApiEnvelope<LogReportCatalog>>(`${BASE}/catalog`);
+  const payload = res.data.data;
+  return {
+    fieldCodes: Array.isArray(payload?.fieldCodes) ? payload.fieldCodes : [],
+    chartDefaults: Array.isArray(payload?.chartDefaults) ? payload.chartDefaults : [],
+  };
+}
+
 /**
  * Open-builder bootstrap — mirrors Tablogs' three parallel calls:
  * list + builder-configuration + edit/:id
  */
 export async function loadBuilderBootstrap(
-  templateId: string
+  templateId: string,
+  ownerUserId?: number
 ): Promise<LogTemplateBuilderBootstrap> {
   const [template, list, builderConfiguration] = await Promise.all([
-    getLogTemplate(templateId),
-    listLogTemplates(),
+    getLogTemplate(templateId, ownerUserId),
+    listLogTemplates(ownerUserId),
     getBuilderConfiguration(),
   ]);
   return { template, list, builderConfiguration };
@@ -116,52 +162,72 @@ export async function updateLogTemplate(
   id: string,
   patch: Partial<
     Pick<LogTemplateRecord, "name" | "logType" | "isDefault" | "logConfigurationIds" | "config">
-  >
+  >,
+  ownerUserId?: number
 ): Promise<{ data: LogTemplateRecord; message: string }> {
-  const res = await apiClient.patch<ApiEnvelope<ApiTemplate>>(`${BASE}/${encodeURIComponent(id)}`, {
-    ...(patch.name !== undefined ? { name: patch.name } : {}),
-    ...(patch.logType !== undefined ? { logType: patch.logType } : {}),
-    ...(patch.isDefault !== undefined ? { isDefault: patch.isDefault } : {}),
-    ...(patch.logConfigurationIds !== undefined
-      ? { logConfigurationIds: patch.logConfigurationIds }
-      : {}),
-    ...(patch.config !== undefined ? { config: patch.config } : {}),
-  });
+  const res = await apiClient.patch<ApiEnvelope<ApiTemplate>>(
+    `${logReportTemplatesBasePath(ownerUserId)}/${encodeURIComponent(id)}`,
+    {
+      ...(patch.name !== undefined ? { name: patch.name } : {}),
+      ...(patch.logType !== undefined ? { logType: patch.logType } : {}),
+      ...(patch.isDefault !== undefined ? { isDefault: patch.isDefault } : {}),
+      ...(patch.logConfigurationIds !== undefined
+        ? { logConfigurationIds: patch.logConfigurationIds }
+        : {}),
+      ...(patch.config !== undefined ? { config: patch.config } : {}),
+    }
+  );
   return {
     data: toRecord(res.data.data),
     message: extractApiMessage(res.data) || "Log template updated",
   };
 }
 
-export async function createLogTemplate(input: {
-  name: string;
-  logType: LogTemplateLogType;
-  config?: LogTemplateConfig;
-  isDefault?: boolean;
-}): Promise<{ data: LogTemplateRecord; message: string }> {
-  const res = await apiClient.post<ApiEnvelope<ApiTemplate>>(BASE, {
-    name: input.name.trim() || "New Template",
-    logType: input.logType,
-    isDefault: Boolean(input.isDefault),
-    ...(input.config ? { config: input.config } : {}),
-  });
+export async function createLogTemplate(
+  input: {
+    name: string;
+    logType: LogTemplateLogType;
+    config?: LogTemplateConfig;
+    isDefault?: boolean;
+  },
+  ownerUserId?: number
+): Promise<{ data: LogTemplateRecord; message: string }> {
+  const res = await apiClient.post<ApiEnvelope<ApiTemplate>>(
+    logReportTemplatesBasePath(ownerUserId),
+    {
+      name: input.name.trim() || "New Template",
+      logType: input.logType,
+      isDefault: Boolean(input.isDefault),
+      ...(input.config ? { config: input.config } : {}),
+    }
+  );
   return {
     data: toRecord(res.data.data),
     message: extractApiMessage(res.data) || "Log template created",
   };
 }
 
-export async function deleteLogTemplate(id: string): Promise<{ message: string }> {
-  const res = await apiClient.delete<ApiEnvelope<unknown>>(`${BASE}/${encodeURIComponent(id)}`);
+export async function deleteLogTemplate(
+  id: string,
+  ownerUserId?: number
+): Promise<{ message: string }> {
+  const res = await apiClient.delete<ApiEnvelope<unknown>>(
+    `${logReportTemplatesBasePath(ownerUserId)}/${encodeURIComponent(id)}`
+  );
   return { message: extractApiMessage(res.data) || "Log template deleted" };
 }
 
-export async function reorderLogTemplates(orderedIds: string[]): Promise<void> {
+export async function reorderLogTemplates(
+  orderedIds: string[],
+  ownerUserId?: number
+): Promise<void> {
   const numericIds = orderedIds
     .map((id) => Number(id))
     .filter((id) => Number.isInteger(id) && id > 0);
   if (numericIds.length === 0) return;
-  await apiClient.post(`${BASE}/reorder`, { orderedIds: numericIds });
+  await apiClient.post(`${logReportTemplatesBasePath(ownerUserId)}/reorder`, {
+    orderedIds: numericIds,
+  });
 }
 
 /** Local selection-list stand-in until a Geoid selection-list endpoint exists. */

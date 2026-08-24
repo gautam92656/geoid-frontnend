@@ -1,12 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type RefObject } from "react";
+import toast from "react-hot-toast";
 import { UiButton } from "@/shared/components/ui";
 import { REPORT_PREVIEW_TYPES, REPORT_PREVIEW_ZOOM } from "../data/logReportOptions";
 import type { Project } from "../types/project";
 import type { LogFormState } from "../types/log";
 import type { LogReportPreviewState } from "../hooks/useLogReportPreviewState";
-import type { PreviewStratum } from "../utils/logReportPreviewUtils";
+import {
+  reportPageHeightPx,
+  reportPageWidthPx,
+  type DcpPoint,
+  type PreviewDrillingInterval,
+  type PreviewPspBand,
+  type PreviewStratum,
+  type PreviewWaterObservation,
+  type PreviewWellInterval,
+} from "../utils/logReportPreviewUtils";
+import { exportLogReportPdf } from "../utils/logReportPdfExport";
 import { LogReportComposedSheet } from "./LogReportComposedSheet";
 
 function InfoIcon() {
@@ -30,6 +41,12 @@ type LogReportPreviewProps = Readonly<{
   equipmentLabel?: string | null;
   supplierLabel?: string | null;
   subsurfaceLayers?: PreviewStratum[] | null;
+  dcpPoints?: DcpPoint[] | null;
+  drillingIntervals?: PreviewDrillingInterval[] | null;
+  pspBands?: PreviewPspBand[] | null;
+  waterObservations?: PreviewWaterObservation[] | null;
+  wellIntervals?: PreviewWellInterval[] | null;
+  sheetRef?: RefObject<HTMLElement | null>;
 }>;
 
 export function LogReportPreview({
@@ -44,8 +61,15 @@ export function LogReportPreview({
   equipmentLabel,
   supplierLabel,
   subsurfaceLayers,
+  dcpPoints,
+  drillingIntervals,
+  pspBands,
+  waterObservations,
+  wellIntervals,
+  sheetRef,
 }: LogReportPreviewProps) {
   const [zoom, setZoom] = useState<number>(REPORT_PREVIEW_ZOOM.default);
+  const [exporting, setExporting] = useState(false);
   const {
     previewType,
     setPreviewType,
@@ -55,6 +79,29 @@ export function LogReportPreview({
     selectedFooterTemplate,
     loadingLists,
   } = report;
+
+  const handleSaveAsPdf = async () => {
+    const sheet = sheetRef?.current;
+    if (!sheet) {
+      toast.error("Open the log report preview before saving as PDF.");
+      return;
+    }
+    if (exporting) return;
+    setExporting(true);
+    try {
+      await exportLogReportPdf(sheet, {
+        logNumber: form.logNumber,
+        pageWidthPx: reportPageWidthPx(selection.pageSize, selection.orientation),
+        pageHeightPx: reportPageHeightPx(selection.pageSize, selection.orientation),
+      });
+      toast.success("PDF downloaded.");
+    } catch (error) {
+      console.error("Failed to export log report PDF", error);
+      toast.error("Failed to save PDF. Please try again.");
+    } finally {
+      setExporting(false);
+    }
+  };
 
   return (
     <aside className="log-report-preview" aria-label="Log report preview">
@@ -79,8 +126,14 @@ export function LogReportPreview({
           </h3>
         </div>
         <div className="log-report-preview__toolbar-end">
-          <UiButton type="button" variant="primary" size="sm">
-            Save as PDF
+          <UiButton
+            type="button"
+            variant="primary"
+            size="sm"
+            onClick={() => void handleSaveAsPdf()}
+            disabled={exporting || loadingLists}
+          >
+            {exporting ? "Saving…" : "Save as PDF"}
           </UiButton>
         </div>
       </div>
@@ -120,6 +173,7 @@ export function LogReportPreview({
           <p className="log-report-preview__loading">Loading templates…</p>
         ) : (
           <LogReportComposedSheet
+            ref={sheetRef}
             project={project}
             form={form}
             previewType={previewType}
@@ -135,6 +189,11 @@ export function LogReportPreview({
             equipmentLabel={equipmentLabel}
             supplierLabel={supplierLabel}
             subsurfaceLayers={subsurfaceLayers}
+            dcpPoints={dcpPoints}
+            drillingIntervals={drillingIntervals}
+            pspBands={pspBands}
+            waterObservations={waterObservations}
+            wellIntervals={wellIntervals}
             style={{ transform: `scale(${zoom / 100})`, transformOrigin: "top center" }}
           />
         )}

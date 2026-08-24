@@ -10,10 +10,16 @@ import type {
   PaginatedHeaderFooterTemplates,
 } from "../types/headerFooterTemplate";
 
+function headerFooterTemplatesBasePath(ownerUserId?: number): string {
+  return ownerUserId != null
+    ? `/admin/users/${ownerUserId}/header-footer-templates`
+    : "/header-footer-templates";
+}
+
 export async function listHeaderFooterTemplates(
   page = 1,
   limit = DEFAULT_TABLE_PAGE_SIZE,
-  options: ListHeaderFooterTemplatesParams = {}
+  options: ListHeaderFooterTemplatesParams & { ownerUserId?: number } = {}
 ): Promise<PaginatedHeaderFooterTemplates> {
   const params: Record<string, string | number> = {
     page,
@@ -27,24 +33,28 @@ export async function listHeaderFooterTemplates(
   if (options.kind) params.kind = options.kind;
 
   const res = await apiClient.get<ApiEnvelope<PaginatedHeaderFooterTemplates>>(
-    "/header-footer-templates",
+    headerFooterTemplatesBasePath(options.ownerUserId),
     { params }
   );
   return res.data.data;
 }
 
-export async function getHeaderFooterTemplate(id: number): Promise<HeaderFooterTemplate> {
+export async function getHeaderFooterTemplate(
+  id: number,
+  ownerUserId?: number
+): Promise<HeaderFooterTemplate> {
   const res = await apiClient.get<ApiEnvelope<HeaderFooterTemplate>>(
-    `/header-footer-templates/${id}`
+    `${headerFooterTemplatesBasePath(ownerUserId)}/${id}`
   );
   return res.data.data;
 }
 
 export async function createHeaderFooterTemplate(
-  payload: HeaderFooterTemplatePayload
+  payload: HeaderFooterTemplatePayload,
+  ownerUserId?: number
 ): Promise<MutationResult<HeaderFooterTemplate>> {
   const res = await apiClient.post<ApiEnvelope<HeaderFooterTemplate>>(
-    "/header-footer-templates",
+    headerFooterTemplatesBasePath(ownerUserId),
     payload
   );
   return { data: res.data.data, message: extractApiMessage(res.data) };
@@ -52,17 +62,23 @@ export async function createHeaderFooterTemplate(
 
 export async function updateHeaderFooterTemplate(
   id: number,
-  payload: Partial<HeaderFooterTemplatePayload>
+  payload: Partial<HeaderFooterTemplatePayload>,
+  ownerUserId?: number
 ): Promise<MutationResult<HeaderFooterTemplate>> {
   const res = await apiClient.patch<ApiEnvelope<HeaderFooterTemplate>>(
-    `/header-footer-templates/${id}`,
+    `${headerFooterTemplatesBasePath(ownerUserId)}/${id}`,
     payload
   );
   return { data: res.data.data, message: extractApiMessage(res.data) };
 }
 
-export async function deleteHeaderFooterTemplate(id: number): Promise<DeleteResult> {
-  const res = await apiClient.delete<ApiEnvelope<unknown>>(`/header-footer-templates/${id}`);
+export async function deleteHeaderFooterTemplate(
+  id: number,
+  ownerUserId?: number
+): Promise<DeleteResult> {
+  const res = await apiClient.delete<ApiEnvelope<unknown>>(
+    `${headerFooterTemplatesBasePath(ownerUserId)}/${id}`
+  );
   return { message: extractApiMessage(res.data) };
 }
 

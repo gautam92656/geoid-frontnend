@@ -651,7 +651,7 @@
         "code": "remarks",
         "hidden": false,
         "visibility": true,
-        "width": "15",
+        "width": "10",
         "column_type": "text",
         "default_column": true,
         "column_separation": true,

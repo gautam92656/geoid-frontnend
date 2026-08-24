@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useState, type RefObject } from "react";
+import toast from "react-hot-toast";
 import { FormField, Input, Select, UiButton } from "@/shared/components/ui";
 import {
-  LOG_BUILDER_VERSION_OPTIONS,
   REPORT_ORIENTATION_OPTIONS,
   REPORT_PAGE_SIZE_OPTIONS,
   REPORT_PREVIEW_TYPES,
@@ -11,10 +11,9 @@ import {
 import type { Project } from "../types/project";
 import type { LogFormState } from "../types/log";
 import type { LogReportPreviewState } from "../hooks/useLogReportPreviewState";
-import {
-  LOG_REPORT_COMPOSED_PRINT_STYLES,
-  LogReportComposedSheet,
-} from "./LogReportComposedSheet";
+import { reportPageHeightPx, reportPageWidthPx } from "../utils/logReportPreviewUtils";
+import { exportLogReportPdf } from "../utils/logReportPdfExport";
+import { LOG_REPORT_COMPOSED_PRINT_STYLES } from "./LogReportComposedSheet";
 
 function PrintPreviewIcon() {
   return (
@@ -50,21 +49,6 @@ function ExternalLinkIcon() {
   );
 }
 
-function HelpIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
-      <path
-        d="M9.5 9.5a2.5 2.5 0 014.5 1.5c0 2-2.5 2-2.5 4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-      <circle cx="12" cy="17" r="0.75" fill="currentColor" />
-    </svg>
-  );
-}
-
 type LogReportSectionProps = Readonly<{
   project: Project;
   form: LogFormState;
@@ -76,6 +60,8 @@ type LogReportSectionProps = Readonly<{
   phoneNumber?: string | null;
   equipmentLabel?: string | null;
   supplierLabel?: string | null;
+  /** The actual rendered sheet, owned by the sibling LogReportPreview panel. */
+  sheetRef: RefObject<HTMLElement | null>;
 }>;
 
 export function LogReportSection({
@@ -89,8 +75,9 @@ export function LogReportSection({
   phoneNumber,
   equipmentLabel,
   supplierLabel,
+  sheetRef,
 }: LogReportSectionProps) {
-  const sheetRef = useRef<HTMLElement>(null);
+  const [exporting, setExporting] = useState(false);
   const {
     previewType,
     setPreviewType,
@@ -183,6 +170,40 @@ export function LogReportSection({
             <ExternalLinkIcon />
             Open in new tab
           </UiButton>
+
+          <UiButton
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={exporting}
+            onClick={() => {
+              void (async () => {
+                const sheet = sheetRef.current;
+                if (!sheet) {
+                  toast.error("Show the log report preview before saving as PDF.");
+                  return;
+                }
+                if (exporting) return;
+                setExporting(true);
+                try {
+                  await exportLogReportPdf(sheet, {
+                    logNumber: form.logNumber,
+                    pageWidthPx: reportPageWidthPx(selection.pageSize, selection.orientation),
+                    pageHeightPx: reportPageHeightPx(selection.pageSize, selection.orientation),
+                  });
+                  toast.success("PDF downloaded.");
+                } catch (err) {
+                  console.error("Failed to export log report PDF", err);
+                  toast.error("Failed to save PDF. Please try again.");
+                } finally {
+                  setExporting(false);
+                }
+              })();
+            }}
+          >
+            <PrintPreviewIcon />
+            {exporting ? "Saving…" : "Save as PDF"}
+          </UiButton>
         </div>
       </div>
 
@@ -257,25 +278,6 @@ export function LogReportSection({
             disabled={selectsDisabled}
           />
         </FormField>
-
-        {isCorelog ? (
-          <FormField label="Select Log Builder Version">
-            <div className="log-report-section__builder-version">
-              <Select
-                value={selection.builderVersion}
-                onChange={(value) => updateSelection("builderVersion", value)}
-                options={LOG_BUILDER_VERSION_OPTIONS}
-                disabled={selectsDisabled}
-              />
-              <span
-                className="log-report-section__help-icon"
-                title="Latest uses the current log builder release"
-              >
-                <HelpIcon />
-              </span>
-            </div>
-          </FormField>
-        ) : null}
       </div>
 
       {report.error ? (
@@ -283,26 +285,6 @@ export function LogReportSection({
           {report.error}
         </p>
       ) : null}
-
-      {/* <div className="log-report-section__sheet-wrap ui-scrollbar">
-        <LogReportComposedSheet
-          ref={sheetRef}
-          project={project}
-          form={form}
-          previewType={previewType}
-          selection={selection}
-          logTemplate={selectedLogTemplate}
-          headerTemplate={selectedHeaderTemplate}
-          footerTemplate={selectedFooterTemplate}
-          companyName={companyName}
-          companyLogoUrl={companyLogoUrl}
-          companyEmail={companyEmail}
-          phoneCode={phoneCode}
-          phoneNumber={phoneNumber}
-          equipmentLabel={equipmentLabel}
-          supplierLabel={supplierLabel}
-        />
-      </div> */}
     </section>
   );
 }

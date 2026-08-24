@@ -496,7 +496,7 @@ export function ManageRockTypesModal({
                           onChange={(event) => setGraphicFilter(event.target.value)}
                         />
                         <span
-                          className="manage-origins-modal__graphic-preview"
+                          className="manage-origins-modal__graphic-preview manage-origins-modal__graphic-preview--zoomed"
                           style={
                             selectedGraphicUrl
                               ? { backgroundImage: `url("${selectedGraphicUrl}")` }
@@ -542,7 +542,7 @@ export function ManageRockTypesModal({
                               {graphic.label}
                             </span>
                             <span
-                              className="manage-origins-modal__graphic-option-image"
+                              className="manage-origins-modal__graphic-option-image manage-origins-modal__graphic-option-image--zoomed"
                               style={{ backgroundImage: `url("${url}")` }}
                             />
                           </button>

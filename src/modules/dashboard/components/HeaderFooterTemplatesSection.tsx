@@ -38,9 +38,14 @@ import type {
   HeaderFooterTemplateFormState,
   HeaderFooterTemplateKind,
 } from "../types/headerFooterTemplate";
+import { useOwnerUserId } from "../context/LogConfigurationOwnerContext";
 import { AddHeaderFooterTemplateModal } from "./AddHeaderFooterTemplateModal";
 
-const BUILDER_BASE_PATH = "/dashboard/settings/header-footer-templates";
+const DEFAULT_BUILDER_BASE_PATH = "/dashboard/settings/header-footer-templates";
+
+type HeaderFooterTemplatesSectionProps = Readonly<{
+  builderBasePath?: string;
+}>;
 
 const TEMPLATE_GRID =
   "40px minmax(220px, 1.4fr) minmax(110px, 0.7fr) minmax(120px, 0.8fr) 48px";
@@ -135,8 +140,11 @@ function DesignIcon() {
   );
 }
 
-export function HeaderFooterTemplatesSection() {
+export function HeaderFooterTemplatesSection({
+  builderBasePath = DEFAULT_BUILDER_BASE_PATH,
+}: HeaderFooterTemplatesSectionProps = {}) {
   const router = useRouter();
+  const ownerUserId = useOwnerUserId();
   const [templates, setTemplates] = useState<HeaderFooterTemplate[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -150,12 +158,22 @@ export function HeaderFooterTemplatesSection() {
   const [viewTemplate, setViewTemplate] = useState<HeaderFooterTemplate | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<DeleteConfirmState>({ open: false });
 
+  const withOwnerQuery = useCallback(
+    (path: string) => {
+      if (ownerUserId == null) return path;
+      const separator = path.includes("?") ? "&" : "?";
+      return `${path}${separator}userId=${ownerUserId}`;
+    },
+    [ownerUserId]
+  );
+
   const loadTemplates = useCallback(async () => {
     setLoading(true);
     try {
       const result = await listHeaderFooterTemplates(1, MAX_TABLE_PAGE_SIZE, {
         sortBy: "updatedAt",
         sortOrder: "desc",
+        ownerUserId,
       });
       setTemplates(result.data);
     } catch (err) {
@@ -163,7 +181,7 @@ export function HeaderFooterTemplatesSection() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [ownerUserId]);
 
   useEffect(() => {
     void loadTemplates();
@@ -236,9 +254,9 @@ export function HeaderFooterTemplatesSection() {
   const openNewBuilder = useCallback(
     (kind: HeaderFooterTemplateKind) => {
       setNewMenuOpen(false);
-      router.push(`${BUILDER_BASE_PATH}/new/builder?kind=${kind}`);
+      router.push(withOwnerQuery(`${builderBasePath}/new/builder?kind=${kind}`));
     },
-    [router]
+    [builderBasePath, router, withOwnerQuery]
   );
 
   const openEditModal = useCallback((template: HeaderFooterTemplate) => {
@@ -263,7 +281,9 @@ export function HeaderFooterTemplatesSection() {
 
     setDeleting(true);
     try {
-      const results = await Promise.all(ids.map((id) => deleteHeaderFooterTemplate(id)));
+      const results = await Promise.all(
+        ids.map((id) => deleteHeaderFooterTemplate(id, ownerUserId))
+      );
       setTemplates((current) => current.filter((template) => !ids.includes(template.id)));
       setSelectedIds(new Set());
 
@@ -280,7 +300,7 @@ export function HeaderFooterTemplatesSection() {
     } finally {
       setDeleting(false);
     }
-  }, []);
+  }, [ownerUserId]);
 
   const handleConfirmDelete = useCallback(async () => {
     if (!deleteConfirm.open) return;
@@ -300,9 +320,9 @@ export function HeaderFooterTemplatesSection() {
 
   const openBuilder = useCallback(
     (templateId: number) => {
-      router.push(`${BUILDER_BASE_PATH}/${templateId}/builder`);
+      router.push(withOwnerQuery(`${builderBasePath}/${templateId}/builder`));
     },
-    [router]
+    [builderBasePath, router, withOwnerQuery]
   );
 
   const handleSubmit = useCallback(
@@ -313,7 +333,8 @@ export function HeaderFooterTemplatesSection() {
       try {
         const { data, message } = await updateHeaderFooterTemplate(
           modal.editingTemplate.id,
-          formToHeaderFooterTemplatePayload(form)
+          formToHeaderFooterTemplatePayload(form),
+          ownerUserId
         );
         setTemplates((current) =>
           current.map((template) => (template.id === data.id ? data : template))
@@ -327,7 +348,7 @@ export function HeaderFooterTemplatesSection() {
         setSubmitting(false);
       }
     },
-    [closeModal, modal]
+    [closeModal, modal, ownerUserId]
   );
 
   const toolbarActions: ToolbarAction[] = useMemo(

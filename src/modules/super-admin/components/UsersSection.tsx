@@ -37,7 +37,7 @@ import {
   updateAdminUser,
 } from "../services/adminUserApi";
 import type { AdminUser, AdminUserFormState, UserRole } from "../types/user";
-import { superAdminLogConfigurationsPath } from "../utils/paths";
+import { superAdminLogConfigurationsPath, superAdminLogTemplatesPath } from "../utils/paths";
 import { AddUserModal } from "./AddUserModal";
 
 const USER_GRID =
@@ -197,6 +197,13 @@ export function UsersSection() {
       router.push(path);
     },
     [pathname, router]
+  );
+
+  const openUserTemplates = useCallback(
+    (user: AdminUser) => {
+      router.push(superAdminLogTemplatesPath(user.id));
+    },
+    [router]
   );
 
   const closeModal = useCallback(() => {
@@ -456,9 +463,15 @@ export function UsersSection() {
               ? [
                   {
                     id: "view",
-                    label: "View",
+                    label: "Log configs",
                     icon: <ViewIcon />,
                     onClick: () => openUserConfigurations(user),
+                  },
+                  {
+                    id: "templates",
+                    label: "Templates",
+                    icon: <EditIcon />,
+                    onClick: () => openUserTemplates(user),
                   },
                 ]
               : []),
@@ -491,6 +504,7 @@ export function UsersSection() {
       allSelected,
       openEditModal,
       openUserConfigurations,
+      openUserTemplates,
       requestDeleteUser,
       selectedIds,
       someSelected,

@@ -86,6 +86,43 @@ export function resolvePreviewClassificationDisplay(
  * `nameInDescription`, matched classification name, and visible note fields.
  * Example: "Concrete Slab MULCH."
  */
+function normalizeDescriptionPart(value: string): string {
+  const trimmed = value.replace(/\s+/g, " ").trim();
+  return trimmed.replace(/^[\s,;:.]+|[\s,;:.]+$/g, "");
+}
+
+function appendDescriptionPart(parts: string[], seen: Set<string>, value: string): void {
+  const normalized = normalizeDescriptionPart(value);
+  if (!normalized) return;
+  const signature = normalized.toLowerCase();
+  if (seen.has(signature)) return;
+  seen.add(signature);
+  parts.push(normalized);
+}
+
+function collectStepValues(step: WorkflowStep, values: WorkflowPreviewValues): string[] {
+  const raw = values[stepKey(step)];
+  if (Array.isArray(raw)) {
+    return raw
+      .map((entry) => (typeof entry === "string" ? entry.trim() : ""))
+      .filter((entry) => entry.length > 0);
+  }
+  if (typeof raw === "string" && raw.trim()) return [raw.trim()];
+  if (typeof raw === "boolean") return raw ? ["True"] : [];
+  return [];
+}
+
+function shouldSkipNarrativeStep(step: WorkflowStep): boolean {
+  const key = stepKey(step).toLowerCase();
+  return (
+    key === "depth" ||
+    key === "as above" ||
+    key === "origin" ||
+    key === "classification" ||
+    key === "classification code"
+  );
+}
+
 export function buildSubsurfacePreviewDescription(
   steps: readonly WorkflowStep[],
   values: WorkflowPreviewValues,
@@ -93,6 +130,7 @@ export function buildSubsurfacePreviewDescription(
   classification: PreviewClassificationMatch
 ): string {
   const parts: string[] = [];
+  const seen = new Set<string>();
 
   const originStep = steps.find(isOriginStep);
   if (originStep && subsurfaceSettings) {
@@ -104,22 +142,28 @@ export function buildSubsurfacePreviewDescription(
         origin?.nameInDescription?.trim() ||
         origin?.name?.trim() ||
         selected.trim();
-      if (label) parts.push(label);
+      if (label) appendDescriptionPart(parts, seen, label);
     }
   }
 
   const className = classification.name.trim();
-  if (className) parts.push(className);
+  if (className) appendDescriptionPart(parts, seen, className);
 
   for (const step of steps) {
-    if (step.inputType !== "note") continue;
-    const note = values[stepKey(step)];
-    if (typeof note === "string" && note.trim()) {
-      parts.push(note.trim());
-    }
+    if (shouldSkipNarrativeStep(step)) continue;
+
+    const stepValues = collectStepValues(step, values);
+    if (stepValues.length === 0) continue;
+
+    const rendered = stepValues
+      .map((value) => normalizeDescriptionPart(value))
+      .filter(Boolean)
+      .join(", ");
+
+    if (rendered) appendDescriptionPart(parts, seen, rendered);
   }
 
   if (parts.length === 0) return "";
-  const joined = parts.join(" ").replace(/\s+/g, " ").trim();
+  const joined = parts.join(", ").replace(/\s+/g, " ").trim();
   return joined.endsWith(".") ? joined : `${joined}.`;
 }

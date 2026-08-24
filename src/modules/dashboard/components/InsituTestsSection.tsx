@@ -18,7 +18,7 @@ import {
 } from "@/shared/components/ui";
 import { useDebouncedValue } from "@/shared/hooks/useDebouncedValue";
 import { useTableSort } from "@/shared/hooks/useTableSort";
-import { TABLE_PAGE_SIZE_OPTIONS } from "@/shared/constants/pagination";
+import { TABLE_PAGE_SIZE_OPTIONS, MAX_TABLE_PAGE_SIZE } from "@/shared/constants/pagination";
 import { API_ERROR_MESSAGES } from "@/shared/constants/apiMessages";
 import { showApiError, showApiSuccess } from "@/shared/utils/apiToast";
 import {
@@ -45,6 +45,8 @@ type InsituTestsSectionProps = Readonly<{
   projectId: number;
   logId: number;
   logConfigurationId: string;
+  /** Full active list for the log report DCP graph (interval values). */
+  onActiveTestsChange?: (tests: LogInsituTest[]) => void;
 }>;
 
 type ListScope = "active" | "deleted";
@@ -117,6 +119,7 @@ export function InsituTestsSection({
   projectId,
   logId,
   logConfigurationId,
+  onActiveTestsChange,
 }: InsituTestsSectionProps) {
   const [tests, setTests] = useState<LogInsituTest[]>([]);
   const [testTypes, setTestTypes] = useState<InsituTestTypeOption[]>([]);
@@ -131,27 +134,42 @@ export function InsituTestsSection({
   const [deleteConfirm, setDeleteConfirm] = useState<DeleteConfirmState>({ open: false });
   const [actionBusy, setActionBusy] = useState(false);
 
+  const notifyActiveTests = useCallback(
+    (allTests: LogInsituTest[]) => {
+      onActiveTestsChange?.(allTests.filter((test) => test.deletedAt == null));
+    },
+    [onActiveTestsChange]
+  );
+
   const loadTests = useCallback(async () => {
     if (!projectId || !logId) return;
     setLoading(true);
     try {
       const onlyDeleted = listScope === "deleted";
-      const result = await listLogInsituTests(projectId, logId, page, pageSize, {
-        search: debouncedSearch || undefined,
-        onlyDeleted: onlyDeleted || undefined,
-        sortBy: "id",
-        sortOrder: "desc",
-      });
+      const [result, activeResult] = await Promise.all([
+        listLogInsituTests(projectId, logId, page, pageSize, {
+          search: debouncedSearch || undefined,
+          onlyDeleted: onlyDeleted || undefined,
+          sortBy: "id",
+          sortOrder: "desc",
+        }),
+        listLogInsituTests(projectId, logId, 1, MAX_TABLE_PAGE_SIZE, {
+          sortBy: "sortOrder",
+          sortOrder: "asc",
+        }),
+      ]);
       setTests(result.data);
       setTotal(result.total);
+      notifyActiveTests(activeResult.data);
     } catch (err) {
       showApiError(err, API_ERROR_MESSAGES.LOAD_INSITU_TESTS);
       setTests([]);
       setTotal(0);
+      notifyActiveTests([]);
     } finally {
       setLoading(false);
     }
-  }, [projectId, logId, page, pageSize, debouncedSearch, listScope]);
+  }, [projectId, logId, page, pageSize, debouncedSearch, listScope, notifyActiveTests]);
 
   const loadTestTypes = useCallback(async () => {
     if (!logConfigurationId.trim()) {

@@ -2,9 +2,9 @@
 
 import { Suspense, useState } from "react";
 import { AdminLogConfigurationsSection } from "@/modules/super-admin/components/AdminLogConfigurationsSection";
+import { AdminHeaderFooterTemplatesSection } from "@/modules/super-admin/components/AdminHeaderFooterTemplatesSection";
 import { UsersSection } from "@/modules/super-admin/components/UsersSection";
 import { AccountSettingsSection } from "./AccountSettingsSection";
-import { HeaderFooterTemplatesSection } from "./HeaderFooterTemplatesSection";
 import { SettingsSidebar, type SettingsSectionId } from "./SettingsSidebar";
 
 const SECTION_TITLES: Record<SettingsSectionId, string> = {
@@ -68,7 +68,15 @@ export function SettingsPage({ section }: SettingsPageProps) {
                 />
               </Suspense>
             ) : null}
-            {section === "header-footer-templates" ? <HeaderFooterTemplatesSection /> : null}
+            {section === "header-footer-templates" ? (
+              <Suspense fallback={<p>Loading header &amp; footer templates…</p>}>
+                <AdminHeaderFooterTemplatesSection
+                  listBasePath="/dashboard/settings/header-footer-templates"
+                  builderBasePath="/dashboard/settings/header-footer-templates"
+                  usersListPath="/dashboard/settings/user-management"
+                />
+              </Suspense>
+            ) : null}
           </div>
         </div>
       </div>

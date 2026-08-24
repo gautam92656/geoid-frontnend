@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { LogWellLog } from "../types/logWellLog";
 import { WellBackfillsList } from "./WellBackfillsList";
 import { WellCasingTopsList } from "./WellCasingTopsList";
 import { WellCasingsList } from "./WellCasingsList";
@@ -23,12 +24,14 @@ type WellLogsSectionProps = Readonly<{
   projectId: number;
   logId: number;
   logConfigurationId: string;
+  onActiveWellLogsChange?: (wellLogs: LogWellLog[]) => void;
 }>;
 
 export function WellLogsSection({
   projectId,
   logId,
   logConfigurationId,
+  onActiveWellLogsChange,
 }: WellLogsSectionProps) {
   const [activeTab, setActiveTab] = useState<WellLogTabId>("well-logs");
 
@@ -66,6 +69,7 @@ export function WellLogsSection({
             projectId={projectId}
             logId={logId}
             logConfigurationId={logConfigurationId}
+            onActiveWellLogsChange={onActiveWellLogsChange}
           />
         ) : activeTab === "well-covers" ? (
           <WellCoversList

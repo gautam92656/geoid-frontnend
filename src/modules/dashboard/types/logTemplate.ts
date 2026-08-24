@@ -56,6 +56,7 @@ export type LogTemplateChartSeries = Record<string, unknown> & {
   axis_bounds_max?: number | string;
   axis_units_minor?: number | string;
   axis_units_major?: number | string;
+  axis_label?: boolean;
   symbol_type?: string;
   symbol_color?: string;
 };
@@ -120,6 +121,7 @@ export type LogTemplateRecord = {
   logType: LogTemplateLogType;
   isDefault: boolean;
   createdAt: string;
+  updatedAt?: string;
   logConfigurationIds: string[];
   config: LogTemplateConfig;
   templateVersion?: number;
