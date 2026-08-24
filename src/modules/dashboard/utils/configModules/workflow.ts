@@ -20,6 +20,10 @@ import {
 } from "./classification";
 import { isRecord } from "./helpers";
 import {
+  groupForWorkflowStep,
+  resolveLogReportFieldCode,
+} from "../logReportFieldCodes";
+import {
   type WorkflowPreviewValues,
   getWorkflowStepKey,
   isWorkflowOptionDisabled,
@@ -174,7 +178,7 @@ function parseWorkflowStep(value: unknown, index: number): WorkflowStep | null {
     }
   }
 
-  return {
+  const step = {
     id,
     name,
     type,
@@ -202,6 +206,18 @@ function parseWorkflowStep(value: unknown, index: number): WorkflowStep | null {
       value.conditionsOperator === "OR" ? "OR" : value.conditionsOperator === "AND" ? "AND" : undefined,
     instructions: typeof value.instructions === "string" ? value.instructions : undefined,
   };
+
+  const group = groupForWorkflowStep(step);
+  if (group && step.options) {
+    step.options = step.options.map((option) => {
+      const known = resolveLogReportFieldCode(option.name || option.value || "", group);
+      if (!known || known === (option.name || "").trim()) return option;
+      if ((option.abbreviation || "").trim() === known) return option;
+      return { ...option, abbreviation: known };
+    });
+  }
+
+  return step;
 }
 
 const LEGACY_WORKFLOW_STEP_IDS = new Set([

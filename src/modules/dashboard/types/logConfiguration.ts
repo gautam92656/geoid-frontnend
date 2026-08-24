@@ -8,12 +8,16 @@ import {
   parseLogDetailFieldsSettings,
   type LogDetailFieldsSettings,
 } from "../utils/logDetailFieldsUtils";
-import { parseEnabledModuleIds } from "../data/configModules";
+import { CONFIG_MODULES, parseEnabledModuleIds } from "../data/configModules";
 import {
   DEFAULT_WORKFLOW_SETTINGS,
+  ensureModuleSettingsForEnabledModules,
   parseConfigModuleSettings,
   type ConfigModuleSettings,
 } from "../utils/configModuleSettings";
+
+/** All common modules enabled by default for a new log configuration. */
+export const DEFAULT_ENABLED_MODULE_IDS = CONFIG_MODULES.map((module) => module.id);
 
 export type LogConfigurationStatus = "active" | "inactive";
 
@@ -84,9 +88,9 @@ export const DEFAULT_LOG_CONFIGURATION_SETTINGS: LogConfigurationSettings = {
   elevationUnit: "meters",
   projectDetailFields: DEFAULT_PROJECT_DETAIL_FIELDS_SETTINGS,
   logDetailFields: DEFAULT_LOG_DETAIL_FIELDS_SETTINGS,
-  enabledModules: [],
-  moduleSettings: {
-    order: [],
+  enabledModules: [...DEFAULT_ENABLED_MODULE_IDS],
+  moduleSettings: ensureModuleSettingsForEnabledModules(DEFAULT_ENABLED_MODULE_IDS, {
+    order: [...DEFAULT_ENABLED_MODULE_IDS],
     modules: {},
     workflow: {
       enabled: DEFAULT_WORKFLOW_SETTINGS.enabled,
@@ -102,7 +106,7 @@ export const DEFAULT_LOG_CONFIGURATION_SETTINGS: LogConfigurationSettings = {
         ...code,
       })),
     },
-  },
+  }),
 };
 
 export function toLogConfigurationFormState(

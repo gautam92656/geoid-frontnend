@@ -26,6 +26,7 @@ export { SettingsAccessGuard } from "./SettingsAccessGuard";
 export { LogConfigurationsSection } from "./LogConfigurationsSection";
 export { AccountSettingsSection } from "./AccountSettingsSection";
 export { HeaderFooterTemplatesSection } from "./HeaderFooterTemplatesSection";
+export { LogReportTemplatesSection } from "./LogReportTemplatesSection";
 export { AddHeaderFooterTemplateModal } from "./AddHeaderFooterTemplateModal";
 export { HeaderFooterGridBuilderPage } from "./headerFooterBuilder";
 export { LogTemplateBuilderPage } from "./logTemplateBuilder";

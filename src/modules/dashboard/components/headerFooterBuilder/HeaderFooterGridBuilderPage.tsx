@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PageLoader } from "@/shared/components/ui";
 import { API_ERROR_MESSAGES, API_MESSAGES } from "@/shared/constants/apiMessages";
 import { showApiError, showApiSuccess } from "@/shared/utils/apiToast";
@@ -106,7 +106,9 @@ const STYLE_TARGET_LABELS: Record<StyleTargetId, string> = {
   content: "Content Area",
 };
 
-const TEMPLATES_PATH = "/dashboard/settings/header-footer-templates";
+const DASHBOARD_TEMPLATES_PATH = "/dashboard/settings/header-footer-templates";
+const SUPER_ADMIN_HF_BASE = "/super-admin/log-templates/header-footer-templates";
+const SUPER_ADMIN_TEMPLATES_LIST = "/super-admin/log-templates";
 
 type HeaderFooterGridBuilderPageProps = Readonly<{
   templateId: string;
@@ -120,9 +122,27 @@ export function HeaderFooterGridBuilderPage(props: HeaderFooterGridBuilderPagePr
   );
 }
 
+function parseOwnerUserId(value: string | null): number | undefined {
+  if (!value) return undefined;
+  const id = Number.parseInt(value, 10);
+  return Number.isFinite(id) && id > 0 ? id : undefined;
+}
+
 function GridBuilder({ templateId }: HeaderFooterGridBuilderPageProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
+  const ownerUserId = parseOwnerUserId(searchParams.get("userId"));
+  const isSuperAdminBuilder = pathname.includes("/super-admin/");
+  const templatesPath =
+    ownerUserId != null
+      ? isSuperAdminBuilder
+        ? `${SUPER_ADMIN_TEMPLATES_LIST}?userId=${ownerUserId}&tab=header-footer`
+        : `${DASHBOARD_TEMPLATES_PATH}?userId=${ownerUserId}`
+      : DASHBOARD_TEMPLATES_PATH;
+  const builderBasePath = isSuperAdminBuilder
+    ? SUPER_ADMIN_HF_BASE
+    : DASHBOARD_TEMPLATES_PATH;
   const isNew = templateId === "new";
   const numericId = Number(templateId);
 
@@ -168,13 +188,13 @@ function GridBuilder({ templateId }: HeaderFooterGridBuilderPageProps) {
     }
 
     if (!Number.isFinite(numericId) || numericId <= 0) {
-      router.replace(TEMPLATES_PATH);
+      router.replace(templatesPath);
       return;
     }
 
     setLoading(true);
     try {
-      const data = await getHeaderFooterTemplate(numericId);
+      const data = await getHeaderFooterTemplate(numericId, ownerUserId);
       const defaults = createDefaultHeaderFooterContent(data.kind);
       const normalized = normalizeHeaderFooterContent(data.content, defaults);
       setTemplate(data);
@@ -186,11 +206,11 @@ function GridBuilder({ templateId }: HeaderFooterGridBuilderPageProps) {
       setSelection(null);
     } catch (err) {
       showApiError(err, API_ERROR_MESSAGES.LOAD_HEADER_FOOTER_TEMPLATES);
-      router.replace(TEMPLATES_PATH);
+      router.replace(templatesPath);
     } finally {
       setLoading(false);
     }
-  }, [isNew, numericId, router, searchParams]);
+  }, [isNew, numericId, ownerUserId, router, searchParams, templatesPath]);
 
   useEffect(() => {
     void load();
@@ -229,15 +249,19 @@ function GridBuilder({ templateId }: HeaderFooterGridBuilderPageProps) {
     if (isNew) {
       setSaving(true);
       try {
-        const { data, message } = await createHeaderFooterTemplate({
-          name: trimmed,
-          kind,
-          reportType: reportType === "" ? null : reportType,
-          content: contentToJson(history.present),
-        });
+        const { data, message } = await createHeaderFooterTemplate(
+          {
+            name: trimmed,
+            kind,
+            reportType: reportType === "" ? null : reportType,
+            content: contentToJson(history.present),
+          },
+          ownerUserId
+        );
         showApiSuccess(message, API_MESSAGES.HEADER_FOOTER_TEMPLATE_ADDED);
         setSavedSnapshot({ name: trimmed, content: JSON.stringify(history.present) });
-        router.replace(`${TEMPLATES_PATH}/${data.id}/builder`);
+        const query = ownerUserId != null ? `?userId=${ownerUserId}` : "";
+        router.replace(`${builderBasePath}/${data.id}/builder${query}`);
       } catch (err) {
         showApiError(err, API_ERROR_MESSAGES.ADD_HEADER_FOOTER_TEMPLATE);
       } finally {
@@ -251,11 +275,15 @@ function GridBuilder({ templateId }: HeaderFooterGridBuilderPageProps) {
     setSaving(true);
     try {
       const payloadContent = contentToJson(history.present);
-      const { data, message } = await updateHeaderFooterTemplate(template.id, {
-        name: trimmed,
-        reportType: reportType === "" ? null : reportType,
-        content: payloadContent,
-      });
+      const { data, message } = await updateHeaderFooterTemplate(
+        template.id,
+        {
+          name: trimmed,
+          reportType: reportType === "" ? null : reportType,
+          content: payloadContent,
+        },
+        ownerUserId
+      );
       setTemplate(data);
       setName(data.name);
       const normalized = normalizeHeaderFooterContent(
@@ -270,7 +298,7 @@ function GridBuilder({ templateId }: HeaderFooterGridBuilderPageProps) {
     } finally {
       setSaving(false);
     }
-  }, [history, isNew, kind, name, reportType, router, template]);
+  }, [builderBasePath, history, isNew, kind, name, ownerUserId, reportType, router, template]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -413,7 +441,7 @@ function GridBuilder({ templateId }: HeaderFooterGridBuilderPageProps) {
         saving={saving}
         onNameChange={setName}
         onReportTypeChange={setReportType}
-        onBack={() => router.push(TEMPLATES_PATH)}
+        onBack={() => router.push(templatesPath)}
         onSave={() => void handleSave()}
       />
 

@@ -61,6 +61,7 @@ export const LOG_BUILDER_VERSION_OPTIONS: readonly SelectOption[] = [
 
 export const DEFAULT_BORELOG_TEMPLATE = "marsh-gen-2";
 export const DEFAULT_CORELOG_TEMPLATE = "rock-logging";
+/** Matches Tablogs sample borelogs (A4 portrait sheet). */
 export const DEFAULT_REPORT_ORIENTATION = "portrait";
 export const DEFAULT_REPORT_PAGE_SIZE = "a4";
 export const DEFAULT_BORELOG_HEADER = "header-template-00";

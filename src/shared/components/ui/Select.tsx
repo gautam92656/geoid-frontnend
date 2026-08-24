@@ -36,10 +36,10 @@ function getFloatingMenuPosition(trigger: HTMLElement, menuHeight: number): CSSP
 
   let top = openAbove ? rect.top - menuHeight - MENU_GAP : rect.bottom + MENU_GAP;
   let left = rect.left;
-  const width = rect.width;
+  const minWidth = rect.width;
 
-  if (left + width > window.innerWidth - VIEWPORT_PADDING) {
-    left = window.innerWidth - width - VIEWPORT_PADDING;
+  if (left + minWidth > window.innerWidth - VIEWPORT_PADDING) {
+    left = window.innerWidth - minWidth - VIEWPORT_PADDING;
   }
 
   left = Math.max(VIEWPORT_PADDING, left);
@@ -49,7 +49,9 @@ function getFloatingMenuPosition(trigger: HTMLElement, menuHeight: number): CSSP
     position: "fixed",
     top,
     left,
-    width,
+    minWidth,
+    width: "max-content",
+    maxWidth: `calc(100vw - ${VIEWPORT_PADDING * 2}px)`,
     zIndex: "var(--z-floating-menu)",
   };
 }

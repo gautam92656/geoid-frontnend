@@ -1,6 +1,5 @@
 import {
   DEFAULT_LOG_STATUS,
-  FINISHING_REASONS,
   LOG_CREATION_STATUSES,
   LOG_TYPES,
   LOG_WORKFLOW_STATUSES,
@@ -185,8 +184,8 @@ export function validateLogForm(
     errors.finishLogTime = `Finish log time must be ${LOG_TIME_MAX_LENGTH} characters or fewer.`;
   }
 
-  if (trimmedFinishingReason && !(FINISHING_REASONS as readonly string[]).includes(trimmedFinishingReason)) {
-    errors.finishingReason = "Please select a valid finishing reason.";
+  if (trimmedFinishingReason && trimmedFinishingReason.length > 200) {
+    errors.finishingReason = "Finishing reason must be 200 characters or fewer.";
   }
 
   if (trimmedSupplierId) {

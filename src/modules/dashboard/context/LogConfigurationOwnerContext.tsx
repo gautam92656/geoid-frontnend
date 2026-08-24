@@ -2,11 +2,22 @@
 
 import { createContext, useContext } from "react";
 
-/** When set, log-configuration API calls target this user's configs via admin routes. */
-const LogConfigurationOwnerContext = createContext<number | undefined>(undefined);
+/**
+ * When set, user-scoped dashboard APIs (log configurations, log report templates,
+ * header/footer templates) target this user via `/admin/users/:userId/...` routes.
+ */
+const OwnerUserIdContext = createContext<number | undefined>(undefined);
 
-export const LogConfigurationOwnerProvider = LogConfigurationOwnerContext.Provider;
+export const OwnerUserIdProvider = OwnerUserIdContext.Provider;
 
+/** @deprecated Prefer OwnerUserIdProvider — kept for existing log-config admin UI. */
+export const LogConfigurationOwnerProvider = OwnerUserIdProvider;
+
+export function useOwnerUserId(): number | undefined {
+  return useContext(OwnerUserIdContext);
+}
+
+/** @deprecated Prefer useOwnerUserId */
 export function useLogConfigurationOwnerUserId(): number | undefined {
-  return useContext(LogConfigurationOwnerContext);
+  return useOwnerUserId();
 }

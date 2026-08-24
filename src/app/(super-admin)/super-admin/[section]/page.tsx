@@ -6,6 +6,7 @@ import type { SuperAdminSectionId } from "@/modules/super-admin/components/Super
 const SECTION_CONTENT: Record<SuperAdminSectionId, { title: string }> = {
   users: { title: "User Management" },
   "log-configurations": { title: "Log Configurations" },
+  "log-templates": { title: "Log Templates" },
 };
 
 const VALID_SECTIONS = new Set<string>(Object.keys(SECTION_CONTENT));

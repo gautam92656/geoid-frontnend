@@ -6,6 +6,7 @@ import { MAX_TABLE_PAGE_SIZE } from "@/shared/constants/pagination";
 import { showApiError } from "@/shared/utils/apiToast";
 import { listHeaderFooterTemplates } from "../../services/headerFooterTemplateApi";
 import { listLogTemplates } from "../../services/logTemplateApi";
+import { useOwnerUserId } from "../../context/LogConfigurationOwnerContext";
 import {
   LOG_REPORT_WATERMARK_STATUSES,
   MODULE_DISPLAY_NAME_MAX_LENGTH,
@@ -40,6 +41,7 @@ export function LogReportModuleSettingsPanel({
   onRemove,
 }: LogReportModuleSettingsPanelProps) {
   const formId = useId();
+  const ownerUserId = useOwnerUserId();
   const report = getReportConfig(settings);
   const [templatesOpen, setTemplatesOpen] = useState(false);
   const [headerOptions, setHeaderOptions] = useState<SelectOption[]>([]);
@@ -55,13 +57,15 @@ export function LogReportModuleSettingsPanel({
         kind: "header",
         sortBy: "name",
         sortOrder: "asc",
+        ownerUserId,
       }),
       listHeaderFooterTemplates(1, MAX_TABLE_PAGE_SIZE, {
         kind: "footer",
         sortBy: "name",
         sortOrder: "asc",
+        ownerUserId,
       }),
-      listLogTemplates(),
+      listLogTemplates(ownerUserId),
     ])
       .then(([headers, footers, logTemplates]) => {
         if (cancelled) return;
@@ -78,7 +82,7 @@ export function LogReportModuleSettingsPanel({
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [ownerUserId]);
 
   const updateReport = (patch: Partial<LogReportModuleConfig>) => {
     onChange({
@@ -247,7 +251,7 @@ export function LogReportModuleSettingsPanel({
         </FormField>
       </section>
 
-      <section className="log-config-detail__panel">
+      {/* <section className="log-config-detail__panel">
         <div className="log-config-detail__panel-header">
           <h3 className="log-config-detail__section-title">Log Watermarks</h3>
           <p className="log-config-detail__section-description">
@@ -319,7 +323,7 @@ export function LogReportModuleSettingsPanel({
             </table>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* <section className="log-config-detail__panel">
         <div className="log-config-detail__panel-header log-config-detail__panel-header--row">

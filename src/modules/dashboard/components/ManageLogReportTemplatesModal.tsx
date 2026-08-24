@@ -2,7 +2,7 @@
 
 import type { DragEvent } from "react";
 import { useEffect, useId, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Checkbox,
   FormField,
@@ -12,24 +12,26 @@ import {
   Select,
   UiButton,
 } from "@/shared/components/ui";
+import { MAX_TABLE_PAGE_SIZE } from "@/shared/constants/pagination";
 import { showApiError } from "@/shared/utils/apiToast";
 import {
-  DEFAULT_LOG_REPORT_FOOTERS,
-  DEFAULT_LOG_REPORT_HEADERS,
   LOG_REPORT_TEMPLATE_LOG_CONFIG_OPTIONS,
   formatLogReportTemplateDate,
   getLogConfigurationSummary,
-  type LogReportHeaderFooterRecord,
   type LogReportTemplateLogType,
   type LogReportTemplateRecord,
 } from "../data/logReportTemplates";
+import { listHeaderFooterTemplates } from "../services/headerFooterTemplateApi";
 import {
   listLogTemplates,
   reorderLogTemplates,
   updateLogTemplate,
 } from "../services/logTemplateApi";
+import type { HeaderFooterTemplate } from "../types/headerFooterTemplate";
+import { useOwnerUserId } from "../context/LogConfigurationOwnerContext";
+import { SUPER_ADMIN_LOG_TEMPLATES_PATH } from "@/modules/super-admin/utils/paths";
 
-const BUILDER_BASE_PATH = "/dashboard/settings/log-report-templates";
+const DASHBOARD_BUILDER_BASE_PATH = "/dashboard/settings/log-report-templates";
 
 type ManageLogReportTemplatesModalProps = Readonly<{
   open: boolean;
@@ -84,6 +86,12 @@ function StarIcon({ filled }: { filled: boolean }) {
   );
 }
 
+function reportTypeLabel(reportType: HeaderFooterTemplate["reportType"]): string {
+  if (reportType === "borelog") return "Borelog";
+  if (reportType === "corelog") return "Corelog";
+  return "All Types";
+}
+
 function reorderTemplates(
   templates: LogReportTemplateRecord[],
   sourceId: string,
@@ -103,10 +111,12 @@ function HeaderFooterTable({
   title,
   description,
   rows,
+  loading,
 }: Readonly<{
   title: string;
   description: string;
-  rows: LogReportHeaderFooterRecord[];
+  rows: HeaderFooterTemplate[];
+  loading?: boolean;
 }>) {
   return (
     <div className="log-report-templates-modal__section">
@@ -124,14 +134,40 @@ function HeaderFooterTable({
           <thead>
             <tr>
               <th scope="col">Name</th>
+              <th scope="col">Type</th>
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr key={row.id}>
-                <td>{row.name}</td>
+            {loading ? (
+              <tr>
+                <td colSpan={2} className="log-report-templates-modal__empty-cell">
+                  Loading {title.toLowerCase()}…
+                </td>
               </tr>
-            ))}
+            ) : rows.length === 0 ? (
+              <tr>
+                <td colSpan={2} className="log-report-templates-modal__empty-cell">
+                  No {title.toLowerCase()} found.
+                </td>
+              </tr>
+            ) : (
+              rows.map((row) => (
+                <tr key={row.id}>
+                  <td>{row.name}</td>
+                  <td>
+                    {row.reportType ? (
+                      <span
+                        className={`log-report-templates-modal__log-type log-report-templates-modal__log-type--${row.reportType}`}
+                      >
+                        {reportTypeLabel(row.reportType)}
+                      </span>
+                    ) : (
+                      reportTypeLabel(row.reportType)
+                    )}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
@@ -146,11 +182,18 @@ export function ManageLogReportTemplatesModal({
 }: ManageLogReportTemplatesModalProps) {
   const formId = useId();
   const router = useRouter();
+  const pathname = usePathname();
+  const ownerUserId = useOwnerUserId();
+  const builderBasePath = pathname.startsWith("/super-admin")
+    ? `${SUPER_ADMIN_LOG_TEMPLATES_PATH}/log-report-templates`
+    : DASHBOARD_BUILDER_BASE_PATH;
   const [activeTab, setActiveTab] = useState<TabId>("logs");
   const [showDeleted, setShowDeleted] = useState(false);
   const [logTypeFilter, setLogTypeFilter] = useState<"all" | LogReportTemplateLogType>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [templates, setTemplates] = useState<LogReportTemplateRecord[]>([]);
+  const [headers, setHeaders] = useState<HeaderFooterTemplate[]>([]);
+  const [footers, setFooters] = useState<HeaderFooterTemplate[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
@@ -185,11 +228,27 @@ export function ManageLogReportTemplatesModal({
     setSelectedIds([]);
     setDraggingId(null);
     setDragOverId(null);
+    setHeaders([]);
+    setFooters([]);
 
     let cancelled = false;
     setLoading(true);
-    void listLogTemplates()
-      .then((payload) => {
+    void Promise.all([
+      listLogTemplates(ownerUserId),
+      listHeaderFooterTemplates(1, MAX_TABLE_PAGE_SIZE, {
+        kind: "header",
+        sortBy: "name",
+        sortOrder: "asc",
+        ownerUserId,
+      }),
+      listHeaderFooterTemplates(1, MAX_TABLE_PAGE_SIZE, {
+        kind: "footer",
+        sortBy: "name",
+        sortOrder: "asc",
+        ownerUserId,
+      }),
+    ])
+      .then(([payload, headersPayload, footersPayload]) => {
         if (cancelled) return;
         setTemplates(
           [...payload.borelog, ...payload.corelog].map((template) => ({
@@ -201,6 +260,8 @@ export function ManageLogReportTemplatesModal({
             logConfigurationIds: [...template.logConfigurationIds],
           }))
         );
+        setHeaders(headersPayload.data);
+        setFooters(footersPayload.data);
       })
       .catch((error) => {
         showApiError(error, "Failed to load templates");
@@ -212,11 +273,12 @@ export function ManageLogReportTemplatesModal({
     return () => {
       cancelled = true;
     };
-  }, [open]);
+  }, [open, ownerUserId]);
 
   const openBuilder = (templateId: string) => {
     onClose();
-    router.push(`${BUILDER_BASE_PATH}/${templateId}/builder`);
+    const query = ownerUserId != null ? `?userId=${ownerUserId}` : "";
+    router.push(`${builderBasePath}/${templateId}/builder${query}`);
   };
 
   const filteredTemplates = useMemo(() => {
@@ -258,9 +320,11 @@ export function ManageLogReportTemplatesModal({
         return { ...template, isDefault: template.id === templateId };
       })
     );
-    void updateLogTemplate(templateId, { isDefault: true, logType }).catch((error) => {
-      showApiError(error, "Failed to set default template");
-    });
+    void updateLogTemplate(templateId, { isDefault: true, logType }, ownerUserId).catch(
+      (error) => {
+        showApiError(error, "Failed to set default template");
+      }
+    );
   };
 
   const updateLogConfigurations = (templateId: string, logConfigurationIds: string[]) => {
@@ -269,14 +333,17 @@ export function ManageLogReportTemplatesModal({
         template.id === templateId ? { ...template, logConfigurationIds } : template
       )
     );
-    void updateLogTemplate(templateId, { logConfigurationIds }).catch((error) => {
+    void updateLogTemplate(templateId, { logConfigurationIds }, ownerUserId).catch((error) => {
       showApiError(error, "Failed to update log configurations");
     });
   };
 
   const persistReorder = (next: LogReportTemplateRecord[]) => {
     setTemplates(next);
-    void reorderLogTemplates(next.map((template) => template.id)).catch((error) => {
+    void reorderLogTemplates(
+      next.map((template) => template.id),
+      ownerUserId
+    ).catch((error) => {
       showApiError(error, "Failed to reorder templates");
     });
   };
@@ -308,7 +375,7 @@ export function ManageLogReportTemplatesModal({
               </p>
             </div>
             <div className="log-report-templates-modal__header-actions">
-              <UiButton
+              {/* <UiButton
                 type="button"
                 variant="outline"
                 size="sm"
@@ -316,7 +383,7 @@ export function ManageLogReportTemplatesModal({
                 onClick={() => setShowDeleted((current) => !current)}
               >
                 {showDeleted ? "Back to Templates" : "Deleted Records"}
-              </UiButton>
+              </UiButton> */}
               <button
                 type="button"
                 className="log-report-templates-modal__close"
@@ -573,7 +640,8 @@ export function ManageLogReportTemplatesModal({
                   <HeaderFooterTable
                     title="Headers"
                     description="Header templates available for log reports"
-                    rows={DEFAULT_LOG_REPORT_HEADERS}
+                    rows={headers}
+                    loading={loading}
                   />
                 ) : null}
 
@@ -581,7 +649,8 @@ export function ManageLogReportTemplatesModal({
                   <HeaderFooterTable
                     title="Footers"
                     description="Footer templates available for log reports"
-                    rows={DEFAULT_LOG_REPORT_FOOTERS}
+                    rows={footers}
+                    loading={loading}
                   />
                 ) : null}
               </>

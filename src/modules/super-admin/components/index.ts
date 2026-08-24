@@ -4,4 +4,6 @@ export { SuperAdminSidebar } from "./SuperAdminSidebar";
 export { UsersSection } from "./UsersSection";
 export { AddUserModal } from "./AddUserModal";
 export { AdminLogConfigurationsSection } from "./AdminLogConfigurationsSection";
+export { AdminLogTemplatesSection } from "./AdminLogTemplatesSection";
+export { AdminHeaderFooterTemplatesSection } from "./AdminHeaderFooterTemplatesSection";
 export { SuperAdminLogConfigurationDetail } from "./SuperAdminLogConfigurationDetail";

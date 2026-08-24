@@ -856,17 +856,15 @@ export function EditInsituTestModal({
                           onChange={handlePenetrationIntervalChange}
                         />
                       </FormField>
-                      {mode === "add" ? (
-                        <UiButton
-                          type="button"
-                          variant="primary"
-                          size="sm"
-                          onClick={handleAddRow}
-                          disabled={submitting || !draft.interval}
-                        >
-                          + Add Row
-                        </UiButton>
-                      ) : null}
+                      <UiButton
+                        type="button"
+                        variant="primary"
+                        size="sm"
+                        onClick={handleAddRow}
+                        disabled={submitting || !draft.interval}
+                      >
+                        + Add Row
+                      </UiButton>
                     </div>
 
                     {errors.rows ? (

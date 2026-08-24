@@ -3,11 +3,13 @@
 import { Suspense, useState } from "react";
 import { UsersSection } from "./UsersSection";
 import { AdminLogConfigurationsSection } from "./AdminLogConfigurationsSection";
+import { AdminLogTemplatesSection } from "./AdminLogTemplatesSection";
 import { SuperAdminSidebar, type SuperAdminSectionId } from "./SuperAdminSidebar";
 
 const SECTION_TITLES: Record<SuperAdminSectionId, string> = {
   users: "User Management",
   "log-configurations": "Log Configurations",
+  "log-templates": "Log Templates",
 };
 
 function HamburgerIcon() {
@@ -58,6 +60,11 @@ export function SuperAdminPage({ section }: SuperAdminPageProps) {
             {section === "log-configurations" ? (
               <Suspense fallback={<p>Loading log configurations…</p>}>
                 <AdminLogConfigurationsSection />
+              </Suspense>
+            ) : null}
+            {section === "log-templates" ? (
+              <Suspense fallback={<p>Loading log templates…</p>}>
+                <AdminLogTemplatesSection />
               </Suspense>
             ) : null}
           </div>

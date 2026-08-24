@@ -8,11 +8,11 @@ import { API_ERROR_MESSAGES, API_MESSAGES } from "@/shared/constants/apiMessages
 import { getApiErrorMessage, showApiError, showApiSuccess } from "@/shared/utils/apiToast";
 import { COORDINATE_SYSTEMS } from "../data/coordinateSystems";
 import {
-  FINISHING_REASONS,
   LOG_CREATION_STATUSES,
   LOG_TYPES,
 } from "../data/logOptions";
 import { UTM_ZONES } from "../data/utmZones";
+import { useUserFinishingReasons } from "../hooks/useUserFinishingReasons";
 import { listEquipment } from "../services/equipmentApi";
 import { createLog, formToLogPayload, listProjectLogs } from "../services/logApi";
 import { listLogConfigurations } from "../services/logConfigurationApi";
@@ -121,6 +121,20 @@ export function AddLogModal({
     () => resolveLogConfigRuntimeSettings(form.logConfigId, logConfigurations),
     [form.logConfigId, logConfigurations]
   );
+
+  const finishingReasonsApi = useUserFinishingReasons({
+    enabled: open && Boolean(form.logConfigId.trim()),
+    logConfigurationId: form.logConfigId,
+  });
+
+  const finishingReasonOptions = useMemo(() => {
+    const options = [...finishingReasonsApi.selectOptions];
+    const current = form.finishingReason.trim();
+    if (current && !options.some((option) => option.value === current)) {
+      options.unshift({ value: current, label: current });
+    }
+    return options;
+  }, [finishingReasonsApi.selectOptions, form.finishingReason]);
 
   const coordinatesRequired = areCoordinatesRequired(selectedLogConfigSettings);
   const coordinateUnit = coordinateUnitLabel(selectedLogConfigSettings.coordinateSystemUnit);
@@ -304,7 +318,7 @@ export function AddLogModal({
         <form id={formId} className="project-modal__form" onSubmit={handleSubmit} noValidate>
           <div className="project-modal__body ui-scrollbar">
             <section className="project-modal__section">
-              <h3 className="project-modal__section-title">Log Information</h3>
+              {/* <h3 className="project-modal__section-title">Log Information</h3> */}
 
               <div className="project-modal__fields">
                 <FormField
@@ -399,10 +413,11 @@ export function AddLogModal({
                   <Select
                     value={form.finishingReason}
                     onChange={(value) => update("finishingReason", value)}
-                    options={FINISHING_REASONS}
+                    options={finishingReasonOptions}
                     placeholder="Select finishing reason"
                     search
                     searchPlaceholder="Search finishing reasons…"
+                    disabled={finishingReasonsApi.loading}
                   />
                 </FormField>
 

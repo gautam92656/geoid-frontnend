@@ -24,11 +24,8 @@ import {
   persistUserRockTypes,
   type UserDataTypeOptionId,
 } from "../utils/userModuleDataTypeOptions";
-import {
-  getUserModuleWorkflow,
-  getUserOriginOptions,
-  listConfigModules,
-} from "../services/configModulesApi";
+import { getUserModuleWorkflow, getUserOriginOptions, listConfigModules } from "../services/configModulesApi";
+import { ensureLogReportFieldCodeCatalog } from "../utils/logReportFieldCodes";
 import { parseOriginOptions, type OriginOption } from "../utils/configModules/origin";
 import {
   parseNonSoilTypeOptions,
@@ -85,6 +82,7 @@ export function useSubsurfaceRuntime(options: {
           availableOnly: true,
           logConfigurationId,
         }),
+        ensureLogReportFieldCodeCatalog(),
       ]);
 
       const workflow = normalizeWorkflowSettings(

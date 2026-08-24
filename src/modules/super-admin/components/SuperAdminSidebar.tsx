@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   SUPER_ADMIN_LOG_CONFIGURATIONS_PATH,
+  SUPER_ADMIN_LOG_TEMPLATES_PATH,
   SUPER_ADMIN_USERS_PATH,
 } from "../utils/paths";
 
@@ -22,6 +23,13 @@ export const SUPER_ADMIN_SECTIONS = [
     shortLabel: "Log Configs",
     href: SUPER_ADMIN_LOG_CONFIGURATIONS_PATH,
     icon: "log-configurations",
+  },
+  {
+    id: "log-templates",
+    label: "Log Templates",
+    shortLabel: "Templates",
+    href: SUPER_ADMIN_LOG_TEMPLATES_PATH,
+    icon: "log-templates",
   },
 ] as const;
 
@@ -60,6 +68,12 @@ function SectionIcon({ name }: Readonly<{ name: (typeof SUPER_ADMIN_SECTIONS)[nu
         <circle cx="6" cy="18" r="1.5" fill="currentColor" />
       </svg>
     ),
+    "log-templates": (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
   };
 
   return <span className="settings-sidebar__icon">{icons[name]}</span>;
@@ -79,7 +93,7 @@ function CloseIcon() {
 }
 
 function getSectionNavLabel(section: (typeof SUPER_ADMIN_SECTIONS)[number]) {
-  return "shortLabel" in section ? section.shortLabel : section.label;
+  return section.shortLabel;
 }
 
 function useMobileNavLabels() {

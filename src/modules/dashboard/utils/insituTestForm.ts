@@ -696,26 +696,49 @@ export function parseRowsFromResultValues(
     }));
   }
 
-  const commaSeparated = asString(fallbackResult);
+  const commaSeparated = asString(
+    fallbackResult || values?.blowCount || values?.blows || values?.value
+  );
   if (commaSeparated.includes(",")) {
-    const parts = commaSeparated.split(",").map((part) => part.trim());
-    const fromMm =
+    const parts = commaSeparated.split(",").map((part) => part.trim()).filter(Boolean);
+    const fromMmRaw =
       asString(values?.depthFromMm).trim() ||
       (fallbackDepthFromM ? metersToMm(fallbackDepthFromM) : "0.00");
+    const start = Number(fromMmRaw);
+    // Prefer the configured penetration interval (e.g. 100 / 300 / 3000 mm) so
+    // comma-separated blow counts are not stretched across the whole hole depth.
+    const intervalFromConfig = Number(asString(values?.interval).trim());
+    const intervalMm =
+      Number.isFinite(intervalFromConfig) && intervalFromConfig > 0
+        ? intervalFromConfig
+        : null;
+
+    if (intervalMm != null && Number.isFinite(start)) {
+      return parts.map((value, index) => {
+        const rowFrom = start + intervalMm * index;
+        const rowTo = rowFrom + intervalMm;
+        return {
+          id: createIntervalRowId(),
+          depthFromMm: rowFrom.toFixed(2),
+          depthToMm: rowTo.toFixed(2),
+          value,
+        };
+      });
+    }
+
     const toMm =
       asString(values?.depthToMm).trim() ||
-      (fallbackDepthToM ? metersToMm(fallbackDepthToM) : fromMm);
-    const start = Number(fromMm);
+      (fallbackDepthToM ? metersToMm(fallbackDepthToM) : fromMmRaw);
     const end = Number(toMm);
     const span =
-      Number.isFinite(start) && Number.isFinite(end) && parts.length > 1
+      Number.isFinite(start) && Number.isFinite(end) && parts.length > 0
         ? (end - start) / parts.length
         : null;
 
     return parts.map((value, index) => {
       const rowFrom =
         span == null || !Number.isFinite(start)
-          ? fromMm
+          ? fromMmRaw
           : (start + span * index).toFixed(2);
       const rowTo =
         span == null || !Number.isFinite(start)

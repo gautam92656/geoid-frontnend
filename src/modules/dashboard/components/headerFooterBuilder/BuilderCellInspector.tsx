@@ -405,7 +405,22 @@ export function BuilderCellInspector({
                     value={cell.fontSize}
                     onChange={(event) => onChange({ fontSize: event.target.value })}
                   >
-                    {["8pt", "9pt", "10pt", "11pt", "12pt", "14pt", "16pt", "18pt", "24pt"].map(
+                    {[
+                      "3pt",
+                      "4pt",
+                      "5pt",
+                      "6pt",
+                      "7pt",
+                      "8pt",
+                      "9pt",
+                      "10pt",
+                      "11pt",
+                      "12pt",
+                      "14pt",
+                      "16pt",
+                      "18pt",
+                      "24pt",
+                    ].map(
                       (size) => (
                         <option key={size} value={size}>
                           {size}
