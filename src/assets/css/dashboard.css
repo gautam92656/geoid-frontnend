@@ -9526,6 +9526,58 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   color: #374151;
 }
 
+.log-report-composed__hf-legend-block {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.log-report-composed__hf-legend-block-title {
+  font-weight: 700;
+  line-height: 1.15;
+  font-size: inherit;
+}
+
+.log-report-composed__hf-legend-block-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.log-report-composed__hf-legend-block-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.log-report-composed__hf-legend-block-img {
+  display: block;
+  width: 14px;
+  height: 16px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.log-report-composed__hf-legend-block-label {
+  min-width: 0;
+  line-height: 1.15;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.log-report-composed__hf-grid--footer .log-report-composed__hf-legend-block {
+  font-size: 5.5pt;
+}
+
 .log-report-composed__placeholder {
   padding: 8px 10px;
   font-size: 11px;
@@ -9539,6 +9591,10 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid #000;
+}
+
+.log-report-composed__body.has-refusal {
+  border-bottom: none;
 }
 
 .log-report-composed__body-empty {
@@ -9834,16 +9890,44 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   pointer-events: none;
 }
 
-.log-report-composed__water-mark {
+.log-report-composed__water-mark-group {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 1px;
+  right: 1px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  gap: 3px;
   transform: translateY(-4px);
-  gap: 2px;
+  box-sizing: border-box;
+}
+
+.log-report-composed__water-mark {
+  position: relative;
+  left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transform: none;
+  gap: 1px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.log-report-composed__water-mark-group.is-multi .log-report-composed__water-mark {
+  max-width: 100%;
+  flex: 0 0 auto;
+}
+
+.log-report-composed__water-mark-group.is-multi .log-report-composed__water-symbol-img {
+  width: 12px;
+  max-height: 36px;
+}
+
+.log-report-composed__water-mark-group.is-multi .log-report-composed__water-label {
+  font-size: 6px;
 }
 
 .log-report-composed__water-symbol-img {
@@ -9852,12 +9936,14 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   height: auto;
   max-height: 48px;
   object-fit: contain;
+  flex: 0 0 auto;
 }
 
 .log-report-composed__water-symbol {
   color: #000;
   font-size: 10px;
   line-height: 1;
+  flex: 0 0 auto;
 }
 
 .log-report-composed__water-label {
@@ -9867,14 +9953,11 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   text-align: center;
   max-width: 100%;
   padding: 0 1px;
-}
-
-.log-report-composed__water-label.is-vertical {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  white-space: nowrap;
-  letter-spacing: 0.02em;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  writing-mode: horizontal-tb;
+  transform: none;
+  min-width: 0;
 }
 
 .log-report-composed__psp-col {
@@ -9886,11 +9969,12 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
 
 .log-report-composed__psp-band {
   position: absolute;
-  left: 1px;
-  right: 1px;
+  left: 0;
+  right: 0;
   box-sizing: border-box;
-  border: 1px solid #000;
-  background: #fff;
+  border: none;
+  border-bottom: 1px solid #000;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9907,13 +9991,142 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   white-space: nowrap;
 }
 
-.log-report-composed__strata-grid-cell.is-water,
-.log-report-composed__strata-grid-cell.is-psp {
+.log-report-composed__well-diagram {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.log-report-composed__well-interval {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.log-report-composed__well-body {
   position: relative;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  background: #fff;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+/* Shared edge with the segment above — avoid double horizontal borders. */
+.log-report-composed__well-body.is-abutting {
+  border-top: none;
+}
+
+.log-report-composed__well-body.is-casing {
+  z-index: 2;
+  border-width: 1px;
+  background: transparent;
+  border-color: transparent;
+}
+
+.log-report-composed__well-empty {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+}
+
+.log-report-composed__well-hatch {
+  position: absolute;
+  inset: 0;
+  /* Dense horizontal slots — matches corrected Solid/Slotted reference. */
+  background: repeating-linear-gradient(
+    to bottom,
+    #000 0,
+    #000 1px,
+    #fff 1px,
+    #fff 2.5px
+  );
+}
+
+/* Backfill type graphics are square tiles — fill width and repeat down the shaft. */
+.log-report-composed__well-fill {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat-y;
+  background-size: 100% auto;
+  background-position: top center;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+}
+
+.log-report-composed__well-fill-probe {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.log-report-composed__well-fill-img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center top;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+}
+
+.log-report-composed__well-fill-img.is-casing {
+  object-fit: fill;
+}
+
+.log-report-composed__well-casing-fill {
+  position: absolute;
+  inset: 0;
+  background: #d1d5db;
+}
+
+.log-report-composed__well-leader {
+  position: absolute;
+  right: 0;
+  height: 0;
+  border-top: 1px dotted #000;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.log-report-composed__well-leader.is-top {
+  top: 0;
+}
+
+.log-report-composed__well-leader.is-bottom {
+  bottom: 0;
+}
+
+.log-report-composed__strata-grid-cell.is-water,
+.log-report-composed__strata-grid-cell.is-psp,
+.log-report-composed__strata-grid-cell.is-well_diagram {
+  position: relative;
+  overflow: visible;
+}
+
+.log-report-composed__stratum-cell.is-well_diagram {
+  pointer-events: none;
+  background: transparent;
+  border-bottom: none;
 }
 
 .log-report-composed__stratum-cell.is-psp,
-.log-report-composed__stratum-cell.is-water {
+.log-report-composed__stratum-cell.is-water,
+.log-report-composed__stratum-cell.is-remarks,
+.log-report-composed__stratum-cell.is-depth {
   pointer-events: none;
 }
 
@@ -10042,32 +10255,24 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   border-right: none;
 }
 
-/* DCP + Drilling Method stay continuous — no stratum cut lines. */
+/* DCP + Drilling Method + PSP/Water/Remarks/Depth stay continuous — no stratum cut lines. */
 .log-report-composed__stratum-cell.is-method,
-.log-report-composed__stratum-cell.is-chart {
+.log-report-composed__stratum-cell.is-chart,
+.log-report-composed__stratum-cell.is-psp,
+.log-report-composed__stratum-cell.is-water,
+.log-report-composed__stratum-cell.is-remarks,
+.log-report-composed__stratum-cell.is-depth,
+.log-report-composed__stratum-cell.no-stratum-line {
   border-bottom: none;
   background: transparent;
 }
 
 /*
- * Depth column: no full-width horizontal line.
- * A short right-half rule continues the stratum line into Origin / Graphic / etc.
+ * Depth column: no horizontal stratum line at all so depth labels (0.4, 1.0, …)
+ * are never crossed by a cut line.
  */
 .log-report-composed__stratum-cell.is-depth {
-  border-bottom: none;
-  background: transparent;
   padding: 0;
-}
-
-.log-report-composed__stratum-cell.is-depth::after {
-  content: "";
-  position: absolute;
-  left: 45%;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: #000;
-  pointer-events: none;
 }
 
 .log-report-composed__stratum-cell.is-graphic,
@@ -10140,6 +10345,40 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   text-align: center;
 }
 
+.log-report-composed__depth-scale {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Track marks on Depth(m) left vertical line (shared column border). */
+.log-report-composed__depth-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 8px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.log-report-composed__depth-track-tick {
+  position: absolute;
+  left: 0;
+  height: 1px;
+  background: #000;
+  transform: translateY(-50%);
+}
+
+.log-report-composed__depth-track-tick.is-minor {
+  width: 4px;
+}
+
+.log-report-composed__depth-track-tick.is-major {
+  width: 7px;
+}
+
 .log-report-composed__depth-labels {
   position: absolute;
   inset: 0;
@@ -10149,8 +10388,8 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
 
 .log-report-composed__depth-tick-label {
   position: absolute;
-  left: 2px;
-  max-width: calc(100% - 4px);
+  left: 9px;
+  max-width: calc(100% - 11px);
   transform: translateY(-50%);
   font-size: 8px;
   line-height: 1;
@@ -10160,32 +10399,48 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   padding: 0 1px;
 }
 
-/* Depth ruler ticks on the RIGHT edge of the DCP Graph (point left into the plot).
-   The column border itself is the vertical scale line. */
-.log-report-composed__dcp-right-scale {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 10px;
-  z-index: 3;
-  pointer-events: none;
+.log-report-composed__depth-tick-label.is-elev-depth {
+  left: 50%;
+  right: auto;
+  max-width: calc(100% - 4px);
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0;
+  background: #fff;
 }
 
-.log-report-composed__dcp-right-tick {
-  position: absolute;
-  right: 0;
-  height: 1px;
-  background: #000;
-  transform: translateY(-50%);
+.log-report-composed__depth-tick-label.is-page-start {
+  transform: translateY(1px);
 }
 
-.log-report-composed__dcp-right-tick.is-minor {
-  width: 4px;
+.log-report-composed__depth-tick-label.is-elev-depth.is-page-start {
+  transform: translate(-50%, 1px);
 }
 
-.log-report-composed__dcp-right-tick.is-major {
-  width: 7px;
+.log-report-composed__depth-tick-elev,
+.log-report-composed__depth-tick-depth {
+  display: block;
+  line-height: 1.05;
+  padding: 0 2px;
+}
+
+.log-report-composed__depth-tick-elev {
+  padding-bottom: 1px;
+}
+
+.log-report-composed__depth-tick-depth {
+  padding-top: 1px;
+}
+
+.log-report-composed__depth-tick-rule {
+  display: block;
+  width: 100%;
+  min-width: 1.8em;
+  height: 0;
+  border-top: 1px solid #000;
 }
 
 .log-report-composed__hatch {
@@ -10361,7 +10616,7 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
 }
 
 .log-report-composed__refusal-row {
-  display: grid;
+  display: flex;
   align-items: stretch;
   flex-shrink: 0;
   background: #fff;
@@ -10369,11 +10624,10 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   border-bottom: 1px solid #000;
 }
 
-.log-report-composed__refusal-cell {
-  height: 100%;
+.log-report-composed__refusal-banner {
+  flex: 1 1 auto;
   box-sizing: border-box;
-  border-right: 1px solid #000;
-  padding: 4px 6px;
+  padding: 4px 8px;
   font-size: 8px;
   font-weight: 600;
   display: flex;
@@ -10384,8 +10638,9 @@ body.project-sidebar-expanded .dashboard-navbar__logo {
   overflow: hidden;
 }
 
-.log-report-composed__refusal-cell:last-child {
-  border-right: none;
+/* Drop the last stratum cut line so it doesn't double with the refusal top rule. */
+.log-report-composed__stratum.is-last-before-refusal .log-report-composed__stratum-cell {
+  border-bottom: none;
 }
 
 .log-report-preview__loading {

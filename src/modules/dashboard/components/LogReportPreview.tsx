@@ -15,6 +15,7 @@ import {
   type PreviewPspBand,
   type PreviewStratum,
   type PreviewWaterObservation,
+  type PreviewWellInterval,
 } from "../utils/logReportPreviewUtils";
 import { exportLogReportPdf } from "../utils/logReportPdfExport";
 import { LogReportComposedSheet } from "./LogReportComposedSheet";
@@ -44,6 +45,7 @@ type LogReportPreviewProps = Readonly<{
   drillingIntervals?: PreviewDrillingInterval[] | null;
   pspBands?: PreviewPspBand[] | null;
   waterObservations?: PreviewWaterObservation[] | null;
+  wellIntervals?: PreviewWellInterval[] | null;
   sheetRef?: RefObject<HTMLElement | null>;
 }>;
 
@@ -63,6 +65,7 @@ export function LogReportPreview({
   drillingIntervals,
   pspBands,
   waterObservations,
+  wellIntervals,
   sheetRef,
 }: LogReportPreviewProps) {
   const [zoom, setZoom] = useState<number>(REPORT_PREVIEW_ZOOM.default);
@@ -190,6 +193,7 @@ export function LogReportPreview({
             drillingIntervals={drillingIntervals}
             pspBands={pspBands}
             waterObservations={waterObservations}
+            wellIntervals={wellIntervals}
             style={{ transform: `scale(${zoom / 100})`, transformOrigin: "top center" }}
           />
         )}

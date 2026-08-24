@@ -68,23 +68,42 @@ import type { LogInsituTest } from "../types/logInsituTest";
 import type { LogDrillingMethod } from "../types/logDrillingMethod";
 import type { LogFinishLogFormPayload } from "../types/logFinishLog";
 import { listLogWaterObservations } from "../services/logWaterObservationApi";
+import { listLogWellBackfills } from "../services/logWellBackfillApi";
+import { listLogWellCasings } from "../services/logWellCasingApi";
+import { listLogWellLogs } from "../services/logWellLogApi";
+import {
+  getUserWellBackfillTypes,
+  getUserWellCasingTypes,
+  getUserWellTypes,
+} from "../services/configModulesApi";
 import {
   buildDcpPointsFromInsituTests,
   buildDrillingIntervalsFromMethods,
   buildPspBandsFromInsituTests,
   buildStrataFromLayers,
   buildWaterObservationsForPreview,
+  buildWellDiagramIntervals,
   getDcpTestTypeCodesFromLogTemplate,
   parseFinishEndDepthMetres,
 } from "../utils/logReportPreviewUtils";
 import { getWaterObservationGraphicUrl } from "../utils/configModules/waterObservationType";
 import {
+  DEFAULT_WELL_BACKFILL_TYPE_OPTIONS,
+  DEFAULT_WELL_CASING_TYPE_OPTIONS,
+  DEFAULT_WELL_TYPE_OPTIONS,
   DRILLING_OBSERVATIONS_MODULE_ID,
   LOG_REPORT_MODULE_ID,
   parseDrillingTypeOptions,
   parseWaterObservationTypeOptions,
+  parseWellBackfillTypeOptions,
+  parseWellCasingTypeOptions,
+  parseWellTypeOptions,
   WATER_OBSERVATIONS_MODULE_ID,
+  WELL_LOGS_MODULE_ID,
   type DrillingTypeOption,
+  type WellBackfillTypeOption,
+  type WellCasingTypeOption,
+  type WellTypeOption,
 } from "../utils/configModules";
 
 function ReportIcon() {
@@ -125,12 +144,44 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
   const [insituTests, setInsituTests] = useState<LogInsituTest[]>([]);
   const [drillingMethods, setDrillingMethods] = useState<LogDrillingMethod[]>([]);
   const [waterObservationRows, setWaterObservationRows] = useState<
-    Array<{ depth: string; observationTypeName: string; observationTypeId: string }>
+    Array<{
+      depth: string;
+      observationTypeName: string;
+      observationTypeId: string;
+      comments?: string;
+    }>
   >([]);
   const [waterObservationTypes, setWaterObservationTypes] = useState<
     ReturnType<typeof parseWaterObservationTypeOptions>
   >([]);
   const [drillingTypes, setDrillingTypes] = useState<DrillingTypeOption[]>([]);
+  const [wellLogRows, setWellLogRows] = useState<
+    Array<{
+      depthFrom: string;
+      depthTo: string;
+      wellTypeName: string;
+      wellTypeId: string;
+    }>
+  >([]);
+  const [wellTypes, setWellTypes] = useState<WellTypeOption[]>([]);
+  const [wellBackfillRows, setWellBackfillRows] = useState<
+    Array<{
+      depthFrom: string;
+      depthTo: string;
+      backfillTypeName: string;
+      backfillTypeId: string;
+    }>
+  >([]);
+  const [wellCasingRows, setWellCasingRows] = useState<
+    Array<{
+      depthFrom: string;
+      depthTo: string;
+      casingTypeName: string;
+      casingTypeId: string;
+    }>
+  >([]);
+  const [wellBackfillTypes, setWellBackfillTypes] = useState<WellBackfillTypeOption[]>([]);
+  const [wellCasingTypes, setWellCasingTypes] = useState<WellCasingTypeOption[]>([]);
   // Shared with LogReportSection so its "Open in new tab"/"Save as PDF" buttons can act on
   // the actual rendered sheet, which lives in the sibling LogReportPreview panel.
   const reportSheetRef = useRef<HTMLElement>(null);
@@ -229,6 +280,47 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
     );
   }, [waterObservationRows, waterObservationTypes]);
 
+  const reportWellIntervals = useMemo(
+    () =>
+      buildWellDiagramIntervals({
+        wellLogs: wellLogRows,
+        wellTypes,
+        backfills: wellBackfillRows,
+        casings: wellCasingRows,
+        backfillTypes: wellBackfillTypes,
+        casingTypes: wellCasingTypes,
+      }),
+    [
+      wellLogRows,
+      wellTypes,
+      wellBackfillRows,
+      wellCasingRows,
+      wellBackfillTypes,
+      wellCasingTypes,
+    ]
+  );
+
+  const handleActiveWellLogsChange = useCallback(
+    (
+      rows: Array<{
+        depthFrom: string;
+        depthTo: string;
+        wellTypeId: string;
+        wellTypeName: string;
+      }>
+    ) => {
+      setWellLogRows(
+        rows.map((entry) => ({
+          depthFrom: entry.depthFrom,
+          depthTo: entry.depthTo,
+          wellTypeId: entry.wellTypeId,
+          wellTypeName: entry.wellTypeName,
+        }))
+      );
+    },
+    []
+  );
+
   const handleActiveLayersChange = useCallback((layers: SubsurfaceLayer[]) => {
     setSubsurfaceLayers(layers);
   }, []);
@@ -287,6 +379,7 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
               depth: entry.depth,
               observationTypeName: entry.observationTypeName,
               observationTypeId: entry.observationTypeId,
+              comments: entry.comments,
             }))
           );
         }
@@ -322,6 +415,92 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
       cancelled = true;
     };
   }, [form.logConfigId]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      if (!form.logConfigId.trim()) {
+        setWellLogRows([]);
+        setWellTypes([]);
+        setWellBackfillRows([]);
+        setWellCasingRows([]);
+        setWellBackfillTypes([]);
+        setWellCasingTypes([]);
+        return;
+      }
+      try {
+        const [
+          wellLogsResult,
+          backfillsResult,
+          casingsResult,
+          wellTypesRes,
+          backfillTypesRes,
+          casingTypesRes,
+        ] = await Promise.all([
+          listLogWellLogs(project.id, log.id, 1, MAX_TABLE_PAGE_SIZE, {
+            sortBy: "sortOrder",
+            sortOrder: "asc",
+          }),
+          listLogWellBackfills(project.id, log.id, 1, MAX_TABLE_PAGE_SIZE, {
+            sortBy: "sortOrder",
+            sortOrder: "asc",
+          }),
+          listLogWellCasings(project.id, log.id, 1, MAX_TABLE_PAGE_SIZE, {
+            sortBy: "sortOrder",
+            sortOrder: "asc",
+          }),
+          getUserWellTypes(WELL_LOGS_MODULE_ID, form.logConfigId),
+          getUserWellBackfillTypes(WELL_LOGS_MODULE_ID, form.logConfigId),
+          getUserWellCasingTypes(WELL_LOGS_MODULE_ID, form.logConfigId),
+        ]);
+        if (cancelled) return;
+
+        setWellTypes(parseWellTypeOptions(wellTypesRes.data, DEFAULT_WELL_TYPE_OPTIONS));
+        setWellBackfillTypes(
+          parseWellBackfillTypeOptions(backfillTypesRes.data, DEFAULT_WELL_BACKFILL_TYPE_OPTIONS)
+        );
+        setWellCasingTypes(
+          parseWellCasingTypeOptions(casingTypesRes.data, DEFAULT_WELL_CASING_TYPE_OPTIONS)
+        );
+        setWellLogRows(
+          wellLogsResult.data.map((entry) => ({
+            depthFrom: entry.depthFrom,
+            depthTo: entry.depthTo,
+            wellTypeId: entry.wellTypeId,
+            wellTypeName: entry.wellTypeName,
+          }))
+        );
+        setWellBackfillRows(
+          backfillsResult.data.map((entry) => ({
+            depthFrom: entry.depthFrom,
+            depthTo: entry.depthTo,
+            backfillTypeId: entry.backfillTypeId,
+            backfillTypeName: entry.backfillTypeName,
+          }))
+        );
+        setWellCasingRows(
+          casingsResult.data.map((entry) => ({
+            depthFrom: entry.depthFrom,
+            depthTo: entry.depthTo,
+            casingTypeId: entry.casingTypeId,
+            casingTypeName: entry.casingTypeName,
+          }))
+        );
+      } catch {
+        if (!cancelled) {
+          setWellLogRows([]);
+          setWellTypes([]);
+          setWellBackfillRows([]);
+          setWellCasingRows([]);
+          setWellBackfillTypes([]);
+          setWellCasingTypes([]);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [project.id, log.id, form.logConfigId, activeSection]);
 
   useEffect(() => {
     let cancelled = false;
@@ -1093,6 +1272,7 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
                     projectId={project.id}
                     logId={log.id}
                     logConfigurationId={form.logConfigId}
+                    onActiveWellLogsChange={handleActiveWellLogsChange}
                   />
                 ) : activeSection === "water-observations" ? (
                   <WaterObservationsSection
@@ -1137,6 +1317,7 @@ export function UpdateLogPage({ project, log }: UpdateLogPageProps) {
                   drillingIntervals={reportDrillingIntervals}
                   pspBands={reportPspBands}
                   waterObservations={reportWaterObservations}
+                  wellIntervals={reportWellIntervals}
                   sheetRef={reportSheetRef}
                 />
               ) : null}

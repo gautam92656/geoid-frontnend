@@ -29,6 +29,27 @@ import { parseRowsFromResultValues } from "./insituTestForm";
 import type { LogInsituTest } from "../types/logInsituTest";
 import { getDrillingGraphicUrl, normalizeDrillingGraphicFilename } from "./configModules/drillingType";
 import {
+  DEFAULT_WATER_OBSERVATION_GRAPHIC,
+  getWaterObservationGraphicUrl,
+} from "./configModules/waterObservationType";
+import {
+  DEFAULT_WELL_BACKFILL_GRAPHIC,
+  DEFAULT_WELL_BACKFILL_TYPE_OPTIONS,
+  getWellBackfillGraphicUrl,
+  normalizeWellBackfillGraphicFilename,
+} from "./configModules/wellBackfillType";
+import {
+  DEFAULT_WELL_CASING_GRAPHIC,
+  DEFAULT_WELL_CASING_TYPE_OPTIONS,
+  getWellCasingGraphicUrl,
+  normalizeWellCasingGraphicFilename,
+} from "./configModules/wellCasingType";
+import {
+  DEFAULT_WELL_TYPE_OPTIONS,
+  getWellTypeGraphicUrl,
+  normalizeWellTypeGraphicFilename,
+} from "./configModules/wellType";
+import {
   groupForWorkflowStep,
   resolveLogReportFieldCode,
 } from "./logReportFieldCodes";
@@ -605,7 +626,7 @@ export function buildLogReportTokenContext(
     pages?: number;
   } = {}
 ): Record<string, string> {
-  const elevation = form.elevation.trim() || "Not Surveyed";
+  const elevation = formatElevationHeaderValue(form.elevation);
   const endDepth = form.endDepth.trim();
   const totalDepth = endDepth ? `${endDepth} m BGL` : "";
   const phone =
@@ -1169,7 +1190,10 @@ export function filterDcpPointsForColumn(
 
 export type PreviewWaterObservation = {
   depthM: number;
+  /** Display label in the Water column (may include comments: "Standing - test"). */
   label: string;
+  /** Observation type name only (e.g. "Standing") for footer legend. */
+  typeName: string;
   graphicUrl?: string;
 };
 
@@ -1178,6 +1202,7 @@ export function buildWaterObservationsForPreview(
     depth: string;
     observationTypeName?: string;
     observationTypeId?: string;
+    comments?: string | null;
     graphicUrl?: string | null;
   }>
 ): PreviewWaterObservation[] {
@@ -1185,17 +1210,42 @@ export function buildWaterObservationsForPreview(
   for (const entry of observations) {
     const depthM = Number(String(entry.depth ?? "").trim());
     if (!Number.isFinite(depthM) || depthM < 0) continue;
-    const label =
+    const typeName =
       entry.observationTypeName?.trim() ||
       entry.observationTypeId?.trim() ||
       "Water";
+    const comments = entry.comments?.trim() ?? "";
+    // Tablogs-style: "Standing - test" when a comment is present.
+    const label = comments ? `${typeName} - ${comments}` : typeName;
     points.push({
       depthM: Number(depthM.toFixed(3)),
       label,
+      typeName,
       graphicUrl: entry.graphicUrl?.trim() || undefined,
     });
   }
   return points.sort((a, b) => a.depthM - b.depthM);
+}
+
+/** Unique water types used on the log, in first-seen depth order (footer legend). */
+export function buildUsedWaterLegendItems(
+  observations: readonly PreviewWaterObservation[]
+): Array<{ label: string; graphicUrl: string }> {
+  const seen = new Set<string>();
+  const items: Array<{ label: string; graphicUrl: string }> = [];
+  for (const entry of observations) {
+    const typeName = (entry.typeName || entry.label).trim();
+    const key = typeName.toLowerCase();
+    if (!typeName || seen.has(key)) continue;
+    seen.add(key);
+    items.push({
+      label: typeName,
+      graphicUrl:
+        entry.graphicUrl?.trim() ||
+        getWaterObservationGraphicUrl(DEFAULT_WATER_OBSERVATION_GRAPHIC),
+    });
+  }
+  return items;
 }
 
 export function clipWaterObservationsToEndDepth(
@@ -1301,6 +1351,294 @@ export function clipPspBandsToEndDepth(
     .filter((band) => band.toDepth > band.fromDepth + 1e-9);
 }
 
+/** Well Diagram depth bands from Well Logs (pipe) and optional backfill/casing. */
+export type PreviewWellInterval = {
+  fromDepth: number;
+  toDepth: number;
+  label: string;
+  kind: "well" | "backfill" | "casing";
+  /**
+   * How to fill the shaft segment:
+   * - empty: solid/blank pipe (white interior, border only)
+   * - pattern: tile `graphicUrl`
+   * - hatch: CSS horizontal hatch (slotted fallback)
+   */
+  fill: "empty" | "pattern" | "hatch";
+  graphicUrl?: string;
+};
+
+type WellTypeGraphicSource = {
+  id?: string;
+  name?: string;
+  tablogsAlias?: string | null;
+  graphic?: string | null;
+};
+
+function parseWellDepthPair(fromRaw: string, toRaw: string): { fromDepth: number; toDepth: number } | null {
+  let fromDepth = Number(String(fromRaw ?? "").trim());
+  let toDepth = Number(String(toRaw ?? "").trim());
+  if (!Number.isFinite(fromDepth) && Number.isFinite(toDepth)) fromDepth = toDepth;
+  if (!Number.isFinite(toDepth) && Number.isFinite(fromDepth)) toDepth = fromDepth;
+  if (!Number.isFinite(fromDepth) || !Number.isFinite(toDepth)) return null;
+  if (toDepth < fromDepth) {
+    const swap = fromDepth;
+    fromDepth = toDepth;
+    toDepth = swap;
+  }
+  if (toDepth - fromDepth < 1e-6) toDepth = fromDepth + 0.05;
+  return {
+    fromDepth: Number(fromDepth.toFixed(3)),
+    toDepth: Number(toDepth.toFixed(3)),
+  };
+}
+
+function normalizeWellTypeToken(value: string | null | undefined): string {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+}
+
+function findWellTypeOption(
+  types: ReadonlyArray<WellTypeGraphicSource>,
+  typeId: string | undefined,
+  typeName: string | undefined
+): WellTypeGraphicSource | undefined {
+  const idKey = typeId?.trim().toLowerCase() ?? "";
+  const nameKey = typeName?.trim().toLowerCase() ?? "";
+  const compactName = normalizeWellTypeToken(typeName);
+  const compactId = normalizeWellTypeToken(typeId);
+
+  if (idKey) {
+    const byId = types.find((entry) => entry.id?.trim().toLowerCase() === idKey);
+    if (byId) return byId;
+  }
+  if (nameKey) {
+    const byName = types.find((entry) => entry.name?.trim().toLowerCase() === nameKey);
+    if (byName) return byName;
+  }
+  if (compactName || compactId) {
+    return types.find((entry) => {
+      const entryName = normalizeWellTypeToken(entry.name);
+      const entryAlias = normalizeWellTypeToken(entry.tablogsAlias);
+      const entryId = normalizeWellTypeToken(entry.id);
+      return (
+        (compactName && (entryName === compactName || entryAlias === compactName)) ||
+        (compactId && (entryId === compactId || entryName === compactId || entryAlias === compactId))
+      );
+    });
+  }
+  return undefined;
+}
+
+function wellPipeStyleFromType(
+  type: WellTypeGraphicSource | undefined,
+  typeId: string | undefined,
+  typeName: string | undefined
+): { fill: "empty" | "pattern" | "hatch"; graphicUrl?: string } {
+  const alias = normalizeWellTypeToken(type?.tablogsAlias);
+  const name = normalizeWellTypeToken(typeName || type?.name || typeId);
+  const graphic = normalizeWellTypeGraphicFilename(type?.graphic).toLowerCase();
+  const blob = `${alias} ${name} ${graphic}`;
+
+  // Slotted / screen / perforated → dense horizontal hatch (matches corrected Tablogs samples).
+  if (
+    blob.includes("slot") ||
+    blob.includes("screen") ||
+    blob.includes("perforat")
+  ) {
+    return { fill: "hatch" };
+  }
+
+  // Solid / blank / solidBlack graphic → hollow white pipe.
+  if (
+    blob.includes("solid") ||
+    blob.includes("blank") ||
+    graphic === "solidblack.png" ||
+    graphic === "solid.png" ||
+    !graphic
+  ) {
+    return { fill: "empty" };
+  }
+
+  // Any other configured well-type graphic.
+  return {
+    fill: "pattern",
+    graphicUrl: getWellTypeGraphicUrl(graphic) || undefined,
+  };
+}
+
+function resolveWellBackfillGraphicFilename(
+  type: WellTypeGraphicSource | undefined,
+  typeId: string | undefined,
+  typeName: string | undefined
+): string {
+  const configured = normalizeWellBackfillGraphicFilename(type?.graphic);
+  if (configured && configured.toLowerCase() !== "01.png") return configured;
+
+  const defaults = DEFAULT_WELL_BACKFILL_TYPE_OPTIONS;
+  const fallbackType =
+    findWellTypeOption(defaults, typeId, typeName) ??
+    findWellTypeOption(defaults, type?.id, type?.name ?? type?.tablogsAlias ?? undefined);
+  const fallbackGraphic = normalizeWellBackfillGraphicFilename(fallbackType?.graphic);
+  if (fallbackGraphic && fallbackGraphic.toLowerCase() !== "01.png") return fallbackGraphic;
+
+  return configured || fallbackGraphic || DEFAULT_WELL_BACKFILL_GRAPHIC;
+}
+
+/** True when the backfill graphic is the solid-white Blank tile (or missing). */
+export function isBlankWellBackfillGraphic(filenameOrUrl: string | null | undefined): boolean {
+  const raw = String(filenameOrUrl ?? "").trim();
+  if (!raw) return true;
+  const filename = normalizeWellBackfillGraphicFilename(raw.includes("/") ? raw.split("/").pop() : raw);
+  return !filename || filename.toLowerCase() === "01.png";
+}
+
+function resolveWellCasingGraphicFilename(
+  type: WellTypeGraphicSource | undefined,
+  typeId: string | undefined,
+  typeName: string | undefined
+): string {
+  const configured = normalizeWellCasingGraphicFilename(type?.graphic);
+  if (configured) return configured;
+
+  const defaults = DEFAULT_WELL_CASING_TYPE_OPTIONS;
+  const fallbackType =
+    findWellTypeOption(defaults, typeId, typeName) ??
+    findWellTypeOption(defaults, type?.id, type?.name ?? type?.tablogsAlias ?? undefined);
+  return normalizeWellCasingGraphicFilename(fallbackType?.graphic) || DEFAULT_WELL_CASING_GRAPHIC;
+}
+
+/**
+ * Builds Well Diagram intervals.
+ * Prefer Well Logs (pipe by well type: Solid / Slotted). Fall back to backfill/casing
+ * when no well-log rows exist.
+ */
+export function buildWellDiagramIntervals(input: {
+  wellLogs?: ReadonlyArray<{
+    depthFrom: string;
+    depthTo: string;
+    wellTypeId?: string;
+    wellTypeName?: string;
+    graphicUrl?: string | null;
+  }>;
+  wellTypes?: ReadonlyArray<WellTypeGraphicSource>;
+  backfills?: ReadonlyArray<{
+    depthFrom: string;
+    depthTo: string;
+    backfillTypeId?: string;
+    backfillTypeName?: string;
+    graphicUrl?: string | null;
+  }>;
+  casings?: ReadonlyArray<{
+    depthFrom: string;
+    depthTo: string;
+    casingTypeId?: string;
+    casingTypeName?: string;
+    graphicUrl?: string | null;
+  }>;
+  backfillTypes?: ReadonlyArray<WellTypeGraphicSource>;
+  casingTypes?: ReadonlyArray<WellTypeGraphicSource>;
+}): PreviewWellInterval[] {
+  const intervals: PreviewWellInterval[] = [];
+  const wellTypes = [
+    ...(input.wellTypes ?? []),
+    ...DEFAULT_WELL_TYPE_OPTIONS,
+  ];
+  const backfillTypes = input.backfillTypes ?? [];
+  const casingTypes = input.casingTypes ?? [];
+
+  for (const entry of input.wellLogs ?? []) {
+    const depths = parseWellDepthPair(entry.depthFrom, entry.depthTo);
+    if (!depths) continue;
+    const type = findWellTypeOption(wellTypes, entry.wellTypeId, entry.wellTypeName);
+    const label =
+      entry.wellTypeName?.trim() || type?.name?.trim() || entry.wellTypeId?.trim() || "Well";
+    const style = wellPipeStyleFromType(type, entry.wellTypeId, entry.wellTypeName);
+    intervals.push({
+      ...depths,
+      label,
+      kind: "well",
+      fill: style.fill,
+      graphicUrl: style.graphicUrl,
+    });
+  }
+
+  // When Well Logs drive the diagram, skip backfill/casing overlays so the pipe
+  // matches the reference (Solid / Slotted stack only).
+  if (intervals.some((entry) => entry.kind === "well")) {
+    return intervals.sort((a, b) => a.fromDepth - b.fromDepth || a.toDepth - b.toDepth);
+  }
+
+  for (const entry of input.backfills ?? []) {
+    const depths = parseWellDepthPair(entry.depthFrom, entry.depthTo);
+    if (!depths) continue;
+    const type = findWellTypeOption(
+      backfillTypes,
+      entry.backfillTypeId,
+      entry.backfillTypeName
+    );
+    const label =
+      entry.backfillTypeName?.trim() || type?.name?.trim() || entry.backfillTypeId?.trim() || "Backfill";
+    const graphicUrl =
+      entry.graphicUrl?.trim() ||
+      getWellBackfillGraphicUrl(
+        resolveWellBackfillGraphicFilename(type, entry.backfillTypeId, entry.backfillTypeName)
+      ) ||
+      undefined;
+    const blank = isBlankWellBackfillGraphic(graphicUrl);
+    intervals.push({
+      ...depths,
+      label,
+      kind: "backfill",
+      fill: blank ? "hatch" : graphicUrl ? "pattern" : "hatch",
+      graphicUrl: blank ? undefined : graphicUrl,
+    });
+  }
+
+  for (const entry of input.casings ?? []) {
+    const depths = parseWellDepthPair(entry.depthFrom, entry.depthTo);
+    if (!depths) continue;
+    const type = findWellTypeOption(casingTypes, entry.casingTypeId, entry.casingTypeName);
+    const label =
+      entry.casingTypeName?.trim() || type?.name?.trim() || entry.casingTypeId?.trim() || "Casing";
+    const graphicUrl =
+      entry.graphicUrl?.trim() ||
+      getWellCasingGraphicUrl(
+        resolveWellCasingGraphicFilename(type, entry.casingTypeId, entry.casingTypeName)
+      ) ||
+      undefined;
+    intervals.push({
+      ...depths,
+      label,
+      kind: "casing",
+      fill: graphicUrl ? "pattern" : "empty",
+      graphicUrl,
+    });
+  }
+
+  return intervals.sort(
+    (a, b) =>
+      a.fromDepth - b.fromDepth ||
+      a.toDepth - b.toDepth ||
+      a.kind.localeCompare(b.kind)
+  );
+}
+
+export function clipWellIntervalsToEndDepth(
+  intervals: readonly PreviewWellInterval[],
+  endDepthM: number | null
+): PreviewWellInterval[] {
+  if (endDepthM == null) return intervals.map((entry) => ({ ...entry }));
+  return intervals
+    .filter((entry) => entry.fromDepth < endDepthM - 1e-9)
+    .map((entry) => ({
+      ...entry,
+      toDepth: Math.min(entry.toDepth, endDepthM),
+    }))
+    .filter((entry) => entry.toDepth > entry.fromDepth + 1e-9);
+}
+
 /**
  * Flattens saved DCP-family insitu test readings (penetration-row interval values)
  * into a depth-sorted point series for the report's DCP Graph column.
@@ -1391,12 +1729,85 @@ export function buildRefusalText(form: LogFormState): string {
   return `${bh} ${reasonPart}${depthPart}${detail}`;
 }
 
-/** Fill bare seeded labels that lack tokens (UTM / Loc Comment). */
+/** Scale column label mode: depth ticks, reduced level, or both. */
+export type ScaleDisplayMode = "depth" | "elevation" | "elevation_depth";
+
+function scaleColumnSourceValue(column: {
+  text?: string;
+  code?: string;
+  column_data_source?: { group?: string; value?: string } | string;
+}): { source: string; code: string; text: string } {
+  const source =
+    typeof column.column_data_source === "string"
+      ? column.column_data_source
+      : String(column.column_data_source?.value ?? "");
+  return {
+    source: source.toLowerCase(),
+    code: String(column.code ?? "").toLowerCase(),
+    text: String(column.text ?? "").toLowerCase(),
+  };
+}
+
+export function getScaleDisplayMode(column: {
+  text?: string;
+  code?: string;
+  column_data_source?: { group?: string; value?: string } | string;
+}): ScaleDisplayMode {
+  const { source, code, text } = scaleColumnSourceValue(column);
+  const blob = `${source} ${code} ${text}`;
+  if (
+    code === "elevation/depth" ||
+    source.includes("elevation_depth") ||
+    source.includes("elevation/depth") ||
+    /elevation\s*\/\s*depth/.test(blob)
+  ) {
+    return "elevation_depth";
+  }
+  if (
+    source.includes("elevation") ||
+    code === "elevation" ||
+    (text.includes("elevation") && !text.includes("depth"))
+  ) {
+    return "elevation";
+  }
+  return "depth";
+}
+
+/** Parse the log form elevation field (e.g. "1", "1.0 m") to metres. */
+export function parseGroundElevationMetres(raw: string | null | undefined): number | null {
+  const trimmed = String(raw ?? "").trim();
+  if (!trimmed) return null;
+  const match = trimmed.match(/-?\d+(?:\.\d+)?/);
+  if (!match) return null;
+  const value = Number(match[0]);
+  if (!Number.isFinite(value)) return null;
+  return Math.round((value + Number.EPSILON) * 1000) / 1000;
+}
+
+/**
+ * Header / token display for ground elevation.
+ * Form value `1` → `1.0 m` (matches Tablogs-style log headers).
+ */
+export function formatElevationHeaderValue(raw: string, unit = "m"): string {
+  const trimmed = raw.trim();
+  if (!trimmed) return "Not Surveyed";
+  const value = parseGroundElevationMetres(trimmed);
+  if (value == null) return trimmed;
+  const formatted = (Math.round(value * 10) / 10).toFixed(1);
+  return `${formatted} ${unit}`;
+}
+
+/** Fill bare seeded labels that lack tokens (UTM / Loc Comment / Ground Elevation). */
 export function polishResolvedHfText(text: string, context: Record<string, string>): string {
   let next = text;
   const utm = context["{{location.utm}}"] ?? "";
   const locComment = context["{{log.location_comment}}"] ?? "";
+  const elevation = context["{{location.elevation}}"] ?? "";
   next = next.replace(/(^|\n)UTM\s*:\s*(?=\n|$)/g, `$1UTM : ${utm}`);
   next = next.replace(/(^|\n)Loc Comment\s*:\s*(?=\n|$)/g, `$1Loc Comment : ${locComment}`);
+  next = next.replace(
+    /(^|\n)Ground Elevation(?:\s*\([^)]+\))?\s*:\s*(?=\n|$)/gi,
+    `$1Ground Elevation : ${elevation}`
+  );
   return next;
 }

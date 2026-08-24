@@ -2,7 +2,9 @@
 
 import {
   forwardRef,
+  useEffect,
   useMemo,
+  useState,
   type CSSProperties,
   type ReactNode,
 } from "react";
@@ -15,6 +17,13 @@ import {
 } from "./headerFooterBuilder/contentSchema";
 import { mmToPx } from "./headerFooterBuilder/builderGeometry";
 import { resolveRendererTokens } from "./headerFooterBuilder/rendererRegistry";
+import {
+  applyLegendVisibility,
+  resolveLegendTypes,
+  sortLegendItems,
+  type LegendPreviewItem,
+} from "./headerFooterBuilder/legendDataResolver";
+import { defaultLegendColumnDefs } from "./headerFooterBuilder/legendOptions";
 import type { HeaderFooterTemplate } from "../types/headerFooterTemplate";
 import type { LogFormState } from "../types/log";
 import type {
@@ -33,8 +42,12 @@ import {
   clipPspBandsToEndDepth,
   clipStrataToEndDepth,
   clipWaterObservationsToEndDepth,
+  clipWellIntervalsToEndDepth,
+  buildUsedWaterLegendItems,
   filterDcpPointsForColumn,
   parseFinishEndDepthMetres,
+  parseGroundElevationMetres,
+  getScaleDisplayMode,
   polishResolvedHfText,
   reportPageHeightPx,
   reportPageWidthPx,
@@ -45,9 +58,13 @@ import {
   type PreviewPspBand,
   type PreviewStratum,
   type PreviewWaterObservation,
+  type PreviewWellInterval,
 } from "../utils/logReportPreviewUtils";
 import { isColumnVisible } from "./logTemplateBuilder/contentSchema";
-import { getWaterObservationGraphicUrl } from "../utils/configModules/waterObservationType";
+import {
+  DEFAULT_WATER_OBSERVATION_TYPE_OPTIONS,
+  getWaterObservationGraphicUrl,
+} from "../utils/configModules/waterObservationType";
 
 const PROFILE_LOGO_FALLBACK = COMPANY_LOGO_PATH;
 
@@ -95,6 +112,8 @@ type LogReportComposedSheetProps = Readonly<{
   pspBands?: PreviewPspBand[] | null;
   /** Saved water observations for the Water column. */
   waterObservations?: PreviewWaterObservation[] | null;
+  /** Well backfill/casing intervals for the Well Diagram column. */
+  wellIntervals?: PreviewWellInterval[] | null;
   className?: string;
   style?: CSSProperties;
 }>;
@@ -451,6 +470,21 @@ function methodDcpDividerClasses(
   return classes.join(" ");
 }
 
+/** Continuous columns — no horizontal stratum cut lines through the cell. */
+function suppressesStratumBorder(column: LogTemplateColumn): boolean {
+  if (column.flexible_line_borders === true) return true;
+  const kind = columnKind(column);
+  return (
+    kind === "method" ||
+    kind === "chart" ||
+    kind === "depth" ||
+    kind === "water" ||
+    kind === "psp" ||
+    kind === "well_diagram" ||
+    kind === "remarks"
+  );
+}
+
 function contentBandBorderClass(
   column: LogTemplateColumn,
   nextColumn: LogTemplateColumn | null,
@@ -505,16 +539,183 @@ function collapsedFooterBorderWidths(
   };
 }
 
+/** Title-only "Water" text cells are treated as water-observation legends. */
+function isWaterLegendTextCell(cell: HfGridCell, resolvedText: string): boolean {
+  if (cell.type !== "text") return false;
+  return /^water$/i.test(resolvedText.trim());
+}
+
+function legendTypesForCell(cell: HfGridCell): string[] {
+  if (cell.type === "legend") {
+    if (Array.isArray(cell.legendTypes) && cell.legendTypes.length > 0) {
+      return cell.legendTypes.filter(Boolean);
+    }
+    return cell.content ? [cell.content] : [];
+  }
+  return ["water_observations"];
+}
+
+function filterLegendItemsForReport(
+  items: LegendPreviewItem[],
+  cell: HfGridCell,
+  usedWaterLabels: ReadonlySet<string>
+): LegendPreviewItem[] {
+  const visibility = cell.legendVisibility || "all";
+  let next = applyLegendVisibility(
+    items,
+    visibility,
+    cell.legendCustomLabels,
+    cell.legendCustomItems
+  );
+  const types = legendTypesForCell(cell);
+  const isWaterLegend = types.includes("water_observations");
+  // Water footer: always prefer types actually recorded on the log.
+  if (isWaterLegend && usedWaterLabels.size > 0 && visibility !== "custom") {
+    next = next.filter((item) => {
+      const base = item.label.trim().toLowerCase();
+      for (const used of usedWaterLabels) {
+        if (used === base || used.startsWith(`${base} -`) || used.startsWith(`${base}-`)) {
+          return true;
+        }
+      }
+      return false;
+    });
+  } else if (visibility === "used-only" && isWaterLegend) {
+    next = usedWaterLabels.size > 0 ? next : [];
+  }
+  return sortLegendItems(next, cell.legendSort);
+}
+
+function HfReportLegendBlock({
+  cell,
+  title,
+  waterObservations,
+}: {
+  cell: HfGridCell;
+  title?: string;
+  waterObservations?: PreviewWaterObservation[] | null;
+}) {
+  const types = useMemo(() => legendTypesForCell(cell), [cell]);
+  const typesKey = types.join("|");
+  const isWaterLegend = types.includes("water_observations");
+
+  const usedFromLog = useMemo(
+    () =>
+      buildUsedWaterLegendItems(waterObservations ?? []).map((entry) => ({
+        label: entry.label,
+        imageUrl: entry.graphicUrl,
+        legendType: "water_observations" as const,
+      })),
+    [waterObservations]
+  );
+
+  const usedWaterLabels = useMemo(() => {
+    const labels = new Set<string>();
+    for (const entry of waterObservations ?? []) {
+      const typeName = (entry.typeName || entry.label).trim().toLowerCase();
+      if (typeName) labels.add(typeName);
+      const raw = entry.label.trim().toLowerCase();
+      if (raw) labels.add(raw);
+    }
+    return labels;
+  }, [waterObservations]);
+
+  const [catalogItems, setCatalogItems] = useState<LegendPreviewItem[]>(() => {
+    if (!isWaterLegend) return [];
+    return DEFAULT_WATER_OBSERVATION_TYPE_OPTIONS.map((entry) => ({
+      label: entry.name,
+      imageUrl: getWaterObservationGraphicUrl(entry.graphic),
+      legendType: "water_observations",
+    }));
+  });
+
+  useEffect(() => {
+    if (!typesKey || isWaterLegend) return;
+    let cancelled = false;
+    void resolveLegendTypes(typesKey.split("|")).then((resolved) => {
+      if (!cancelled && resolved.length > 0) setCatalogItems(resolved);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [typesKey, isWaterLegend]);
+
+  useEffect(() => {
+    if (!isWaterLegend) return;
+    let cancelled = false;
+    void resolveLegendTypes(["water_observations"]).then((resolved) => {
+      if (!cancelled && resolved.length > 0) setCatalogItems(resolved);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [isWaterLegend]);
+
+  const visible = useMemo(() => {
+    // Prefer exact used observations from the log (symbol + type name).
+    if (isWaterLegend && usedFromLog.length > 0) {
+      const maxRows =
+        cell.legendMaxRows && cell.legendMaxRows > 0
+          ? cell.legendMaxRows
+          : usedFromLog.length;
+      return usedFromLog.slice(0, Math.max(0, maxRows));
+    }
+    const filtered = filterLegendItemsForReport(catalogItems, cell, usedWaterLabels);
+    const maxRows =
+      cell.legendMaxRows && cell.legendMaxRows > 0 ? cell.legendMaxRows : filtered.length;
+    return filtered.slice(0, Math.max(0, maxRows));
+  }, [isWaterLegend, usedFromLog, catalogItems, cell, usedWaterLabels]);
+
+  const columnDefs =
+    cell.legendColumnDefs?.length > 0 ? cell.legendColumnDefs : defaultLegendColumnDefs();
+  const showGraphic = columnDefs.some((def) => def.content === "graphic");
+  const showLabel = columnDefs.some((def) => def.content === "label");
+  const heading =
+    title?.trim() ||
+    (types[0] === "water_observations" ? "Water" : types[0]?.replace(/_/g, " ") || "Legend");
+
+  return (
+    <div className="log-report-composed__hf-legend-block">
+      <div className="log-report-composed__hf-legend-block-title">{heading}</div>
+      {visible.length === 0 ? null : (
+        <div className="log-report-composed__hf-legend-block-rows">
+          {visible.map((item) => (
+            <div
+              key={`${item.legendType ?? "legend"}:${item.label}`}
+              className="log-report-composed__hf-legend-block-row"
+            >
+              {showGraphic ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={item.imageUrl}
+                  alt=""
+                  className="log-report-composed__hf-legend-block-img"
+                  crossOrigin="anonymous"
+                />
+              ) : null}
+              {showLabel ? (
+                <span className="log-report-composed__hf-legend-block-label">{item.label}</span>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function HfSectionGrid({
   section,
   tokenContext,
   companyLogoUrl,
   variant,
+  waterObservations,
 }: {
   section: HfGridSection;
   tokenContext: Record<string, string>;
   companyLogoUrl?: string | null;
   variant: "header" | "footer";
+  waterObservations?: PreviewWaterObservation[] | null;
 }) {
   if (!section.enabled || section.rows < 1 || section.cols < 1) return null;
 
@@ -564,6 +765,8 @@ function HfSectionGrid({
 
         const footerBorders =
           variant === "footer" ? collapsedFooterBorderWidths(cell, section) : null;
+        const renderAsLegend =
+          cell.type === "legend" || isWaterLegendTextCell(cell, resolvedText);
 
         return (
           <div
@@ -600,8 +803,6 @@ function HfSectionGrid({
                       ? "flex-end"
                       : "stretch",
               padding: cell.type === "image" ? cell.padding ?? 6 : cell.padding ?? 4,
-              // Header: row-gap draws the rule between rows; column-gap stays 0 (no vertical splits).
-              // Footer collapses edges that would double against the frame / neighbours.
               borderStyle: cell.borderStyle || "solid",
               borderColor: cell.borderColor || "#000",
               borderWidth: 0,
@@ -618,14 +819,28 @@ function HfSectionGrid({
                 alt=""
                 className="log-report-composed__hf-image"
                 style={{
-                  // Company logos must keep aspect ratio (desired PDF never stretches).
-                  // Never honour "fill" for image cells — it oval-distorts marks.
-                  objectFit:
-                    cell.imageFit === "cover" ? "cover" : "contain",
+                  objectFit: cell.imageFit === "cover" ? "cover" : "contain",
                 }}
               />
             ) : null}
-            {cell.type === "text" ? (
+            {renderAsLegend ? (
+              <HfReportLegendBlock
+                cell={
+                  cell.type === "legend"
+                    ? cell
+                    : {
+                        ...cell,
+                        type: "legend",
+                        content: "water_observations",
+                        legendTypes: ["water_observations"],
+                        legendVisibility: "used-only",
+                      }
+                }
+                title={cell.type === "text" ? resolvedText : undefined}
+                waterObservations={waterObservations}
+              />
+            ) : null}
+            {cell.type === "text" && !renderAsLegend ? (
               looksLikeHfMetaBlock(resolvedText) ? (
                 <HfMetaBlock text={resolvedText} />
               ) : looksLikeHfLegendColumn(resolvedText) ? (
@@ -633,9 +848,6 @@ function HfSectionGrid({
               ) : (
                 <span className="log-report-composed__hf-text">{resolvedText}</span>
               )
-            ) : null}
-            {cell.type === "legend" ? (
-              <span className="log-report-composed__hf-legend">Legend</span>
             ) : null}
           </div>
         );
@@ -766,42 +978,238 @@ function WaterColumn({
   pageWindowMetres: number;
 }) {
   const pageEndMetres = pageStartMetres + pageWindowMetres;
-  const visible = observations.filter(
-    (entry) =>
-      pageWindowMetres > 0 && entry.depthM >= pageStartMetres && entry.depthM <= pageEndMetres
-  );
+
+  // Group same-depth observations so we can stagger them instead of stacking on top of each other.
+  const groups = useMemo(() => {
+    const visible = observations.filter(
+      (entry) =>
+        pageWindowMetres > 0 && entry.depthM >= pageStartMetres && entry.depthM <= pageEndMetres
+    );
+    const byDepth = new Map<string, PreviewWaterObservation[]>();
+    for (const entry of visible) {
+      const key = entry.depthM.toFixed(3);
+      const list = byDepth.get(key);
+      if (list) list.push(entry);
+      else byDepth.set(key, [entry]);
+    }
+    return Array.from(byDepth.entries()).map(([depthKey, entries]) => ({
+      depthM: Number(depthKey),
+      entries,
+    }));
+  }, [observations, pageStartMetres, pageEndMetres, pageWindowMetres]);
 
   return (
     <div className="log-report-composed__water-col" aria-label="Water observations">
-      {visible.map((entry) => {
-        const graphicUrl =
-          entry.graphicUrl?.trim() ||
-          getWaterObservationGraphicUrl("water_symbol_1.svg");
+      {groups.map((group) => {
+        const topPct = ((group.depthM - pageStartMetres) / pageWindowMetres) * 100;
+        const isMulti = group.entries.length > 1;
+
         return (
           <div
-            key={`${entry.depthM}-${entry.label}`}
-            className="log-report-composed__water-mark"
-            style={{ top: `${((entry.depthM - pageStartMetres) / pageWindowMetres) * 100}%` }}
-            title={`${entry.label} @ ${entry.depthM.toFixed(2)} m`}
+            key={`water-depth-${group.depthM.toFixed(3)}`}
+            className={`log-report-composed__water-mark-group${isMulti ? " is-multi" : ""}`}
+            style={{ top: `${topPct}%` }}
           >
-            {graphicUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={graphicUrl}
-                alt=""
-                className="log-report-composed__water-symbol-img"
-                crossOrigin="anonymous"
-              />
-            ) : (
-              <span className="log-report-composed__water-symbol" aria-hidden="true">
-                ▼
-              </span>
-            )}
-            <span className="log-report-composed__water-label is-vertical">{entry.label}</span>
+            {group.entries.map((entry, slotIndex) => {
+              const graphicUrl =
+                entry.graphicUrl?.trim() ||
+                getWaterObservationGraphicUrl("water_symbol_1.svg");
+              return (
+                <div
+                  key={`${entry.depthM}-${entry.typeName}-${entry.label}-${slotIndex}`}
+                  className="log-report-composed__water-mark"
+                  title={`${entry.label} @ ${entry.depthM.toFixed(2)} m`}
+                >
+                  {graphicUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={graphicUrl}
+                      alt=""
+                      className="log-report-composed__water-symbol-img"
+                      crossOrigin="anonymous"
+                    />
+                  ) : (
+                    <span className="log-report-composed__water-symbol" aria-hidden="true">
+                      ▼
+                    </span>
+                  )}
+                  <span className="log-report-composed__water-label">{entry.label}</span>
+                </div>
+              );
+            })}
           </div>
         );
       })}
     </div>
+  );
+}
+
+function WellDiagramColumn({
+  intervals,
+  column,
+  pageStartMetres,
+  pageWindowMetres,
+}: {
+  intervals: PreviewWellInterval[];
+  column: LogTemplateColumn;
+  pageStartMetres: number;
+  pageWindowMetres: number;
+}) {
+  const pageEndMetres = pageStartMetres + pageWindowMetres;
+  const showWell = column.show_well !== false;
+  const configuredWidth = Number(column.well_width ?? column.pattern_width ?? 45);
+  const bodyWidthPct = showWell
+    ? Math.min(55, Math.max(32, Number.isFinite(configuredWidth) && configuredWidth > 0 ? configuredWidth : 45))
+    : 0;
+
+  const visible = intervals
+    .filter(
+      (entry) =>
+        pageWindowMetres > 0 &&
+        entry.toDepth > pageStartMetres &&
+        entry.fromDepth < pageEndMetres
+    )
+    .map((entry) => ({
+      ...entry,
+      fromDepth: Math.max(entry.fromDepth, pageStartMetres),
+      toDepth: Math.min(entry.toDepth, pageEndMetres),
+    }))
+    .filter((entry) => entry.toDepth > entry.fromDepth)
+    .sort((a, b) => a.fromDepth - b.fromDepth || a.toDepth - b.toDepth);
+
+  if (visible.length === 0 || bodyWidthPct <= 0) return null;
+
+  const wells = visible.filter((entry) => entry.kind === "well");
+  const backfills = visible.filter((entry) => entry.kind === "backfill");
+  const casings = visible.filter((entry) => entry.kind === "casing");
+  const showCasing =
+    column.show_regular_casing !== false || column.show_surface_casing !== false;
+  // Well Logs (pipe) take priority; otherwise backfill bands.
+  const pipeSegments = wells.length > 0 ? wells : backfills;
+
+  return (
+    <div className="log-report-composed__well-diagram" aria-label="Well diagram">
+      {pipeSegments.map((entry, index) => {
+        const topPct = ((entry.fromDepth - pageStartMetres) / pageWindowMetres) * 100;
+        const heightPct = ((entry.toDepth - entry.fromDepth) / pageWindowMetres) * 100;
+        const prev = pipeSegments[index - 1];
+        const abutsPrev =
+          Boolean(prev) && Math.abs((prev?.toDepth ?? 0) - entry.fromDepth) < 1e-6;
+        return (
+          <div
+            key={`${entry.kind}-${entry.fromDepth}-${entry.toDepth}-${entry.label}-${index}`}
+            className={`log-report-composed__well-interval is-${entry.kind}${
+              abutsPrev ? " is-abutting" : ""
+            }`}
+            style={{ top: `${topPct}%`, height: `${Math.max(heightPct, 0.8)}%` }}
+            title={`${entry.label} ${entry.fromDepth.toFixed(2)}–${entry.toDepth.toFixed(2)} m`}
+          >
+            <div
+              className={`log-report-composed__well-body${abutsPrev ? " is-abutting" : ""}`}
+              style={{ width: `${bodyWidthPct}%` }}
+            >
+              <WellIntervalGraphic
+                graphicUrl={entry.graphicUrl}
+                fill={entry.fill}
+                kind={entry.kind}
+                label={entry.label}
+              />
+            </div>
+          </div>
+        );
+      })}
+
+      {wells.length === 0 && showCasing
+        ? casings.map((entry, index) => {
+            const topPct = ((entry.fromDepth - pageStartMetres) / pageWindowMetres) * 100;
+            const heightPct = ((entry.toDepth - entry.fromDepth) / pageWindowMetres) * 100;
+            const casingWidth = Math.max(10, Math.round(bodyWidthPct * 0.32));
+            return (
+              <div
+                key={`casing-${entry.fromDepth}-${entry.toDepth}-${entry.label}-${index}`}
+                className="log-report-composed__well-interval is-casing"
+                style={{ top: `${topPct}%`, height: `${Math.max(heightPct, 0.8)}%` }}
+                title={`${entry.label} ${entry.fromDepth.toFixed(2)}–${entry.toDepth.toFixed(2)} m`}
+              >
+                <div
+                  className="log-report-composed__well-body is-casing"
+                  style={{ width: `${casingWidth}%` }}
+                >
+                  <WellIntervalGraphic
+                    graphicUrl={entry.graphicUrl}
+                    fill={entry.fill}
+                    kind="casing"
+                    label={entry.label}
+                  />
+                </div>
+              </div>
+            );
+          })
+        : null}
+    </div>
+  );
+}
+
+function WellIntervalGraphic({
+  graphicUrl,
+  fill,
+  kind,
+  label,
+}: {
+  graphicUrl?: string;
+  fill: PreviewWellInterval["fill"];
+  kind: PreviewWellInterval["kind"];
+  label: string;
+}) {
+  const [failed, setFailed] = useState(false);
+  const src = graphicUrl?.trim() || "";
+
+  useEffect(() => {
+    setFailed(false);
+  }, [src]);
+
+  if (kind === "casing") {
+    if (src && !failed) {
+      return (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt={label}
+          className="log-report-composed__well-fill-img is-casing"
+          crossOrigin="anonymous"
+          onError={() => setFailed(true)}
+        />
+      );
+    }
+    return <div className="log-report-composed__well-casing-fill" aria-hidden="true" />;
+  }
+
+  if (fill === "hatch") {
+    return <div className="log-report-composed__well-hatch" aria-hidden="true" />;
+  }
+
+  if (fill === "empty" || failed || (fill === "pattern" && !src)) {
+    return <div className="log-report-composed__well-empty" aria-hidden="true" />;
+  }
+
+  const safeUrl = src.replace(/\\/g, "/").replace(/"/g, "%22");
+  return (
+    <>
+      <div
+        className="log-report-composed__well-fill"
+        style={{ backgroundImage: `url("${safeUrl}")` }}
+        role="img"
+        aria-label={label}
+      />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt=""
+        className="log-report-composed__well-fill-probe"
+        crossOrigin="anonymous"
+        onError={() => setFailed(true)}
+      />
+    </>
   );
 }
 
@@ -832,13 +1240,11 @@ function resolveDcpSeriesStyle(column: LogTemplateColumn): {
 
 function DcpChart({
   column,
-  depthColumn,
   points,
   pageStartMetres,
   pageWindowMetres,
 }: {
   column: LogTemplateColumn;
-  depthColumn?: LogTemplateColumn | null;
   points: DcpPoint[];
   pageStartMetres: number;
   pageWindowMetres: number;
@@ -873,7 +1279,7 @@ function DcpChart({
   return (
     <div className="log-report-composed__dcp">
       <div className="log-report-composed__dcp-plot">
-        {/* Dots/line/grid are independent of the depth track-mark rail on the right. */}
+        {/* Dots/line/grid; depth track marks live on Depth(m) left border. */}
         <div className="log-report-composed__dcp-plot-inner">
           {depthGuides.map((depth) => (
             <span
@@ -943,11 +1349,6 @@ function DcpChart({
             : null}
         </div>
 
-        <DcpRightDepthScale
-          depthColumn={depthColumn ?? null}
-          pageStartMetres={pageStartMetres}
-          pageWindowMetres={pageWindowMetres}
-        />
       </div>
     </div>
   );
@@ -1096,11 +1497,58 @@ function isFeetDepthColumn(column: LogTemplateColumn): boolean {
   return label.includes("(ft)") || label.includes("_ft") || label.includes(" ft");
 }
 
-function formatDepthLabel(metres: number, column: LogTemplateColumn): string {
-  const display = isFeetDepthColumn(column) ? metres * METRES_TO_FEET : metres;
-  const rounded = Math.round(display * 1000) / 1000;
-  // Always one decimal so major ticks read 1.0 (not "1") like Tablogs samples.
-  return rounded.toFixed(1);
+function scaleDecimalPlaces(column: LogTemplateColumn): number {
+  const raw = String(
+    column.scale_decimal_places ?? column.number_display ?? column.decimals ?? ""
+  ).toLowerCase();
+  if (raw === "no" || raw === "0" || raw === "none") return 0;
+  if (raw === "two" || raw === "2") return 2;
+  return 1;
+}
+
+/** Avoid IEEE leftovers like 0.19999999999999998 when subtracting metres. */
+function roundToMillis(value: number): number {
+  return Math.round((Number(value) + Number.EPSILON) * 1000) / 1000;
+}
+
+function formatScaleNumber(value: number, column: LogTemplateColumn): string {
+  return roundToMillis(value).toFixed(scaleDecimalPlaces(column));
+}
+
+function elevationAtDisplayedDepth(groundDisplay: number, depthDisplay: number): number {
+  return (Math.round(groundDisplay * 1000) - Math.round(depthDisplay * 1000)) / 1000;
+}
+
+function formatScaleTickLabel(
+  depthM: number,
+  column: LogTemplateColumn,
+  groundElevationM: number | null
+): { elevation?: string; depth?: string } {
+  const mode = getScaleDisplayMode(column);
+  const depthDisplay = roundToMillis(
+    isFeetDepthColumn(column) ? depthM * METRES_TO_FEET : depthM
+  );
+  const depthText = formatScaleNumber(depthDisplay, column);
+
+  // Depth (m) / Depth (ft): omit the origin 0.0 label (implied at ground).
+  if (mode === "depth") {
+    if (Math.abs(depthDisplay) < 1e-6) return {};
+    return { depth: depthText };
+  }
+
+  if (groundElevationM == null) {
+    return mode === "elevation_depth" ? { depth: depthText } : {};
+  }
+
+  const groundDisplay = roundToMillis(
+    isFeetDepthColumn(column) ? groundElevationM * METRES_TO_FEET : groundElevationM
+  );
+  const elevationText = formatScaleNumber(
+    elevationAtDisplayedDepth(groundDisplay, depthDisplay),
+    column
+  );
+  if (mode === "elevation") return { elevation: elevationText };
+  return { elevation: elevationText, depth: depthText };
 }
 
 function buildDepthTickValues(
@@ -1157,83 +1605,124 @@ function buildStratumDepthLabels(
 }
 
 /**
- * Depth ruler drawn on the RIGHT edge of the DCP Graph column (ticks point left
- * into the plot). Matches Tablogs: the shared DCP|Depth border is the scale line.
+ * Depth(m) scale: track marks on the LEFT vertical line (column border) with
+ * labels to the right — matches Tablogs PSP | Water | Depth layouts.
+ * Feet columns keep numeric labels only (no second tick rail).
  */
-function DcpRightDepthScale({
-  depthColumn,
-  pageStartMetres,
-  pageWindowMetres,
-}: {
-  depthColumn: LogTemplateColumn | null;
-  pageStartMetres: number;
-  pageWindowMetres: number;
-}) {
-  const { majorTicks, minorTicks } = buildDepthTickValues(
-    depthColumn,
-    pageStartMetres,
-    pageWindowMetres
-  );
-
-  return (
-    <div className="log-report-composed__dcp-right-scale" aria-hidden="true">
-      {minorTicks.map((tick) => (
-        <span
-          key={`dcp-minor-${tick}`}
-          className="log-report-composed__dcp-right-tick is-minor"
-          style={{ top: `${((tick - pageStartMetres) / pageWindowMetres) * 100}%` }}
-        />
-      ))}
-      {majorTicks.map((tick) => (
-        <span
-          key={`dcp-major-${tick}`}
-          className="log-report-composed__dcp-right-tick is-major"
-          style={{ top: `${((tick - pageStartMetres) / pageWindowMetres) * 100}%` }}
-        />
-      ))}
-    </div>
-  );
-}
-
-/** Numeric depth labels — layer boundaries + major scale, no tick rail (rail is on DCP). */
-function DepthLabels({
+function DepthColumnScale({
   column,
   strata,
   pageStartMetres,
   pageWindowMetres,
+  groundElevationM,
 }: {
   column: LogTemplateColumn;
   strata: PreviewStratum[];
   pageStartMetres: number;
   pageWindowMetres: number;
+  groundElevationM: number | null;
 }) {
+  const scaleMode = getScaleDisplayMode(column);
+  const isElevDepthScale = scaleMode === "elevation_depth";
+  // Elevation/Depth uses stacked labels — do not draw a second vertical rail.
+  const showTrackMarks = !isElevDepthScale && !isFeetDepthColumn(column);
+  const { majorTicks, minorTicks } = buildDepthTickValues(
+    column,
+    pageStartMetres,
+    pageWindowMetres
+  );
   const pageEndMetres = pageStartMetres + pageWindowMetres;
-  const { majorTicks } = buildDepthTickValues(column, pageStartMetres, pageWindowMetres);
+  const startTick = Math.round(pageStartMetres * 1000) / 1000;
 
-  // Label every subsurface section-start depth (e.g. 0.5, 0.8).
+  // Label every subsurface section-start depth (e.g. 0.5, 0.8) plus major scale.
   const boundaryDepths = buildStratumDepthLabels(
     strata,
     pageStartMetres,
     pageWindowMetres
   );
 
+  const labeledMajors = Array.from(
+    new Set(
+      [startTick, ...majorTicks]
+        .map((depth) => Math.round(depth * 1000) / 1000)
+        .filter((depth) => depth >= pageStartMetres - 1e-6 && depth < pageEndMetres - 1e-6)
+    )
+  );
+
   const depths = Array.from(
     new Set(
-      [...majorTicks, ...boundaryDepths].map((depth) => Math.round(depth * 1000) / 1000)
+      [startTick, ...majorTicks, ...boundaryDepths]
+        .map((depth) => Math.round(depth * 1000) / 1000)
+        .filter((depth) => depth >= pageStartMetres - 1e-6 && depth < pageEndMetres - 1e-6)
     )
   ).sort((a, b) => a - b);
 
+  // Longer ticks at labeled boundaries that aren't already major steps.
+  const majorSet = new Set(labeledMajors);
+  const boundaryTicks = boundaryDepths.filter((depth) => !majorSet.has(depth));
+
+  const tickTop = (tick: number) =>
+    `${((tick - pageStartMetres) / pageWindowMetres) * 100}%`;
+
   return (
-    <div className="log-report-composed__depth-labels">
-      {depths.map((tick) => (
-        <span
-          key={`label-${tick}`}
-          className="log-report-composed__depth-tick-label"
-          style={{ top: `${((tick - pageStartMetres) / pageWindowMetres) * 100}%` }}
-        >
-          {formatDepthLabel(tick, column)}
-        </span>
-      ))}
+    <div className="log-report-composed__depth-scale">
+      {showTrackMarks ? (
+        <div className="log-report-composed__depth-track" aria-hidden="true">
+          {minorTicks.map((tick) => (
+            <span
+              key={`depth-minor-${tick}`}
+              className="log-report-composed__depth-track-tick is-minor"
+              style={{ top: tickTop(tick) }}
+            />
+          ))}
+          {boundaryTicks.map((tick) => (
+            <span
+              key={`depth-boundary-${tick}`}
+              className="log-report-composed__depth-track-tick is-major"
+              style={{ top: tickTop(tick) }}
+            />
+          ))}
+          {labeledMajors.map((tick) => (
+            <span
+              key={`depth-major-${tick}`}
+              className="log-report-composed__depth-track-tick is-major"
+              style={{ top: tickTop(tick) }}
+            />
+          ))}
+        </div>
+      ) : null}
+      <div className="log-report-composed__depth-labels">
+        {depths.map((tick) => {
+          const label = formatScaleTickLabel(tick, column, groundElevationM);
+          if (!label.elevation && !label.depth) return null;
+          const top = tickTop(tick);
+          const key = roundToMillis(tick);
+          const isPageStartTick = Math.abs(tick - pageStartMetres) < 1e-6;
+          const stacked = Boolean(isElevDepthScale && label.elevation && label.depth);
+          const className = [
+            "log-report-composed__depth-tick-label",
+            stacked ? "is-elev-depth" : "",
+            isPageStartTick ? "is-page-start" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          if (stacked) {
+            return (
+              <span key={`label-${key}`} className={className} style={{ top }}>
+                <span className="log-report-composed__depth-tick-elev">{label.elevation}</span>
+                <span className="log-report-composed__depth-tick-rule" aria-hidden="true" />
+                <span className="log-report-composed__depth-tick-depth">{label.depth}</span>
+              </span>
+            );
+          }
+          const text = label.elevation ?? label.depth ?? "";
+          return (
+            <span key={`label-${key}`} className={className} style={{ top }}>
+              {text}
+            </span>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -1354,7 +1843,9 @@ function LogBody({
   drillingIntervals,
   pspBands,
   waterObservations,
+  wellIntervals,
   hideColumnHeadings = false,
+  groundElevationM,
 }: {
   columns: LogTemplateColumn[];
   strata: PreviewStratum[];
@@ -1366,7 +1857,9 @@ function LogBody({
   drillingIntervals?: PreviewDrillingInterval[] | null;
   pspBands?: PreviewPspBand[] | null;
   waterObservations?: PreviewWaterObservation[] | null;
+  wellIntervals?: PreviewWellInterval[] | null;
   hideColumnHeadings?: boolean;
+  groundElevationM: number | null;
 }) {
   const widthPcts = columnWidthPct(columns);
   const pageEndMetres = pageStartMetres + pageWindowMetres;
@@ -1406,10 +1899,12 @@ function LogBody({
   }
 
   const gridCols = widthPcts.map((pct) => `${pct}%`).join(" ");
-  const depthColumn = columns.find((column) => columnKind(column) === "depth") ?? null;
+  const hasRefusalBanner = Boolean(showRefusal && refusal);
 
   return (
-    <div className="log-report-composed__body">
+    <div
+      className={`log-report-composed__body${hasRefusalBanner ? " has-refusal" : ""}`}
+    >
       {!hideColumnHeadings ? (
       <div className="log-report-composed__col-head" style={{ gridTemplateColumns: gridCols }}>
         {columns.map((column, index) => {
@@ -1497,7 +1992,6 @@ function LogBody({
                 {kind === "chart" ? (
                   <DcpChart
                     column={column}
-                    depthColumn={depthColumn}
                     points={filterDcpPointsForColumn(dcpPoints ?? [], column)}
                     pageStartMetres={pageStartMetres}
                     pageWindowMetres={pageWindowMetres}
@@ -1524,12 +2018,21 @@ function LogBody({
                     pageWindowMetres={pageWindowMetres}
                   />
                 ) : null}
+                {kind === "well_diagram" ? (
+                  <WellDiagramColumn
+                    intervals={wellIntervals ?? []}
+                    column={column}
+                    pageStartMetres={pageStartMetres}
+                    pageWindowMetres={pageWindowMetres}
+                  />
+                ) : null}
                 {kind === "depth" ? (
-                  <DepthLabels
+                  <DepthColumnScale
                     column={column}
                     strata={strata}
                     pageStartMetres={pageStartMetres}
                     pageWindowMetres={pageWindowMetres}
+                    groundElevationM={groundElevationM}
                   />
                 ) : null}
               </div>
@@ -1537,7 +2040,7 @@ function LogBody({
           })}
         </div>
 
-        {pageStrata.map(({ stratum, isContinuation }) => {
+        {pageStrata.map(({ stratum, isContinuation }, stratumIndex) => {
           const topPct = Math.max(0, ((stratum.fromDepth - pageStartMetres) / pageWindowMetres) * 100);
           const thicknessM = Math.max(0, stratum.toDepth - stratum.fromDepth);
           // Zero-thickness / depth-0 bands need enough height for graphic + text.
@@ -1545,10 +2048,14 @@ function LogBody({
             thicknessM > 1e-9 ? (thicknessM / pageWindowMetres) * 100 : 8,
             2.5
           );
+          const isLastBeforeRefusal =
+            hasRefusalBanner && stratumIndex === pageStrata.length - 1;
           return (
             <div
               key={`${stratum.fromDepth}-${stratum.toDepth}-${stratum.recordStartDepth}-${stratum.classification}-${stratum.description.slice(0, 24)}`}
-              className="log-report-composed__stratum"
+              className={`log-report-composed__stratum${
+                isLastBeforeRefusal ? " is-last-before-refusal" : ""
+              }`}
               style={{
                 top: `${topPct}%`,
                 height: `${heightPct}%`,
@@ -1562,6 +2069,7 @@ function LogBody({
                   columns[columnIndex + 1] ?? null,
                   columns[columnIndex - 1] ?? null
                 );
+                const noStratumLine = suppressesStratumBorder(column);
                 return (
                   <div
                     key={`${columnKey(column)}-${stratum.fromDepth}-${stratum.toDepth}-${stratum.recordStartDepth}`}
@@ -1569,6 +2077,7 @@ function LogBody({
                       "log-report-composed__stratum-cell",
                       `is-${kind}`,
                       dividerClass,
+                      noStratumLine ? "no-stratum-line" : "",
                     ]
                       .filter(Boolean)
                       .join(" ")}
@@ -1582,16 +2091,9 @@ function LogBody({
         })}
       </div>
 
-      {showRefusal && refusal ? (
-        <div className="log-report-composed__refusal-row" style={{ gridTemplateColumns: gridCols }}>
-          {columns.map((column) => {
-            const kind = columnKind(column);
-            return (
-              <div key={`refusal-${columnKey(column)}`} className="log-report-composed__refusal-cell">
-                {kind === "description" ? asCellText(refusal) : null}
-              </div>
-            );
-          })}
+      {hasRefusalBanner ? (
+        <div className="log-report-composed__refusal-row">
+          <div className="log-report-composed__refusal-banner">{asCellText(refusal)}</div>
         </div>
       ) : null}
     </div>
@@ -1620,6 +2122,7 @@ export const LogReportComposedSheet = forwardRef<HTMLElement, LogReportComposedS
       drillingIntervals,
       pspBands,
       waterObservations,
+      wellIntervals,
       className,
       style,
     },
@@ -1698,6 +2201,10 @@ export const LogReportComposedSheet = forwardRef<HTMLElement, LogReportComposedS
       () => clipPspBandsToEndDepth(pspBands ?? [], endDepthM),
       [pspBands, endDepthM]
     );
+    const cappedWellIntervals = useMemo(
+      () => clipWellIntervalsToEndDepth(wellIntervals ?? [], endDepthM),
+      [wellIntervals, endDepthM]
+    );
     return (
       // `section` (not `div`) so this keeps the same generic-HTMLElement DOM type the
       // forwarded ref already expects (matching the single `<article>` it used to point at).
@@ -1749,7 +2256,9 @@ export const LogReportComposedSheet = forwardRef<HTMLElement, LogReportComposedS
                 drillingIntervals={cappedDrillingIntervals}
                 pspBands={cappedPspBands}
                 waterObservations={cappedWaterObservations}
+                wellIntervals={cappedWellIntervals}
                 hideColumnHeadings={Boolean(logTemplate?.config.hide_all_column_headings)}
+                groundElevationM={parseGroundElevationMetres(form.elevation)}
               />
 
               {footerSection ? (
@@ -1758,6 +2267,7 @@ export const LogReportComposedSheet = forwardRef<HTMLElement, LogReportComposedS
                   tokenContext={pageTokenContext}
                   companyLogoUrl={companyLogoUrl}
                   variant="footer"
+                  waterObservations={cappedWaterObservations}
                 />
               ) : (
                 <div className="log-report-composed__placeholder">No footer template selected</div>
@@ -1932,6 +2442,25 @@ export const LOG_REPORT_COMPOSED_PRINT_STYLES = `
     font-size: 5.5pt;
   }
   .log-report-composed__hf-legend { font-size: 9px; color: #374151; }
+  .log-report-composed__hf-legend-block {
+    width: 100%; height: 100%; display: flex; flex-direction: column;
+    gap: 2px; min-width: 0; overflow: hidden;
+  }
+  .log-report-composed__hf-legend-block-title { font-weight: 700; line-height: 1.15; }
+  .log-report-composed__hf-legend-block-rows {
+    display: flex; flex-direction: column; gap: 1px; min-height: 0; overflow: hidden;
+  }
+  .log-report-composed__hf-legend-block-row {
+    display: flex; align-items: center; gap: 4px; min-width: 0;
+  }
+  .log-report-composed__hf-legend-block-img {
+    display: block; width: 14px; height: 16px; object-fit: contain; flex: 0 0 auto;
+  }
+  .log-report-composed__hf-legend-block-label {
+    min-width: 0; line-height: 1.15; font-weight: 400;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .log-report-composed__hf-grid--footer .log-report-composed__hf-legend-block { font-size: 5.5pt; }
   .log-report-composed__placeholder {
     padding: 8px 10px; font-size: 11px; color: #6b7280; border-bottom: 1px solid #000;
   }
@@ -1942,6 +2471,7 @@ export const LOG_REPORT_COMPOSED_PRINT_STYLES = `
     flex-direction: column;
     border-bottom: 1px solid #000;
   }
+  .log-report-composed__body.has-refusal { border-bottom: none; }
   .log-report-composed__body-empty {
     padding: 24px 12px; text-align: center; color: #9ca3af; font-size: 12px;
   }
@@ -2178,6 +2708,101 @@ export const LOG_REPORT_COMPOSED_PRINT_STYLES = `
   .log-report-composed__drill-methods {
     position: absolute; inset: 0; z-index: 1; pointer-events: none;
   }
+  .log-report-composed__psp-col {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  }
+  .log-report-composed__psp-band {
+    position: absolute; left: 0; right: 0; box-sizing: border-box;
+    border: none; border-bottom: 1px solid #000; background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; min-height: 12px;
+  }
+  .log-report-composed__psp-band-text {
+    font-size: 7px; line-height: 1.1; color: #000; text-align: center;
+    padding: 1px 2px; white-space: nowrap;
+  }
+  .log-report-composed__water-col {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  }
+  .log-report-composed__water-mark-group {
+    position: absolute; left: 1px; right: 1px;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    gap: 3px; transform: translateY(-4px); box-sizing: border-box;
+  }
+  .log-report-composed__water-mark {
+    position: relative; left: auto;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    transform: none; gap: 1px; max-width: 100%; min-width: 0;
+  }
+  .log-report-composed__water-mark-group.is-multi .log-report-composed__water-mark {
+    max-width: 100%; flex: 0 0 auto;
+  }
+  .log-report-composed__water-mark-group.is-multi .log-report-composed__water-symbol-img {
+    width: 12px; max-height: 36px;
+  }
+  .log-report-composed__water-mark-group.is-multi .log-report-composed__water-label {
+    font-size: 6px;
+  }
+  .log-report-composed__water-symbol-img {
+    display: block; width: 14px; height: auto; max-height: 48px;
+    object-fit: contain; flex: 0 0 auto;
+  }
+  .log-report-composed__water-symbol { color: #000; font-size: 10px; line-height: 1; flex: 0 0 auto; }
+  .log-report-composed__water-label {
+    font-size: 7px; line-height: 1.1; color: #000; text-align: center;
+    max-width: 100%; padding: 0 1px; white-space: normal; overflow-wrap: anywhere;
+    writing-mode: horizontal-tb; transform: none; min-width: 0;
+  }
+  .log-report-composed__well-diagram {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: visible;
+  }
+  .log-report-composed__well-interval {
+    position: absolute; left: 0; right: 0;
+    display: flex; justify-content: center; box-sizing: border-box; overflow: visible;
+  }
+  .log-report-composed__well-body {
+    position: relative; height: 100%; box-sizing: border-box;
+    border: 1px solid #000; background: #fff; overflow: hidden; flex: 0 0 auto;
+  }
+  .log-report-composed__well-body.is-abutting { border-top: none; }
+  .log-report-composed__well-body.is-casing {
+    z-index: 2;
+    background: transparent;
+    border-color: transparent;
+  }
+  .log-report-composed__well-empty {
+    position: absolute; inset: 0; background: #fff;
+  }
+  .log-report-composed__well-hatch {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(to bottom, #000 0, #000 1px, #fff 1px, #fff 2.5px);
+  }
+  .log-report-composed__well-fill {
+    position: absolute; inset: 0;
+    background-repeat: repeat-y; background-size: 100% auto; background-position: top center;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges; pointer-events: none;
+  }
+  .log-report-composed__well-fill-probe {
+    position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none;
+  }
+  .log-report-composed__well-fill-img {
+    position: absolute; inset: 0; display: block;
+    width: 100%; height: 100%;
+    object-fit: fill; object-position: center top;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges; pointer-events: none;
+  }
+  .log-report-composed__well-casing-fill {
+    position: absolute; inset: 0; background: #d1d5db;
+  }
+  .log-report-composed__well-leader {
+    position: absolute; right: 0; height: 0;
+    border-top: 1px dotted #000; pointer-events: none; z-index: 3;
+  }
+  .log-report-composed__well-leader.is-top { top: 0; }
+  .log-report-composed__well-leader.is-bottom { bottom: 0; }
+  .log-report-composed__strata-grid-cell.is-well_diagram { position: relative; overflow: visible; }
   .log-report-composed__drill-interval {
     position: absolute; left: 0; right: 0; box-sizing: border-box;
     border-top: 1px solid #000; border-bottom: 1px solid #000;
@@ -2242,24 +2867,18 @@ export const LOG_REPORT_COMPOSED_PRINT_STYLES = `
   }
   .log-report-composed__stratum-cell:last-child { border-right: none; }
   .log-report-composed__stratum-cell.is-method,
-  .log-report-composed__stratum-cell.is-chart {
+  .log-report-composed__stratum-cell.is-chart,
+  .log-report-composed__stratum-cell.is-psp,
+  .log-report-composed__stratum-cell.is-water,
+  .log-report-composed__stratum-cell.is-well_diagram,
+  .log-report-composed__stratum-cell.is-remarks,
+  .log-report-composed__stratum-cell.is-depth,
+  .log-report-composed__stratum-cell.no-stratum-line {
     border-bottom: none;
     background: transparent;
   }
   .log-report-composed__stratum-cell.is-depth {
-    border-bottom: none;
-    background: transparent;
     padding: 0;
-  }
-  .log-report-composed__stratum-cell.is-depth::after {
-    content: "";
-    position: absolute;
-    left: 45%;
-    right: 0;
-    bottom: 0;
-    height: 1px;
-    background: #000;
-    pointer-events: none;
   }
   .log-report-composed__stratum-cell.is-graphic,
   .log-report-composed__stratum-cell.is-well_diagram,
@@ -2320,25 +2939,50 @@ export const LOG_REPORT_COMPOSED_PRINT_STYLES = `
   .log-report-composed__stratum-cell.is-classification .log-report-composed__cell-text {
     text-align: center;
   }
+  .log-report-composed__depth-scale {
+    position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  }
+  .log-report-composed__depth-track {
+    position: absolute; top: 0; left: 0; bottom: 0; width: 8px;
+    z-index: 1; pointer-events: none;
+  }
+  .log-report-composed__depth-track-tick {
+    position: absolute; left: 0; height: 1px; background: #000;
+    transform: translateY(-50%);
+  }
+  .log-report-composed__depth-track-tick.is-minor { width: 4px; }
+  .log-report-composed__depth-track-tick.is-major { width: 7px; }
   .log-report-composed__depth-labels {
     position: absolute; inset: 0; z-index: 2; pointer-events: none;
   }
   .log-report-composed__depth-tick-label {
-    position: absolute; left: 2px; max-width: calc(100% - 4px);
+    position: absolute; left: 9px; max-width: calc(100% - 11px);
     transform: translateY(-50%);
     font-size: 8px; line-height: 1; white-space: nowrap; text-align: left;
     background: #fff; padding: 0 1px;
   }
-  .log-report-composed__dcp-right-scale {
-    position: absolute; top: 0; right: 0; bottom: 0; width: 10px;
-    z-index: 3; pointer-events: none;
+  .log-report-composed__depth-tick-label.is-elev-depth {
+    left: 50%; right: auto; max-width: calc(100% - 4px);
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; padding: 0; background: #fff;
   }
-  .log-report-composed__dcp-right-tick {
-    position: absolute; right: 0; height: 1px; background: #000;
-    transform: translateY(-50%);
+  .log-report-composed__depth-tick-label.is-page-start {
+    transform: translateY(1px);
   }
-  .log-report-composed__dcp-right-tick.is-minor { width: 4px; }
-  .log-report-composed__dcp-right-tick.is-major { width: 7px; }
+  .log-report-composed__depth-tick-label.is-elev-depth.is-page-start {
+    transform: translate(-50%, 1px);
+  }
+  .log-report-composed__depth-tick-elev,
+  .log-report-composed__depth-tick-depth {
+    display: block; line-height: 1.05; padding: 0 2px;
+  }
+  .log-report-composed__depth-tick-elev { padding-bottom: 1px; }
+  .log-report-composed__depth-tick-depth { padding-top: 1px; }
+  .log-report-composed__depth-tick-rule {
+    display: block; width: 100%; min-width: 1.8em; height: 0;
+    border-top: 1px solid #000;
+  }
   .log-report-composed__hatch { width: 100%; height: 100%; min-height: 100%; position: relative; }
   .log-report-composed__hatch--image {
     background-repeat: repeat;
@@ -2457,20 +3101,20 @@ export const LOG_REPORT_COMPOSED_PRINT_STYLES = `
     display: none;
   }
   .log-report-composed__refusal-row {
-    display: grid;
+    display: flex;
     align-items: stretch;
     flex-shrink: 0;
     background: #fff; border-top: 1px solid #000; border-bottom: 1px solid #000;
   }
-  .log-report-composed__refusal-cell {
-    height: 100%;
-    box-sizing: border-box;
-    border-right: 1px solid #000;
-    padding: 4px 6px; font-size: 8px; font-weight: 600;
+  .log-report-composed__refusal-banner {
+    flex: 1 1 auto; box-sizing: border-box;
+    padding: 4px 8px; font-size: 8px; font-weight: 600;
     display: flex; align-items: center; justify-content: center; text-align: center;
     min-width: 0; overflow: hidden;
   }
-  .log-report-composed__refusal-cell:last-child { border-right: none; }
+  .log-report-composed__stratum.is-last-before-refusal .log-report-composed__stratum-cell {
+    border-bottom: none;
+  }
   @media print {
     body { margin: 0; background: #fff; }
     .log-report-composed { box-shadow: none; width: 100% !important; min-height: auto !important; }
