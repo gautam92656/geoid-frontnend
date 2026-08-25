@@ -1,1 +1,1 @@
-export const APP_NAME = "GeoID";
+export const APP_NAME = "GeoLog";

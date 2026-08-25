@@ -230,7 +230,7 @@ export async function reorderLogTemplates(
   });
 }
 
-/** Local selection-list stand-in until a Geoid selection-list endpoint exists. */
+/** Local selection-list stand-in until a GeoLog selection-list endpoint exists. */
 export function getBuilderSelectionGroups(): LogTemplateSelectionGroup[] {
   const seen = new Set<string>();
   const groups = selectionGroups as LogTemplateSelectionGroup[];

@@ -17,6 +17,7 @@ export { AddEquipmentModal } from "./AddEquipmentModal";
 export { AddLogModal } from "./AddLogModal";
 export { CreateLabTestRequestModal } from "./CreateLabTestRequestModal";
 export { LabTestsSection } from "./LabTestsSection";
+export { ExportsSection } from "./ExportsSection";
 export { ProjectDetailsForm } from "./ProjectDetailsForm";
 export { ProjectOverviewSections } from "./ProjectOverviewSections";
 export { ProjectSidebar } from "./ProjectSidebar";

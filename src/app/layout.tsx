@@ -23,11 +23,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Book a Discovery Call | GeoID",
-    template: "%s | GeoID",
+    default: "Book a Discovery Call | GeoLog",
+    template: "%s | GeoLog",
   },
   description:
-    "See GeoID working on your data. Each session is run by one of our in-house geotechnical professionals.",
+    "See GeoLog working on your data. Each session is run by one of our in-house geotechnical professionals.",
 };
 
 export default function RootLayout({

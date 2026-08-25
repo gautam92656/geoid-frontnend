@@ -44,9 +44,9 @@ import {
   type ProjectListScope,
   type ProjectPageTabId,
 } from "../data/projectOptions";
-import { archiveProject, createProject, deleteProject, listProjects, unarchiveProject } from "../services/projectApi";
+import { archiveProject, copyProject, deleteProject, listProjects, unarchiveProject } from "../services/projectApi";
 import type { Project } from "../types/project";
-import { projectStatusToApiValue, projectToCopyPayload } from "../utils/projectFormUtils";
+import { projectStatusToApiValue } from "../utils/projectFormUtils";
 import { projectDetailPath } from "../utils/projectPaths";
 import { PROJECT_EXPORT_COLUMNS } from "../data/exportColumns";
 import { AddProjectModal } from "./AddProjectModal";
@@ -325,18 +325,12 @@ export function ProjectsPage() {
     async (project: Project) => {
       if (copying) return;
 
-      const payload = projectToCopyPayload(project);
-      if (!payload) {
-        showApiError(undefined, "Cannot copy project without a client.");
-        return;
-      }
-
       setCopying(true);
       try {
-        const { message } = await createProject(payload);
+        const { message } = await copyProject(project.id);
         setSelectedIds(new Set());
         await loadProjects(1, pageSize, "active");
-        showApiSuccess(message, API_MESSAGES.PROJECT_ADDED);
+        showApiSuccess(message, API_MESSAGES.PROJECT_COPIED);
       } catch (err) {
         showApiError(err, API_ERROR_MESSAGES.COPY_PROJECT);
       } finally {

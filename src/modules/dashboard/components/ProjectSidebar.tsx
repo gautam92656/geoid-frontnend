@@ -4,22 +4,22 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
+import { APP_NAME } from "@/config/app";
 import {
-  COMPANY_LOGO_ALT,
   COMPANY_LOGO_HEIGHT,
   COMPANY_LOGO_PATH,
   COMPANY_LOGO_WIDTH,
-} from "@/shared/constants/branding";
+} from "../data/branding";
 
 export const PROJECT_SIDEBAR_SECTIONS = [
   { id: "overview", label: "Overview", icon: "overview" },
-  { id: "logs", label: "Logs", icon: "logs" },
-  { id: "logs-quick-select", label: "Quick Select", icon: "logs-quick-select" },
-  { id: "lab-tests", label: "Lab Tests", icon: "lab-tests" },
-  { id: "report-tools", label: "Reports", icon: "report-tools" },
-  { id: "project-photos", label: "Photos", icon: "project-photos" },
+  // { id: "logs", label: "Logs", icon: "logs" },
+  // { id: "logs-quick-select", label: "Quick Select", icon: "logs-quick-select" },
+  // { id: "lab-tests", label: "Lab Tests", icon: "lab-tests" },
+  // { id: "report-tools", label: "Reports", icon: "report-tools" },
+  // { id: "project-photos", label: "Photos", icon: "project-photos" },
   { id: "exports", label: "Exports", icon: "exports" },
-  { id: "client-portal", label: "Portal", icon: "client-portal" },
+  // { id: "client-portal", label: "Portal", icon: "client-portal" },
 ] as const;
 
 export type ProjectSidebarSectionId = (typeof PROJECT_SIDEBAR_SECTIONS)[number]["id"];
@@ -133,7 +133,7 @@ export function ProjectSidebar({ activeSection, onSectionChange }: ProjectSideba
       }}
     >
       <div className="project-sidebar__brand">
-        <Link href="/dashboard" className="project-sidebar__brand-link" aria-label="GeoID home">
+        <Link href="/dashboard" className="project-sidebar__brand-link" aria-label={`${APP_NAME} home`}>
           <Image
             src={COMPANY_LOGO_PATH}
             alt=""
@@ -141,7 +141,7 @@ export function ProjectSidebar({ activeSection, onSectionChange }: ProjectSideba
             height={COMPANY_LOGO_HEIGHT}
             className="project-sidebar__brand-mark"
           />
-          <span className="project-sidebar__brand-text">GeoID</span>
+          <span className="project-sidebar__brand-text">{APP_NAME}</span>
         </Link>
       </div>
 

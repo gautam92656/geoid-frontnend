@@ -8,9 +8,9 @@ import {
 } from "@/modules/landing/components";
 
 export const metadata: Metadata = {
-  title: "GeoID — Boring Log Software",
+  title: "GeoLog — Boring Log Software",
   description:
-    "Transform your geotechnical workflows with GeoID. From field capture to final report, seamlessly.",
+    "Transform your geotechnical workflows with GeoLog. From field capture to final report, seamlessly.",
 };
 
 export default function HomePage() {

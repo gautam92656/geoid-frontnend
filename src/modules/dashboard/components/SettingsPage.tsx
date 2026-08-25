@@ -4,6 +4,7 @@ import { Suspense, useState } from "react";
 import { AdminLogConfigurationsSection } from "@/modules/super-admin/components/AdminLogConfigurationsSection";
 import { AdminHeaderFooterTemplatesSection } from "@/modules/super-admin/components/AdminHeaderFooterTemplatesSection";
 import { UsersSection } from "@/modules/super-admin/components/UsersSection";
+import { useAppSelector } from "@/store/hooks";
 import { AccountSettingsSection } from "./AccountSettingsSection";
 import { SettingsSidebar, type SettingsSectionId } from "./SettingsSidebar";
 
@@ -28,6 +29,8 @@ type SettingsPageProps = Readonly<{
 
 export function SettingsPage({ section }: SettingsPageProps) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const isSuperAdmin = useAppSelector((state) => state.auth.user?.role === "super_admin");
+  const canViewSection = isSuperAdmin || section === "account";
 
   return (
     <div className="settings-page">
@@ -59,8 +62,8 @@ export function SettingsPage({ section }: SettingsPageProps) {
 
           <div className="settings-page__content">
             {section === "account" ? <AccountSettingsSection /> : null}
-            {section === "user-management" ? <UsersSection /> : null}
-            {section === "log-configurations" ? (
+            {isSuperAdmin && section === "user-management" ? <UsersSection /> : null}
+            {isSuperAdmin && section === "log-configurations" ? (
               <Suspense fallback={<p>Loading log configurations…</p>}>
                 <AdminLogConfigurationsSection
                   detailBasePath="/dashboard/settings/log-configurations"
@@ -68,7 +71,7 @@ export function SettingsPage({ section }: SettingsPageProps) {
                 />
               </Suspense>
             ) : null}
-            {section === "header-footer-templates" ? (
+            {isSuperAdmin && section === "header-footer-templates" ? (
               <Suspense fallback={<p>Loading header &amp; footer templates…</p>}>
                 <AdminHeaderFooterTemplatesSection
                   listBasePath="/dashboard/settings/header-footer-templates"
@@ -77,6 +80,7 @@ export function SettingsPage({ section }: SettingsPageProps) {
                 />
               </Suspense>
             ) : null}
+            {!canViewSection ? <p>You do not have access to this settings section.</p> : null}
           </div>
         </div>
       </div>

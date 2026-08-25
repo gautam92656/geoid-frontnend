@@ -1,8 +1,9 @@
 "use client";
 
 import type { FormEvent } from "react";
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import {
+  FileUpload,
   FormField,
   Input,
   Select,
@@ -10,8 +11,9 @@ import {
   UiButton,
   ProjectModalPortal,
 } from "@/shared/components/ui";
-import type { AdminUser, AdminUserFormState } from "../types/user";
+import type { AdminUser, AdminUserFormState, UserRole } from "../types/user";
 import {
+  ADMIN_USER_FIELD_LIMITS,
   EMPTY_ADMIN_USER_FORM,
   adminUserToForm,
   validateAdminUserForm,
@@ -23,8 +25,19 @@ const ROLE_OPTIONS = [
   { value: "super_admin", label: "Super Admin" },
 ];
 
-const LOGO_ACCEPT = ".jpeg,.png,.jpg,.gif,.svg,image/*";
+const LOGO_ACCEPT =
+  ".jpeg,.png,.jpg,.gif,.svg,.webp,image/jpeg,image/png,image/gif,image/svg+xml,image/webp";
 const LOGO_MAX_MB = 2;
+const ERROR_FIELD_ORDER: (keyof AdminUserFormErrors)[] = [
+  "firstName",
+  "lastName",
+  "email",
+  "companyName",
+  "companyLogo",
+  "phoneCode",
+  "phoneNumber",
+  "password",
+];
 
 type AddUserModalProps = Readonly<{
   open: boolean;
@@ -35,14 +48,39 @@ type AddUserModalProps = Readonly<{
   submitting?: boolean;
 }>;
 
-function ImageIcon() {
+function EyeIcon() {
   return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="9" cy="10" r="1.5" fill="currentColor" />
-      <path d="M3 16l5-5 4 4 3-3 6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M2.5 12C4.5 7.5 8 5 12 5s7.5 2.5 9.5 7c-2 4.5-5.5 7-9.5 7s-7.5-2.5-9.5-7z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5" />
     </svg>
   );
+}
+
+function EyeOffIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M3 3l18 18M10.5 10.7A3 3 0 0012 15a3 3 0 002.3-4.3M7.8 7.9C9.2 7.1 10.6 6.7 12 6.7c4 0 7.5 2.5 9.5 7-.8 1.4-1.8 2.6-3 3.5M5.6 5.7C3.9 7 2.5 8.8 1.5 11c2 4.5 5.5 7 10.5 7 1.5 0 2.9-.3 4.2-.9"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function normalizePhoneCode(value: string) {
+  const digits = value.replace(/[^\d]/g, "").slice(0, 4);
+  return digits ? `+${digits}` : "";
+}
+
+function sanitizePhoneNumber(value: string) {
+  return value.replace(/[^\d\s()-]/g, "").slice(0, ADMIN_USER_FIELD_LIMITS.phoneNumber);
 }
 
 export function AddUserModal({
@@ -53,29 +91,55 @@ export function AddUserModal({
   editingUser = null,
   submitting = false,
 }: AddUserModalProps) {
+  return (
+    <ProjectModalPortal open={open}>
+      {open ? (
+        <AddUserModalDialog
+          key={editingUser ? `edit-${editingUser.id}` : "create"}
+          onClose={onClose}
+          onSubmit={onSubmit}
+          users={users}
+          editingUser={editingUser}
+          submitting={submitting}
+        />
+      ) : null}
+    </ProjectModalPortal>
+  );
+}
+
+function AddUserModalDialog({
+  onClose,
+  onSubmit,
+  users = [],
+  editingUser = null,
+  submitting = false,
+}: Omit<AddUserModalProps, "open">) {
   const formId = useId();
   const logoInputId = useId();
-  const logoInputRef = useRef<HTMLInputElement>(null);
-  const isEditing = editingUser !== null;
-  const [form, setForm] = useState<AdminUserFormState>(EMPTY_ADMIN_USER_FORM);
+  const isEditing = Boolean(editingUser);
+  const limits = ADMIN_USER_FIELD_LIMITS;
+  const [form, setForm] = useState<AdminUserFormState>(() =>
+    editingUser ? adminUserToForm(editingUser) : EMPTY_ADMIN_USER_FORM,
+  );
   const [errors, setErrors] = useState<AdminUserFormErrors>({});
-  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const existingLogoUrl = useMemo(() => {
-    if (form.companyLogoFile || !form.companyLogoUrl) return null;
-    return form.companyLogoUrl;
-  }, [form.companyLogoFile, form.companyLogoUrl]);
+  const showCompanyFields = form.role === "user";
+  const fieldId = (name: string) => `${formId}-${name}`;
 
-  const companyLogoSrc = logoPreview || existingLogoUrl;
+  const requestClose = () => {
+    if (submitting) return;
+    onClose();
+  };
 
   useEffect(() => {
-    if (!open) return;
-
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key !== "Escape" || submitting) return;
+      if (document.querySelector(".ui-select.is-open")) return;
+      onClose();
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -84,63 +148,58 @@ export function AddUserModal({
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [open, onClose]);
+  }, [onClose, submitting]);
 
-  useEffect(() => {
-    if (!open) {
-      setForm(EMPTY_ADMIN_USER_FORM);
-      setErrors({});
-      setLogoPreview(null);
-      return;
-    }
+  const clearError = (key: keyof AdminUserFormErrors) => {
+    setErrors((current) => (current[key] ? { ...current, [key]: undefined } : current));
+  };
 
-    setForm(editingUser ? adminUserToForm(editingUser) : EMPTY_ADMIN_USER_FORM);
-    setErrors({});
-    setLogoPreview(null);
-  }, [open, editingUser]);
-
-  useEffect(() => {
-    if (!form.companyLogoFile) {
-      setLogoPreview(null);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(form.companyLogoFile);
-    setLogoPreview(objectUrl);
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [form.companyLogoFile]);
-
-  const update = <K extends keyof AdminUserFormState>(key: K, value: AdminUserFormState[K]) => {
+  const update = <K extends keyof AdminUserFormState>(
+    key: K,
+    value: AdminUserFormState[K],
+  ) => {
     setForm((current) => ({ ...current, [key]: value }));
-    if (
-      key === "firstName" ||
-      key === "lastName" ||
-      key === "email" ||
-      key === "password" ||
-      key === "companyName"
-    ) {
-      setErrors((current) => ({ ...current, [key]: undefined }));
+    if (key in errors) {
+      clearError(key as keyof AdminUserFormErrors);
+    }
+  };
+
+  const handleRoleChange = (value: string) => {
+    const role = value as UserRole;
+    setForm((current) => ({ ...current, role }));
+    if (role !== "user") {
+      setErrors((current) => ({
+        ...current,
+        companyName: undefined,
+        companyLogo: undefined,
+      }));
     }
   };
 
   const handleLogoChange = (file: File | null) => {
-    if (!file) {
-      update("companyLogoFile", null);
-      return;
-    }
-
-    if (file.size > LOGO_MAX_MB * 1024 * 1024) {
-      return;
-    }
-
-    update("companyLogoFile", file);
-    update("companyLogoUrl", "");
+    setForm((current) => ({
+      ...current,
+      companyLogoFile: file,
+      companyLogoUrl: "",
+    }));
+    clearError("companyLogo");
   };
 
-  const clearLogo = () => {
-    update("companyLogoFile", null);
-    update("companyLogoUrl", "");
-    if (logoInputRef.current) logoInputRef.current.value = "";
+  const focusFirstError = (nextErrors: AdminUserFormErrors) => {
+    const firstKey = ERROR_FIELD_ORDER.find((key) => nextErrors[key]);
+    if (!firstKey) return;
+
+    window.requestAnimationFrame(() => {
+      const fieldIdToFocus =
+        firstKey === "companyLogo" ? logoInputId : fieldId(firstKey);
+      const field = document.getElementById(fieldIdToFocus);
+      const upload = field?.closest(".ui-file-upload");
+      const focusTarget =
+        (upload?.querySelector('[role="button"]') as HTMLElement | null) ?? field;
+
+      focusTarget?.focus();
+      (upload ?? field)?.scrollIntoView({ block: "center", behavior: "smooth" });
+    });
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -153,206 +212,317 @@ export function AddUserModal({
       editingUserId: editingUser?.id,
     });
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) return;
+    if (Object.keys(nextErrors).length > 0) {
+      focusFirstError(nextErrors);
+      return;
+    }
 
-    await onSubmit(form);
+    try {
+      await onSubmit(form);
+    } catch {
+      // Parent surfaces API errors.
+    }
   };
 
-  const showCompanyFields = form.role === "user";
-
   return (
-    <ProjectModalPortal open={open}>
-      <div className="project-modal project-modal--stacked" role="presentation">
-        <button
-          type="button"
-          className="project-modal__backdrop"
-          aria-label={`Close ${isEditing ? "edit" : "add"} user dialog`}
-          onClick={onClose}
-        />
+    <div className="project-modal project-modal--stacked" role="presentation">
+      <button
+        type="button"
+        className="project-modal__backdrop"
+        aria-label={`Close ${isEditing ? "edit" : "add"} user dialog`}
+        onClick={requestClose}
+      />
 
-        <div
-          className="project-modal__dialog project-modal__dialog--scroll project-modal__dialog--form"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={`${formId}-title`}
+      <div
+        className="project-modal__dialog project-modal__dialog--scroll project-modal__dialog--form"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={fieldId("title")}
+        aria-describedby={fieldId("subtitle")}
+      >
+        <div className="project-modal__header">
+          <h2 id={fieldId("title")} className="project-modal__title">
+            {isEditing ? "Edit User" : "Add User"}
+          </h2>
+          <p id={fieldId("subtitle")} className="project-modal__subtitle">
+            {isEditing
+              ? "Update this user’s details, branding, and access."
+              : "Create a user account with company branding and access."}
+          </p>
+        </div>
+
+        <form
+          id={formId}
+          className="project-modal__form"
+          onSubmit={handleSubmit}
+          noValidate
+          aria-busy={submitting}
         >
-          <div className="project-modal__header">
-            <h2 id={`${formId}-title`} className="project-modal__title">
-              {isEditing ? "Edit User" : "Add User"}
-            </h2>
-            <p className="project-modal__subtitle">
-              {isEditing
-                ? "Update this user’s details, branding, and access."
-                : "Create a user with their own company name and logo (not GeoID)."}
-            </p>
-          </div>
+          <div className="project-modal__body ui-scrollbar">
+            <div className="project-modal__fields">
+              <FormField
+                label="First name"
+                htmlFor={fieldId("firstName")}
+                required
+                error={errors.firstName}
+              >
+                <Input
+                  id={fieldId("firstName")}
+                  variant="ui"
+                  type="text"
+                  name="firstName"
+                  placeholder="Jane"
+                  value={form.firstName}
+                  maxLength={limits.firstName}
+                  onChange={(event) => update("firstName", event.target.value)}
+                  onBlur={() => update("firstName", form.firstName.trim())}
+                  autoComplete="given-name"
+                  autoFocus
+                  disabled={submitting}
+                  aria-invalid={Boolean(errors.firstName)}
+                />
+              </FormField>
 
-          <form id={formId} className="project-modal__form" onSubmit={handleSubmit} noValidate>
-            <div className="project-modal__body ui-scrollbar">
-              <div className="project-modal__fields">
-                {showCompanyFields ? (
-                  <div className="project-modal__field--full project-modal__company-logo">
-                    <input
-                      ref={logoInputRef}
-                      id={logoInputId}
-                      type="file"
-                      accept={LOGO_ACCEPT}
-                      className="project-modal__company-logo-input"
-                      onChange={(event) => handleLogoChange(event.target.files?.[0] ?? null)}
-                    />
-                    <button
-                      type="button"
-                      className="project-modal__company-logo-btn"
-                      aria-label="Upload company logo"
-                      onClick={() => logoInputRef.current?.click()}
-                    >
-                      {companyLogoSrc ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={companyLogoSrc} alt="Company logo" />
-                      ) : (
-                        <span className="project-modal__company-logo-placeholder">
-                          <ImageIcon />
-                          <span>Upload logo</span>
-                        </span>
-                      )}
-                    </button>
-                    <p className="project-modal__company-logo-label">Company logo</p>
-                    <p className="ui-field__hint">
-                      Click to upload. PNG, JPG, GIF or SVG up to {LOGO_MAX_MB} MB.
-                    </p>
-                    {companyLogoSrc ? (
-                      <UiButton type="button" variant="ghost" size="sm" onClick={clearLogo}>
-                        Remove logo
-                      </UiButton>
-                    ) : null}
-                  </div>
-                ) : null}
+              <FormField
+                label="Last name"
+                htmlFor={fieldId("lastName")}
+                required
+                error={errors.lastName}
+              >
+                <Input
+                  id={fieldId("lastName")}
+                  variant="ui"
+                  type="text"
+                  name="lastName"
+                  placeholder="Smith"
+                  value={form.lastName}
+                  maxLength={limits.lastName}
+                  onChange={(event) => update("lastName", event.target.value)}
+                  onBlur={() => update("lastName", form.lastName.trim())}
+                  autoComplete="family-name"
+                  disabled={submitting}
+                  aria-invalid={Boolean(errors.lastName)}
+                />
+              </FormField>
 
-                <FormField label="First name" required error={errors.firstName}>
-                  <Input
-                    variant="ui"
-                    type="text"
-                    placeholder="First name"
-                    value={form.firstName}
-                    onChange={(event) => update("firstName", event.target.value)}
-                    autoComplete="given-name"
-                    autoFocus
-                  />
-                </FormField>
+              <FormField
+                label="Email"
+                htmlFor={fieldId("email")}
+                required
+                error={errors.email}
+              >
+                <Input
+                  id={fieldId("email")}
+                  variant="ui"
+                  type="email"
+                  name="email"
+                  placeholder="jane@company.com"
+                  value={form.email}
+                  maxLength={limits.email}
+                  onChange={(event) => update("email", event.target.value)}
+                  onBlur={() => update("email", form.email.trim())}
+                  autoComplete="email"
+                  spellCheck={false}
+                  disabled={submitting}
+                  aria-invalid={Boolean(errors.email)}
+                />
+              </FormField>
 
-                <FormField label="Last name" required error={errors.lastName}>
-                  <Input
-                    variant="ui"
-                    type="text"
-                    placeholder="Last name"
-                    value={form.lastName}
-                    onChange={(event) => update("lastName", event.target.value)}
-                    autoComplete="family-name"
-                  />
-                </FormField>
+              <FormField label="Role" htmlFor={fieldId("role")} required>
+                <Select
+                  id={fieldId("role")}
+                  value={form.role}
+                  options={ROLE_OPTIONS}
+                  onChange={handleRoleChange}
+                  floatingMenu
+                  disabled={submitting}
+                />
+              </FormField>
 
-                {showCompanyFields ? (
+              {showCompanyFields ? (
+                <>
                   <FormField
                     label="Company name"
+                    htmlFor={fieldId("companyName")}
                     required
                     error={errors.companyName}
-                    hint=""
+                    className="project-modal__field--full"
                   >
                     <Input
+                      id={fieldId("companyName")}
                       variant="ui"
                       type="text"
-                      placeholder="Company name"
+                      name="companyName"
+                      placeholder="Acme Geotechnics"
                       value={form.companyName}
+                      maxLength={limits.companyName}
                       onChange={(event) => update("companyName", event.target.value)}
+                      onBlur={() => update("companyName", form.companyName.trim())}
+                      autoComplete="organization"
+                      disabled={submitting}
+                      aria-invalid={Boolean(errors.companyName)}
                     />
                   </FormField>
-                ) : null}
 
+                  <FormField
+                    label="Company logo"
+                    htmlFor={logoInputId}
+                    error={errors.companyLogo}
+                    className="project-modal__field--full"
+                  >
+                    <FileUpload
+                      id={logoInputId}
+                      value={form.companyLogoFile}
+                      existingSrc={
+                        form.companyLogoFile ? null : form.companyLogoUrl || null
+                      }
+                      existingLabel="Current company logo"
+                      accept={LOGO_ACCEPT}
+                      maxSizeMb={LOGO_MAX_MB}
+                      hint={`PNG, JPG, GIF, SVG or WEBP up to ${LOGO_MAX_MB} MB.`}
+                      disabled={submitting}
+                      error={errors.companyLogo}
+                      onChange={handleLogoChange}
+                      onReject={(message) =>
+                        setErrors((current) => ({ ...current, companyLogo: message }))
+                      }
+                    />
+                  </FormField>
+                </>
+              ) : null}
+
+              <div className="project-modal__phone">
                 <FormField
-                  label="Email"
-                  required
-                  error={errors.email}
-                  className={showCompanyFields ? undefined : "project-modal__field--full"}
+                  label="Phone code"
+                  htmlFor={fieldId("phoneCode")}
+                  error={errors.phoneCode}
                 >
                   <Input
-                    variant="ui"
-                    type="email"
-                    placeholder="Email"
-                    value={form.email}
-                    onChange={(event) => update("email", event.target.value)}
-                    autoComplete="email"
-                  />
-                </FormField>
-
-                <FormField label="Role" required>
-                  <Select
-                    value={form.role}
-                    options={ROLE_OPTIONS}
-                    onChange={(value) => update("role", value as AdminUserFormState["role"])}
-                    floatingMenu
-                  />
-                </FormField>
-
-                <FormField label="Phone code">
-                  <Input
-                    variant="ui"
-                    type="text"
-                    placeholder="+61"
-                    value={form.phoneCode}
-                    onChange={(event) => update("phoneCode", event.target.value)}
-                  />
-                </FormField>
-
-                <FormField label="Phone number">
-                  <Input
+                    id={fieldId("phoneCode")}
                     variant="ui"
                     type="tel"
-                    placeholder="Phone number"
-                    value={form.phoneNumber}
-                    onChange={(event) => update("phoneNumber", event.target.value)}
+                    name="phoneCode"
+                    inputMode="tel"
+                    placeholder="+61"
+                    value={form.phoneCode}
+                    maxLength={limits.phoneCode}
+                    onChange={(event) =>
+                      update("phoneCode", normalizePhoneCode(event.target.value))
+                    }
+                    autoComplete="tel-country-code"
+                    disabled={submitting}
+                    aria-invalid={Boolean(errors.phoneCode)}
                   />
                 </FormField>
 
                 <FormField
-                  label={isEditing ? "New password" : "Password"}
-                  required={!isEditing}
-                  error={errors.password}
-                  hint={isEditing ? "Leave blank to keep the current password." : "Minimum 8 characters."}
-                  className="project-modal__field--full"
+                  label="Phone number"
+                  htmlFor={fieldId("phoneNumber")}
+                  error={errors.phoneNumber}
                 >
                   <Input
+                    id={fieldId("phoneNumber")}
                     variant="ui"
-                    type="password"
-                    placeholder={isEditing ? "Leave blank to keep current" : "Password"}
+                    type="tel"
+                    name="phoneNumber"
+                    inputMode="tel"
+                    placeholder="4123 456 789"
+                    value={form.phoneNumber}
+                    maxLength={limits.phoneNumber}
+                    onChange={(event) =>
+                      update("phoneNumber", sanitizePhoneNumber(event.target.value))
+                    }
+                    autoComplete="tel-national"
+                    disabled={submitting}
+                    aria-invalid={Boolean(errors.phoneNumber)}
+                  />
+                </FormField>
+              </div>
+
+              <FormField
+                label={isEditing ? "New password" : "Password"}
+                htmlFor={fieldId("password")}
+                required={!isEditing}
+                error={errors.password}
+                hint={
+                  isEditing
+                    ? "Leave blank to keep the current password."
+                    : `Minimum ${limits.passwordMin} characters.`
+                }
+                className="project-modal__field--full"
+              >
+                <div className="ui-password">
+                  <Input
+                    id={fieldId("password")}
+                    variant="ui"
+                    type={passwordVisible ? "text" : "password"}
+                    name="password"
+                    placeholder={
+                      isEditing ? "Leave blank to keep current" : "Create a password"
+                    }
                     value={form.password}
                     onChange={(event) => update("password", event.target.value)}
                     autoComplete="new-password"
+                    disabled={submitting}
+                    aria-invalid={Boolean(errors.password)}
                   />
-                </FormField>
+                  <button
+                    type="button"
+                    className="ui-password__toggle"
+                    aria-label={passwordVisible ? "Hide password" : "Show password"}
+                    onClick={() => setPasswordVisible((current) => !current)}
+                    disabled={submitting}
+                  >
+                    {passwordVisible ? <EyeOffIcon /> : <EyeIcon />}
+                  </button>
+                </div>
+              </FormField>
 
-                <div className="project-modal__field--full">
-                  <div className="ui-field">
-                    <span className="ui-field__label">Email verified</span>
-                    <Toggle
-                      checked={form.isEmailVerified}
-                      onChange={(checked) => update("isEmailVerified", checked)}
-                    />
+              <div className="project-modal__field--full">
+                <div className="project-modal__toggle-row">
+                  <div className="project-modal__toggle-row-text">
+                    <label
+                      className="project-modal__toggle-row-label"
+                      htmlFor={fieldId("isEmailVerified")}
+                    >
+                      Email verified
+                    </label>
+                    <p className="project-modal__toggle-row-hint">
+                      Skip the verification email and mark this account as verified.
+                    </p>
                   </div>
+                  <Toggle
+                    id={fieldId("isEmailVerified")}
+                    checked={form.isEmailVerified}
+                    onChange={(checked) => update("isEmailVerified", checked)}
+                    disabled={submitting}
+                  />
                 </div>
               </div>
             </div>
+          </div>
 
-            <div className="project-modal__footer">
-              <UiButton type="button" variant="ghost" onClick={onClose} disabled={submitting}>
-                Cancel
-              </UiButton>
-              <UiButton type="submit" variant="primary" disabled={submitting}>
-                {submitting ? "Submitting…" : isEditing ? "Save" : "Submit"}
-              </UiButton>
-            </div>
-          </form>
-        </div>
+          <div className="project-modal__footer">
+            <UiButton
+              type="button"
+              variant="ghost"
+              onClick={requestClose}
+              disabled={submitting}
+            >
+              Cancel
+            </UiButton>
+            <UiButton type="submit" variant="primary" disabled={submitting}>
+              {submitting
+                ? isEditing
+                  ? "Saving…"
+                  : "Creating…"
+                : isEditing
+                  ? "Save changes"
+                  : "Create user"}
+            </UiButton>
+          </div>
+        </form>
       </div>
-    </ProjectModalPortal>
+    </div>
   );
 }

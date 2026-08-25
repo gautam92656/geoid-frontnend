@@ -51,7 +51,7 @@ export function projectToDetailsFormState(project: Project): ProjectDetailsFormS
     projectNumber: project.projectNo,
     projectName: project.name,
     location: project.location || project.address,
-    equipmentSupplier: "GEOID",
+    equipmentSupplier: "GEOLOG",
     equipment: "Drillman GT10",
     logConfigId: project.logConfigId,
     coordinateSystem: project.coordinateSystem || DEFAULT_COORDINATE_SYSTEM,

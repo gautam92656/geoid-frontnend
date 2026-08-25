@@ -83,6 +83,11 @@ export async function createProject(payload: ProjectPayload): Promise<MutationRe
   return { data: res.data.data, message: extractApiMessage(res.data) };
 }
 
+export async function copyProject(id: number): Promise<MutationResult<Project>> {
+  const res = await apiClient.post<ApiEnvelope<Project>>(`/projects/${id}/copy`);
+  return { data: res.data.data, message: extractApiMessage(res.data) };
+}
+
 export async function updateProject(
   id: number,
   payload: Partial<ProjectPayload>
