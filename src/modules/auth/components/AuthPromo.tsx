@@ -3,7 +3,7 @@ export function AuthPromo() {
     <div className="auth-promo">
       {/* <span className="discovery-hero__badge">Book a Call</span> */}
       <h1 className="auth-promo__title">
-        Transform your geotechnical workflows with GeoID —{" "}
+        Transform your geotechnical workflows with GeoLog —{" "}
         <span className="discovery-hero__title-accent">from field capture to final report, seamlessly.</span>
       </h1>
       <p className="auth-promo__text">

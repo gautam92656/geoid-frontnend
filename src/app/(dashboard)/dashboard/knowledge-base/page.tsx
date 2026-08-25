@@ -24,7 +24,7 @@ export default function KnowledgeBasePage() {
   return (
     <PlaceholderPage
       title="Knowledge Base"
-      description="Browse guides, documentation, and best practices for using GeoID."
+      description="Browse guides, documentation, and best practices for using GeoLog."
     />
   );
 }

@@ -91,6 +91,9 @@ export async function changePassword(
 }
 
 export type UpdateProfilePayload = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
   companyLogoUrl?: string | null;
   companyName?: string | null;
 };

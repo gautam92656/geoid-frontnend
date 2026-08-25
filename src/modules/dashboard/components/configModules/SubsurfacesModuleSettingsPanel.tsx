@@ -412,7 +412,7 @@ export function SubsurfacesModuleSettingsPanel({
               type="button"
               variant="primary"
               size="sm"
-              disabled={disabled}
+              disabled={true}
               onClick={onEditWorkflow}
             >
               Edit Workflow and Descriptions

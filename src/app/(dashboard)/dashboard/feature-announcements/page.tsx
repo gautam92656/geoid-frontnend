@@ -24,7 +24,7 @@ export default function FeatureAnnouncementsPage() {
   return (
     <PlaceholderPage
       title="Feature Announcements"
-      description="Stay up to date with the latest GeoID features and product updates."
+      description="Stay up to date with the latest GeoLog features and product updates."
     />
   );
 }

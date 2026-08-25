@@ -7,7 +7,7 @@ export function HeroSection() {
         <div className="discovery-hero__content">
           {/* <span className="discovery-hero__badge">Book a Call</span> */}
           <h1 className="discovery-hero__title">
-            Transform your geotechnical workflows with GeoID —{" "}
+            Transform your geotechnical workflows with GeoLog —{" "}
             <span className="discovery-hero__title-accent">
               from field capture to final report, seamlessly.
             </span>

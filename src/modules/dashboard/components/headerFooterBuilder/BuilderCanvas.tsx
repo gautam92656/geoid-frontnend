@@ -109,7 +109,7 @@ export function BuilderCanvas({
         [user?.firstName, user?.lastName].filter(Boolean).join(" ").trim() || "User profile",
       email: user?.email?.trim() || null,
       companyName: user?.companyName?.trim() || null,
-      // Match Account Settings "Your photo": uploaded logo, else Geoid default profile photo.
+      // Match Account Settings: uploaded logo, else the GeoLog default.
       logoUrl: user?.companyLogoUrl?.trim() || PROFILE_LOGO_FALLBACK,
     }),
     [user?.companyLogoUrl, user?.companyName, user?.email, user?.firstName, user?.lastName]

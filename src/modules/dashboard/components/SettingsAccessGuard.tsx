@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAppSelector } from "@/store/hooks";
 
@@ -9,19 +9,27 @@ type SettingsAccessGuardProps = {
   children: ReactNode;
 };
 
-/** Settings is platform-only; regular tenant users are redirected away. */
+const ACCOUNT_PATH = "/dashboard/settings/account";
+
+function isAccountSettingsPath(pathname: string) {
+  return pathname === ACCOUNT_PATH || pathname.startsWith(`${ACCOUNT_PATH}/`);
+}
+
+/** Platform settings stay super-admin only. Account/profile is available to every signed-in user. */
 export function SettingsAccessGuard({ children }: SettingsAccessGuardProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const { hydrated, isAuthenticated, user } = useAppSelector((state) => state.auth);
-  const canAccessSettings = user?.role === "super_admin";
+  const isSuperAdmin = user?.role === "super_admin";
+  const canAccess = isSuperAdmin || isAccountSettingsPath(pathname);
 
   useEffect(() => {
-    if (hydrated && isAuthenticated && !canAccessSettings) {
+    if (hydrated && isAuthenticated && !canAccess) {
       router.replace("/dashboard");
     }
-  }, [canAccessSettings, hydrated, isAuthenticated, router]);
+  }, [canAccess, hydrated, isAuthenticated, router]);
 
-  if (!hydrated || !isAuthenticated || !canAccessSettings) {
+  if (!hydrated || !isAuthenticated || !canAccess) {
     return null;
   }
 

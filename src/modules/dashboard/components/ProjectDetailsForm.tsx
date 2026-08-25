@@ -42,7 +42,7 @@ import {
 import { AddClientModal } from "./AddClientModal";
 import { AddOfficeModal } from "./AddOfficeModal";
 
-const EQUIPMENT_SUPPLIERS = ["GEOID", "SiteTech", "GeoEquip"];
+const EQUIPMENT_SUPPLIERS = ["GEOLOG", "SiteTech", "GeoEquip"];
 const EQUIPMENT_OPTIONS = ["Drillman GT10", "Drillman GT12", "Rig Pro 300"];
 
 type ProjectDetailsFormProps = Readonly<{

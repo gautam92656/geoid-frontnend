@@ -16,10 +16,10 @@ export function CtaSection() {
           <div className="landing-cta__content">
             <span className="landing-eyebrow">Get Started</span>
             <h2 className="landing-section__title">
-              Ready to get started with GeoID?
+              Ready to get started with GeoLog?
             </h2>
             <p className="landing-section__text">
-              Join engineering teams using GeoID for faster logging, consistent reports,
+              Join engineering teams using GeoLog for faster logging, consistent reports,
               and streamlined geotechnical project management.
             </p>
             <ul className="landing-cta__list">
@@ -41,7 +41,7 @@ export function CtaSection() {
           </div>
 
           <div className="landing-cta__form-card">
-            <h3 className="landing-cta__form-title">Start with GeoID</h3>
+            <h3 className="landing-cta__form-title">Start with GeoLog</h3>
             <p className="landing-cta__form-sub">
               Create your account and explore the platform with a free trial.
             </p>

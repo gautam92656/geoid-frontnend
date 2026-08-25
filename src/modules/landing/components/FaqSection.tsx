@@ -6,12 +6,12 @@ import { Container } from "react-bootstrap";
 
 const FAQS = [
   {
-    q: "What is GeoID?",
-    a: "GeoID is a cloud-based platform for geotechnical engineers to capture digital boring logs, manage borehole data, and generate professional reports from field to office.",
+    q: "What is GeoLog?",
+    a: "GeoLog is a cloud-based platform for geotechnical engineers to capture digital boring logs, manage borehole data, and generate professional reports from field to office.",
   },
   {
-    q: "Can I use GeoID offline in the field?",
-    a: "Yes. GeoID supports offline field logging on mobile devices. Data syncs automatically when an internet connection is available.",
+    q: "Can I use GeoLog offline in the field?",
+    a: "Yes. GeoLog supports offline field logging on mobile devices. Data syncs automatically when an internet connection is available.",
   },
   {
     q: "What export formats are supported?",

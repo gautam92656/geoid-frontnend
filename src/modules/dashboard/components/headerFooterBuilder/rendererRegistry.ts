@@ -19,7 +19,7 @@ export const RENDERER_PLACEHOLDERS: readonly RendererPlaceholder[] = [
   { label: "Page X of Y", token: "{{page}} of {{pages}}", category: "System", sample: "1 of 5" },
   { label: "Current Date", token: "{{date}}", category: "System", sample: "01/08/2026" },
   { label: "Current Time", token: "{{time}}", category: "System", sample: "12:47 pm" },
-  { label: "Company Name", token: "{{company.name}}", category: "Company", sample: "Geoid" },
+  { label: "Company Name", token: "{{company.name}}", category: "Company", sample: "GeoLog" },
   { label: "Company Address", token: "{{company.address}}", category: "Company", sample: "Company address" },
   { label: "Company Phone", token: "{{company.phone}}", category: "Company", sample: "+1 555 0100" },
   { label: "Company Email", token: "{{company.email}}", category: "Company", sample: "info@example.com" },

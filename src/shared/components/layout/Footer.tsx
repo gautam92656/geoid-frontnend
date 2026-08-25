@@ -44,7 +44,7 @@ export function Footer() {
           </div>
 
           <div className="footer__bottom">
-            <p className="footer__copy">&copy; {new Date().getFullYear()} GeoID. All rights reserved.</p>
+            <p className="footer__copy">&copy; {new Date().getFullYear()} GeoLog. All rights reserved.</p>
           </div>
         </div>
       </Container>

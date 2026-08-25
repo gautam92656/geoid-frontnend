@@ -3,7 +3,7 @@ import { DashboardHero, ProjectsSection, StatCards } from "@/modules/dashboard/c
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "GeoID dashboard — view your logs and project activity at a glance.",
+  description: "GeoLog dashboard — view your logs and project activity at a glance.",
 };
 
 export default function DashboardHomePage() {

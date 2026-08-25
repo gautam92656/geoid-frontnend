@@ -53,7 +53,7 @@ export function JourneyStepsSection() {
   return (
     <section className="discovery-steps">
       <Container>
-        <h2 className="discovery-steps__title">How GeoID works in three simple steps</h2>
+        <h2 className="discovery-steps__title">How GeoLog works in three simple steps</h2>
         <div className="discovery-steps__grid">
           {STEPS.map((step) => (
             <article key={step.title} className="discovery-step-card">

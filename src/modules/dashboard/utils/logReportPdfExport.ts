@@ -6,6 +6,21 @@ export type LogReportPdfExportOptions = {
   pageHeightPx: number;
 };
 
+export type LogReportPdfDoc = {
+  addPage: (format: number[], orientation: "portrait" | "landscape") => unknown;
+  addImage: (
+    imageData: string,
+    format: string,
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    alias?: string,
+    compression?: string
+  ) => unknown;
+  save: (filename: string) => unknown;
+};
+
 const CSS_PX_PER_INCH = 96;
 const MM_PER_INCH = 25.4;
 
@@ -43,7 +58,7 @@ function resetExportTransforms(root: HTMLElement): void {
   root.style.transformOrigin = "top left";
 }
 
-async function waitForImages(root: HTMLElement): Promise<void> {
+export async function waitForLogReportImages(root: HTMLElement): Promise<void> {
   const images = Array.from(root.querySelectorAll("img"));
   await Promise.all(
     images.map(
@@ -61,19 +76,24 @@ async function waitForImages(root: HTMLElement): Promise<void> {
   );
 }
 
+export function sanitizePdfFileName(value: string, fallback = "Log"): string {
+  return value.trim().replace(/[^\w.-]+/g, "_") || fallback;
+}
+
 /**
- * Captures every `.log-report-composed` page inside `sheet` and writes each one to
- * its own PDF page (one image per page, at matching physical dimensions), so a log
- * that spans multiple Metres/Page windows downloads as a real multi-page PDF.
+ * Captures every `.log-report-composed` page inside `sheet` and appends each one
+ * to `pdf` (creating the document on the first call).
  */
-export async function exportLogReportPdf(
+export async function appendLogReportSheetToPdf(
+  pdf: LogReportPdfDoc | null,
   sheet: HTMLElement,
-  { logNumber, pageWidthPx, pageHeightPx }: LogReportPdfExportOptions
-): Promise<void> {
+  { pageWidthPx, pageHeightPx }: Pick<LogReportPdfExportOptions, "pageWidthPx" | "pageHeightPx">
+): Promise<LogReportPdfDoc | null> {
   const pageNodes = Array.from(sheet.querySelectorAll<HTMLElement>(".log-report-composed"));
   const nodes = pageNodes.length > 0 ? pageNodes : [sheet];
+  if (nodes.length === 0) return pdf;
 
-  await waitForImages(sheet);
+  await waitForLogReportImages(sheet);
 
   const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
     import("jspdf"),
@@ -83,12 +103,15 @@ export async function exportLogReportPdf(
   const pageWidthMm = pxToMm(pageWidthPx);
   const pageHeightMm = pxToMm(pageHeightPx);
   const orientation = pageWidthPx >= pageHeightPx ? "landscape" : "portrait";
-  const pdf = new jsPDF({
-    orientation,
-    unit: "mm",
-    format: [pageWidthMm, pageHeightMm],
-    compress: true,
-  });
+
+  const startedEmpty = pdf == null;
+  const nextPdf: LogReportPdfDoc = (pdf ??
+    new jsPDF({
+      orientation,
+      unit: "mm",
+      format: [pageWidthMm, pageHeightMm],
+      compress: true,
+    })) as LogReportPdfDoc;
 
   for (let index = 0; index < nodes.length; index += 1) {
     const node = nodes[index];
@@ -99,7 +122,6 @@ export async function exportLogReportPdf(
       logging: false,
       backgroundColor: "#ffffff",
       imageTimeout: 15000,
-      letterRendering: true,
       onclone: (_document, clonedNode) => {
         resetExportTransforms(clonedNode);
       },
@@ -107,12 +129,29 @@ export async function exportLogReportPdf(
 
     // PNG keeps vertical header glyphs sharper than JPEG.
     const imageData = canvas.toDataURL("image/png");
-    if (index > 0) {
-      pdf.addPage([pageWidthMm, pageHeightMm], orientation);
+    if (!startedEmpty || index > 0) {
+      nextPdf.addPage([pageWidthMm, pageHeightMm], orientation);
     }
-    pdf.addImage(imageData, "PNG", 0, 0, pageWidthMm, pageHeightMm, undefined, "FAST");
+    nextPdf.addImage(imageData, "PNG", 0, 0, pageWidthMm, pageHeightMm, undefined, "FAST");
   }
 
-  const safeName = (logNumber ?? "").toString().trim().replace(/[^\w.-]+/g, "_") || "Log";
-  pdf.save(`${safeName}.pdf`);
+  return nextPdf;
+}
+
+export function downloadLogReportPdf(pdf: LogReportPdfDoc, fileName: string): void {
+  pdf.save(`${sanitizePdfFileName(fileName)}.pdf`);
+}
+
+/**
+ * Captures every `.log-report-composed` page inside `sheet` and writes each one to
+ * its own PDF page (one image per page, at matching physical dimensions), so a log
+ * that spans multiple Metres/Page windows downloads as a real multi-page PDF.
+ */
+export async function exportLogReportPdf(
+  sheet: HTMLElement,
+  { logNumber, pageWidthPx, pageHeightPx }: LogReportPdfExportOptions
+): Promise<void> {
+  const pdf = await appendLogReportSheetToPdf(null, sheet, { pageWidthPx, pageHeightPx });
+  if (!pdf) return;
+  downloadLogReportPdf(pdf, (logNumber ?? "").toString() || "Log");
 }

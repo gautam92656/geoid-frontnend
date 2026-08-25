@@ -23,7 +23,7 @@ export function FeaturesSection() {
           <span className="landing-eyebrow">Features</span>
           <h2 className="landing-section__title">Everything you need for geotechnical logging</h2>
           <p className="landing-section__text">
-            GeoID helps your team move from paper logs and spreadsheets to a modern, cloud-based workflow.
+            GeoLog helps your team move from paper logs and spreadsheets to a modern, cloud-based workflow.
           </p>
         </div>
         <div className="landing-features-grid">

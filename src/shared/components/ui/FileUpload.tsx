@@ -12,6 +12,10 @@ type FileUploadProps = Readonly<{
   id?: string;
   disabled?: boolean;
   className?: string;
+  existingSrc?: string | null;
+  existingLabel?: string;
+  error?: string;
+  onReject?: (message: string) => void;
 }>;
 
 function formatFileSize(bytes: number) {
@@ -43,10 +47,29 @@ function UploadIcon() {
 function ImageIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.5" />
+      <rect
+        x="3"
+        y="5"
+        width="18"
+        height="14"
+        rx="2"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
       <circle cx="9" cy="10" r="1.5" fill="currentColor" />
-      <path d="M3 16l5-5 4 4 3-3 6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M3 16l5-5 4 4 3-3 6 6"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
     </svg>
+  );
+}
+
+function isLikelyImage(file: File) {
+  return (
+    file.type.startsWith("image/") || /\.(jpe?g|png|gif|svg|webp)$/i.test(file.name)
   );
 }
 
@@ -59,43 +82,56 @@ export function FileUpload({
   id,
   disabled = false,
   className = "",
+  existingSrc = null,
+  existingLabel = "Current logo",
+  error,
+  onReject,
 }: FileUploadProps) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [localError, setLocalError] = useState<string | null>(null);
 
+  /* Object URLs must be created and revoked with the selected file. */
+  /* eslint-disable react-hooks/set-state-in-effect -- blob URL lifecycle */
   useEffect(() => {
-    if (!value || !value.type.startsWith("image/")) {
+    if (!value || !isLikelyImage(value)) {
       setPreviewUrl(null);
       return;
     }
 
     const objectUrl = URL.createObjectURL(value);
     setPreviewUrl(objectUrl);
-
-    return () => {
-      URL.revokeObjectURL(objectUrl);
-    };
+    return () => URL.revokeObjectURL(objectUrl);
   }, [value]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const openFilePicker = () => {
     if (disabled) return;
     inputRef.current?.click();
   };
 
+  const reject = (message: string) => {
+    setLocalError(message);
+    onReject?.(message);
+  };
+
   const handleFile = (file: File | null) => {
     if (!file || disabled) return;
 
-    if (accept.includes("image") && !file.type.startsWith("image/")) {
+    if (accept.includes("image") && !isLikelyImage(file)) {
+      reject("Please choose a PNG, JPG, GIF, SVG, or WEBP image.");
       return;
     }
 
     if (file.size > maxSizeMb * 1024 * 1024) {
+      reject(`Image must be ${maxSizeMb} MB or smaller.`);
       return;
     }
 
+    setLocalError(null);
     onChange(file);
   };
 
@@ -132,9 +168,14 @@ export function FileUpload({
 
   const handleRemove = () => {
     if (disabled) return;
+    setLocalError(null);
     onChange(null);
     if (inputRef.current) inputRef.current.value = "";
   };
+
+  const shownError = error || localError;
+  const previewImage = previewUrl || (!value ? existingSrc : null);
+  const hasPreview = Boolean(value || existingSrc);
 
   return (
     <div className={["ui-file-upload", className].filter(Boolean).join(" ")}>
@@ -148,11 +189,24 @@ export function FileUpload({
         onChange={handleInputChange}
       />
 
-      {value ? (
-        <div className="ui-file-upload__preview">
+      {hasPreview ? (
+        <div
+          className={["ui-file-upload__preview", isDragging ? "is-dragging" : ""]
+            .filter(Boolean)
+            .join(" ")}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
           <div className="ui-file-upload__preview-media">
-            {previewUrl ? (
-              <img src={previewUrl} alt={value.name} className="ui-file-upload__image" />
+            {previewImage ? (
+              // eslint-disable-next-line @next/next/no-img-element -- blob/data URLs are user uploads
+              <img
+                src={previewImage}
+                alt={value?.name ?? existingLabel}
+                className="ui-file-upload__image"
+              />
             ) : (
               <div className="ui-file-upload__file-icon">
                 <ImageIcon />
@@ -161,8 +215,12 @@ export function FileUpload({
           </div>
 
           <div className="ui-file-upload__meta">
-            <p className="ui-file-upload__name">{value.name}</p>
-            <p className="ui-file-upload__size">{formatFileSize(value.size)}</p>
+            <p className="ui-file-upload__name">{value?.name ?? existingLabel}</p>
+            {value ? (
+              <p className="ui-file-upload__size">{formatFileSize(value.size)}</p>
+            ) : (
+              <p className="ui-file-upload__size">Uploaded</p>
+            )}
           </div>
 
           <div className="ui-file-upload__actions">
@@ -194,6 +252,7 @@ export function FileUpload({
             "ui-file-upload__dropzone",
             isDragging ? "is-dragging" : "",
             disabled ? "is-disabled" : "",
+            error || localError ? "is-error" : "",
           ]
             .filter(Boolean)
             .join(" ")}
@@ -219,6 +278,10 @@ export function FileUpload({
           {hint ? <p className="ui-file-upload__hint">{hint}</p> : null}
         </div>
       )}
+
+      {!error && localError ? (
+        <p className="ui-file-upload__error">{localError}</p>
+      ) : null}
     </div>
   );
 }

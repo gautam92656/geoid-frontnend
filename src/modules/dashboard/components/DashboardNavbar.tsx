@@ -12,12 +12,12 @@ import {
   COMPANY_LOGO_HEIGHT,
   COMPANY_LOGO_PATH,
   COMPANY_LOGO_WIDTH,
-} from "@/shared/constants/branding";
+} from "../data/branding";
 
 const MAIN_LINKS = [
   { label: "Home", href: "/dashboard", icon: "home" },
   { label: "Projects", href: "/dashboard/projects", icon: "projects" },
-  { label: "Data", href: "/dashboard/data", icon: "data" },
+  // { label: "Data", href: "/dashboard/data", icon: "data" },
   { label: "Settings", href: "/dashboard/settings", icon: "settings" },
 ] as const;
 
@@ -239,10 +239,12 @@ function getInitials(firstName?: string, lastName?: string): string {
 function ProfileMenu({
   initials,
   email,
+  photoUrl,
   isSuperAdmin,
 }: Readonly<{
   initials: string;
   email: string;
+  photoUrl?: string | null;
   isSuperAdmin: boolean;
 }>) {
   const { signOut } = useAuth();
@@ -286,23 +288,26 @@ function ProfileMenu({
         aria-label="Open profile menu"
         onClick={() => setOpen((current) => !current)}
       >
-        {initials}
+        {photoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={photoUrl} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        ) : (
+          initials
+        )}
       </button>
 
       {open ? (
         <div className="dashboard-navbar__profile-menu" role="menu" aria-label="Profile">
           <p className="dashboard-navbar__profile-email">{email}</p>
 
-          {isSuperAdmin ? (
-            <Link
-              href="/dashboard/settings/account"
-              role="menuitem"
-              className="dashboard-navbar__profile-action"
-              onClick={() => setOpen(false)}
-            >
-              My Profile
-            </Link>
-          ) : null}
+          <Link
+            href="/dashboard/settings/account"
+            role="menuitem"
+            className="dashboard-navbar__profile-action"
+            onClick={() => setOpen(false)}
+          >
+            My Profile
+          </Link>
 
           {isSuperAdmin ? (
             <Link
@@ -370,40 +375,40 @@ export function DashboardNavbar() {
           <div className="dashboard-navbar__inner">
             <div className="dashboard-navbar__left">
               <BrandLogo />
-
-              <nav className="dashboard-navbar__main-nav" aria-label="Main navigation">
-                <ul>
-                  {MAIN_LINKS.filter((link) => link.href !== "/dashboard/settings").map(
-                    ({ label, href, icon }) => (
-                      <li key={href}>
-                        <Link href={href} className="dashboard-navbar__main-link">
-                          <NavIcon name={icon} />
-                          {label}
-                        </Link>
-                      </li>
-                    )
-                  )}
-                  <AssetsDropdown />
-                  {isSuperAdmin
-                    ? MAIN_LINKS.filter((link) => link.href === "/dashboard/settings").map(
-                        ({ label, href, icon }) => (
-                          <li key={href}>
-                            <Link href={href} className="dashboard-navbar__main-link">
-                              <NavIcon name={icon} />
-                              {label}
-                            </Link>
-                          </li>
-                        )
-                      )
-                    : null}
-                </ul>
-              </nav>
             </div>
+
+            <nav className="dashboard-navbar__main-nav dashboard-navbar__center" aria-label="Main navigation">
+              <ul>
+                {MAIN_LINKS.filter((link) => link.href !== "/dashboard/settings").map(
+                  ({ label, href, icon }) => (
+                    <li key={href}>
+                      <Link href={href} className="dashboard-navbar__main-link">
+                        <NavIcon name={icon} />
+                        {label}
+                      </Link>
+                    </li>
+                  )
+                )}
+                <AssetsDropdown />
+                {isSuperAdmin
+                  ? MAIN_LINKS.filter((link) => link.href === "/dashboard/settings").map(
+                      ({ label, href, icon }) => (
+                        <li key={href}>
+                          <Link href={href} className="dashboard-navbar__main-link">
+                            <NavIcon name={icon} />
+                            {label}
+                          </Link>
+                        </li>
+                      )
+                    )
+                  : null}
+              </ul>
+            </nav>
 
             <div className="dashboard-navbar__right">
 
               <div className="dashboard-navbar__utilities">
-                <button type="button" className="dashboard-navbar__utility-btn" aria-label="Toggle dark mode">
+                {/* <button type="button" className="dashboard-navbar__utility-btn" aria-label="Toggle dark mode">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path
                       d="M21 14.5A8.5 8.5 0 1112.5 3a6.5 6.5 0 009.5 11.5z"
@@ -422,7 +427,7 @@ export function DashboardNavbar() {
                       strokeLinecap="round"
                     />
                   </svg>
-                </button>
+                </button> */}
                 <button type="button" className="dashboard-navbar__utility-btn" aria-label="Notifications">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path
@@ -436,7 +441,12 @@ export function DashboardNavbar() {
                 </button>
               </div>
 
-              <ProfileMenu initials={initials} email={profileEmail} isSuperAdmin={isSuperAdmin} />
+              <ProfileMenu
+                initials={initials}
+                email={profileEmail}
+                photoUrl={user?.companyLogoUrl?.trim() || null}
+                isSuperAdmin={isSuperAdmin}
+              />
 
               <button
                 type="button"
@@ -502,6 +512,9 @@ export function DashboardNavbar() {
             ) : null}
           </div>
 
+          <Link href="/dashboard/settings/account" className="navbar__drawer-link" onClick={close}>
+            My Profile
+          </Link>
           {isSuperAdmin
             ? MAIN_LINKS.filter((link) => link.href === "/dashboard/settings").map(({ label, href }) => (
                 <Link key={href} href={href} className="navbar__drawer-link" onClick={close}>

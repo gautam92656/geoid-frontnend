@@ -10,6 +10,7 @@ export const API_MESSAGES = {
   SUPPLIERS_DELETED: "Suppliers deleted successfully.",
 
   PROJECT_ADDED: "Project added successfully.",
+  PROJECT_COPIED: "Project copied successfully.",
   PROJECT_UPDATED: "Project updated successfully.",
   PROJECT_ARCHIVED: "Project archived successfully.",
   PROJECT_RESTORED: "Project restored successfully.",

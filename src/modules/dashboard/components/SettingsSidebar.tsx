@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useAppSelector } from "@/store/hooks";
 
 export const SETTINGS_SECTIONS = [
   {
@@ -129,6 +130,10 @@ type SettingsSidebarProps = Readonly<{
 
 export function SettingsSidebar({ activeSection, mobileOpen = false, onCloseMobile }: SettingsSidebarProps) {
   const useFullLabels = useMobileNavLabels();
+  const isSuperAdmin = useAppSelector((state) => state.auth.user?.role === "super_admin");
+  const visibleSections = isSuperAdmin
+    ? SETTINGS_SECTIONS
+    : SETTINGS_SECTIONS.filter((section) => section.id === "account");
 
   return (
     <aside
@@ -151,7 +156,7 @@ export function SettingsSidebar({ activeSection, mobileOpen = false, onCloseMobi
 
       <nav className="settings-sidebar__nav ui-scrollbar">
         <ul className="settings-sidebar__list">
-          {SETTINGS_SECTIONS.map((section) => (
+          {visibleSections.map((section) => (
             <li key={section.id}>
               <Link
                 href={section.href}
