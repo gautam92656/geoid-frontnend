@@ -512,8 +512,10 @@ function resolveHfFontFamily(fontFamily: string | undefined): string {
 }
 
 /** Borelog header row height share within the fixed section height (brand / meta). */
-const BORELOG_HEADER_BRAND_ROW_FR = 52;
+const BORELOG_HEADER_BRAND_ROW_FR = 40;
 const BORELOG_HEADER_META_ROW_FR = 48;
+/** Prior brand share — used so shrinking brand does not grow the meta row. */
+const BORELOG_HEADER_BRAND_ROW_FR_BASELINE = 52;
 
 /**
  * Footer cells sit inside `.log-report-composed__frame` and below the body
@@ -722,7 +724,14 @@ function HfSectionGrid({
   const colTemplate = section.columnWidths
     .map((weight) => `${Math.max(weight, 0.01) * 100}fr`)
     .join(" ");
-  const heightPx = Math.max(28, mmToPx(section.heightMm || 20));
+  const configuredHeightPx = Math.max(28, mmToPx(section.heightMm || 20));
+  // Shrink brand row only: scale total height so the meta row keeps its absolute size.
+  const heightPx =
+    variant === "header" && section.rows === 2
+      ? configuredHeightPx *
+        ((BORELOG_HEADER_BRAND_ROW_FR + BORELOG_HEADER_META_ROW_FR) /
+          (BORELOG_HEADER_BRAND_ROW_FR_BASELINE + BORELOG_HEADER_META_ROW_FR))
+      : configuredHeightPx;
   // Header: fixed row ratio so meta row gets more height than max-content alone.
   const rowTemplate =
     variant === "header" && section.rows === 2
@@ -796,13 +805,18 @@ function HfSectionGrid({
                       : "flex-start",
               alignItems:
                 cell.type === "image"
-                  ? "center"
+                  ? "stretch"
                   : cell.textAlign === "center"
                     ? "center"
                     : cell.textAlign === "right"
                       ? "flex-end"
                       : "stretch",
-              padding: cell.type === "image" ? cell.padding ?? 6 : cell.padding ?? 4,
+              padding:
+                cell.type === "image"
+                  ? variant === "header"
+                    ? 2
+                    : (cell.padding ?? 6)
+                  : (cell.padding ?? 4),
               borderStyle: cell.borderStyle || "solid",
               borderColor: cell.borderColor || "#000",
               borderWidth: 0,
@@ -2340,19 +2354,21 @@ export const LOG_REPORT_COMPOSED_PRINT_STYLES = `
     border-width: 0;
   }
   .log-report-composed__hf-cell.is-image {
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
+    padding: 2px !important;
   }
   .log-report-composed__hf-image {
     display: block;
-    width: auto;
-    height: auto;
+    width: 100%;
+    height: 100%;
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
     object-position: center;
-    flex: 0 1 auto;
+    flex: 1 1 auto;
     min-height: 0;
+    min-width: 0;
   }
   .log-report-composed__logo-fallback {
     width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
